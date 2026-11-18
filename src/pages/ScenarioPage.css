@@ -1,0 +1,3419 @@
+/* ───────── «سناریوسازی» (prompt §8.3) ───────── */
+.scn-page {
+  display: grid;
+  gap: var(--space-20);
+  padding-bottom: 96px;
+}
+.scn-code {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+}
+
+/* Context bar: the alert these scenarios come from */
+.scn-context {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-14, 14px) var(--space-20);
+}
+.scn-context__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--rounded-xl);
+  background: var(--brand-shades-50);
+  color: var(--ext-primary-strong);
+}
+.scn-context__text {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 220px;
+}
+.scn-context__from {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-context__title {
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+
+.scn-titlebar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-12);
+}
+.scn-title {
+  margin: 0;
+  font-size: var(--type-heading-4-size, 20px);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-add {
+  position: relative;
+  margin-inline-start: auto;
+}
+.scn-add__menu {
+  position: absolute;
+  top: calc(100% + var(--space-8));
+  inset-inline-end: 0;
+  z-index: 30;
+  display: grid;
+  gap: var(--space-10, 10px);
+  width: 380px;
+  max-height: 70vh;
+  padding: var(--space-16);
+  overflow-y: auto;
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-2xl);
+  background: var(--color-card);
+  box-shadow: 0 16px 40px -16px rgb(16 24 40 / 0.22);
+  animation: tb-pop 180ms var(--ext-ease);
+}
+.scn-add__title {
+  margin: 0;
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-add__sub {
+  margin: -6px 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-add__blank {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+  padding: var(--space-10, 10px) var(--space-12);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--rounded-xl);
+  background: var(--color-unofficial-accent-0);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.scn-add__blank span,
+.scn-add__item span {
+  display: grid;
+  gap: 2px;
+}
+.scn-add__blank span span,
+.scn-add__item span span {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-add__blank strong,
+.scn-add__item strong {
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-add__group {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-8) 0 0;
+  border: 0;
+  border-top: 1px solid var(--color-unofficial-border-1);
+}
+.scn-add__group legend {
+  padding: var(--space-8) 0 var(--space-4);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-add__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-10, 10px);
+  padding: var(--space-8);
+  border-radius: var(--rounded-lg);
+  cursor: pointer;
+}
+.scn-add__item:hover {
+  background: var(--color-unofficial-accent-0);
+}
+.scn-add__item input {
+  margin-top: 4px;
+  accent-color: var(--color-primary);
+}
+.scn-add__foot {
+  position: sticky;
+  bottom: -16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -16px -16px;
+  padding: var(--space-12) var(--space-16);
+  border-top: 1px solid var(--color-unofficial-border-1);
+  background: var(--color-card);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* Assumptions on the start side, table and chart beside them */
+.scn-grid {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-20);
+}
+.scn-main {
+  display: grid;
+  gap: var(--space-20);
+  min-width: 0;
+}
+.scn-vars {
+  position: sticky;
+  top: 88px;
+  gap: var(--space-14, 14px);
+}
+.scn-vars__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.scn-vars__head h3 {
+  margin: 0;
+  font-size: var(--type-paragraph-regular-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-vars__locked {
+  margin: 0;
+  padding: var(--space-8) var(--space-10, 10px);
+  border-radius: var(--rounded-lg);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.7;
+}
+.scn-vars__group {
+  display: grid;
+  gap: var(--space-10, 10px);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-unofficial-border-1);
+}
+.scn-vars__title {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-vars__fixed dl {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+}
+.scn-vars__fixed dl div {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-vars__fixed dd {
+  margin: 0;
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+/* One variable: label and value, slider, source; changed values are tinted */
+.svar {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  margin-inline: calc(-1 * var(--space-8));
+  border-radius: var(--rounded-lg);
+  transition: background-color 160ms var(--ext-ease);
+}
+.svar.is-changed {
+  background: var(--brand-shades-50);
+}
+.svar.is-error {
+  background: var(--ext-status-danger-bg);
+}
+.svar__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.svar__label {
+  font-size: var(--type-paragraph-small-size);
+}
+.svar__value {
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+  white-space: nowrap;
+}
+.svar__range {
+  width: 100%;
+  height: 6px;
+  margin: var(--space-6) 0;
+  border-radius: var(--rounded-full);
+  background: linear-gradient(to left, var(--color-primary) var(--p), var(--color-unofficial-accent-2) var(--p));
+  accent-color: var(--color-primary);
+  appearance: none;
+  cursor: pointer;
+}
+.svar__range::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--color-primary);
+  border-radius: 50%;
+  background: var(--color-card);
+  appearance: none;
+}
+.svar__range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--color-primary);
+  border-radius: 50%;
+  background: var(--color-card);
+}
+.svar__range:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.svar__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.svar__source {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+.svar__reset {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ext-primary-strong);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.svar__limit {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+.svar__error {
+  margin: 0;
+  color: var(--ext-status-danger-fg);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+
+/* Scenarios table */
+.scn-table-wrap {
+  padding: 0;
+  overflow-x: auto;
+}
+.scn-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-table thead th {
+  padding: var(--space-10, 10px) var(--space-12);
+  border-bottom: 1px solid var(--color-unofficial-border-1);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+  text-align: start;
+  white-space: nowrap;
+}
+.scn-table tbody tr {
+  cursor: pointer;
+  transition: background-color 140ms var(--ext-ease);
+}
+.scn-table tbody tr:hover {
+  background: var(--color-unofficial-accent-0);
+}
+.scn-table tbody tr.is-selected {
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-card));
+  box-shadow: inset -3px 0 0 var(--color-primary);
+}
+.scn-table td,
+.scn-table tbody th {
+  padding: var(--space-10, 10px) var(--space-12);
+  border-bottom: 1px solid var(--color-unofficial-border-1);
+  text-align: start;
+  vertical-align: middle;
+}
+.scn-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.scn-table td.is-danger {
+  color: var(--ext-status-danger-fg);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-table input[type='radio'] {
+  accent-color: var(--color-primary);
+}
+.scn-name {
+  font-weight: var(--type-paragraph-semibold-weight);
+  white-space: nowrap;
+}
+.scn-name > * {
+  vertical-align: middle;
+}
+.scn-dot {
+  display: inline-block;
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-inline-end: var(--space-8);
+  border-radius: 50%;
+}
+.scn-origin {
+  margin-inline-start: var(--space-8);
+  padding: 1px var(--space-8);
+  border-radius: var(--rounded-full);
+  font-size: 11px;
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.scn-origin--reference {
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+}
+.scn-origin--alert {
+  background: var(--brand-shades-50);
+  color: var(--ext-primary-strong);
+}
+.scn-origin--user {
+  background: color-mix(in srgb, var(--raw-violet-500) 12%, var(--color-card));
+  color: var(--raw-violet-600);
+}
+.scn-origin--template {
+  background: var(--ext-status-success-bg);
+  color: var(--ext-status-success-fg);
+}
+.scn-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.scn-chips span {
+  padding: 1px var(--space-8);
+  border-radius: var(--rounded-md);
+  background: var(--color-unofficial-accent-0);
+  font-size: var(--type-paragraph-mini-size);
+  white-space: nowrap;
+}
+.scn-chips .is-muted {
+  background: none;
+  color: var(--color-muted-foreground);
+}
+.scn-rename {
+  width: 180px;
+  padding: 2px var(--space-6);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--rounded-md);
+  font: inherit;
+}
+.scn-rowmenu {
+  position: relative;
+  width: 1%;
+}
+.tb-menu.scn-rowmenu__pop {
+  top: calc(100% - 4px);
+  inset-inline-end: 0;
+  z-index: 20;
+  min-width: 210px;
+}
+
+/* Chart */
+.scn-chart__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+.scn-chart__head h3 {
+  margin: 0;
+  font-size: var(--type-paragraph-regular-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-chart__head .alegend {
+  margin: 0;
+}
+.scn-chart__note {
+  margin: var(--space-8) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* Sticky footer: the selected scenario and the one primary action */
+.scn-foot {
+  position: sticky;
+  bottom: var(--space-16);
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-20);
+  box-shadow: 0 8px 28px -12px rgb(16 24 40 / 0.22);
+}
+.scn-foot__text {
+  flex: 1;
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-foot__text strong {
+  color: var(--color-foreground);
+}
+.scn-foot .abtn--primary {
+  flex: none;
+  min-width: 160px;
+}
+/* Room for the floating assistant button on the end (left) side */
+.scn-foot {
+  padding-inline-end: 88px;
+}
+
+/* Starting point when no alert is given */
+.scn-empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-10, 10px);
+  padding: var(--space-32);
+  text-align: center;
+}
+.scn-empty h2 {
+  margin: 0;
+  font-size: var(--type-paragraph-large-size);
+}
+.scn-empty p {
+  margin: 0;
+  color: var(--color-muted-foreground);
+}
+.scn-empty ul {
+  display: grid;
+  gap: var(--space-8);
+  width: min(520px, 100%);
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.scn-empty__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+  padding: var(--space-12) var(--space-14, 14px);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-xl);
+  color: inherit;
+  text-decoration: none;
+}
+.scn-empty__link:hover {
+  background: var(--color-unofficial-accent-0);
+}
+.scn-empty__link .scn-code {
+  margin-inline-start: auto;
+  color: var(--color-muted-foreground);
+}
+
+@media (max-width: 1100px) {
+  .scn-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scn-vars {
+    position: static;
+  }
+}
+
+/* ───────── Phase 2: every type, weak estimates, settings page ───────── */
+.scn-table td.is-weak {
+  color: var(--ext-status-warning-fg);
+}
+.scn-empty__text {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  text-align: start;
+}
+.scn-empty__kind {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-add__empty {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-add__manage {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-page > .abanner {
+  margin: 0;
+}
+
+/* «سناریوهای آماده» settings */
+.tpl-grid {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-20);
+}
+.tpl-kinds {
+  position: sticky;
+  top: 88px;
+  gap: var(--space-4);
+  padding: var(--space-10, 10px);
+}
+.tpl-kind {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-10, 10px) var(--space-12);
+  border: 0;
+  border-radius: var(--rounded-lg);
+  background: transparent;
+  color: var(--color-foreground);
+  font: inherit;
+  font-size: var(--type-paragraph-small-size);
+  text-align: start;
+  cursor: pointer;
+}
+.tpl-kind:hover {
+  background: var(--color-unofficial-accent-0);
+}
+.tpl-kind.is-on {
+  background: var(--brand-shades-50);
+  color: var(--ext-primary-strong);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+/* Count badge: same size and weight as the alert chips' counts, so the digits read in the body font */
+.tpl-kind__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 var(--space-6);
+  border-radius: var(--rounded-full);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+  font-family: inherit;
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tpl-kind.is-on .tpl-kind__count {
+  background: var(--color-card);
+  color: var(--ext-primary-strong);
+}
+.tpl-perms {
+  gap: var(--space-12);
+}
+.tpl-perms h3,
+.tpl-head h3 {
+  margin: 0;
+  font-size: var(--type-paragraph-regular-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.tpl-perms__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8) var(--space-16);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.tpl-perms__row legend {
+  width: 100%;
+  margin-bottom: var(--space-6);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.tpl-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  font-size: var(--type-paragraph-small-size);
+  cursor: pointer;
+}
+/* Checkbox from the tokens: 16px box, border token, primary fill with a white tick when on */
+.tpl-check input {
+  flex: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid var(--color-unofficial-border-4, var(--color-border));
+  border-radius: var(--rounded-sm, 4px);
+  background: var(--color-card);
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+.tpl-check input:checked {
+  border-color: var(--color-primary);
+  background: var(--color-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5'/%3E%3C/svg%3E") center / 14px no-repeat;
+}
+.tpl-check input:focus-visible {
+  outline: 2px solid var(--color-ring, var(--color-primary));
+  outline-offset: 2px;
+}
+.tpl-check input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+/* «فعال» on each built-in template is an on/off setting: a switch, not a checkbox */
+.tpl-list .tpl-check {
+  flex-direction: row-reverse;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.tpl-list .tpl-check input {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  border: 0;
+  border-radius: var(--rounded-full);
+  background: var(--brand-neutrals-300, var(--color-border));
+}
+.tpl-list .tpl-check input::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  inset-inline-start: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-card);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  transition: inset-inline-start 150ms ease;
+}
+.tpl-list .tpl-check input:checked {
+  background: var(--color-primary);
+}
+.tpl-list .tpl-check input:checked::after {
+  inset-inline-start: 16px;
+}
+.tpl-list .tpl-check:has(input:checked) {
+  color: var(--color-foreground);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tpl-check input,
+  .tpl-check input::after {
+    transition: none;
+  }
+}
+.tpl-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  margin-bottom: var(--space-12);
+}
+/* «سناریوی آماده جدید»: the design system's secondary button (filled secondary token, as «هشدارهای محموله») */
+.tpl-head .abtn--secondary {
+  height: 32px;
+  padding: 0 var(--space-12);
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.tpl-head .abtn--secondary:hover {
+  background: var(--color-unofficial-secondary-hover, var(--color-secondary));
+}
+/* Group picker in the form: one line per option, body font, regular weight unless chosen */
+.tpl-form .seg {
+  justify-self: start;
+  width: auto;
+}
+.tpl-form .seg button {
+  padding-inline: var(--space-12);
+  font-family: inherit;
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+  white-space: nowrap;
+}
+.tpl-form .seg button[aria-pressed='true'] {
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.tpl-form {
+  display: grid;
+  gap: var(--space-12);
+  margin-bottom: var(--space-16);
+  padding: var(--space-16);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, var(--color-card));
+  border-radius: var(--rounded-xl);
+  background: color-mix(in srgb, var(--color-primary) 3%, var(--color-card));
+}
+.tpl-input {
+  min-height: 0;
+  resize: none;
+}
+.tpl-vars {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-10, 10px);
+}
+.tpl-var {
+  display: grid;
+  gap: var(--space-4);
+  font-size: var(--type-paragraph-mini-size);
+}
+.tpl-form__foot {
+  display: flex;
+  gap: var(--space-8);
+}
+.tpl-form__foot .abtn--primary {
+  flex: none;
+}
+.tpl-group {
+  display: grid;
+  gap: var(--space-8);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-unofficial-border-1);
+}
+.tpl-group + .tpl-group {
+  margin-top: var(--space-12);
+}
+.tpl-empty {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-small-size);
+}
+.tpl-list {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tpl-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-10, 10px) var(--space-12);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-lg);
+}
+.tpl-list li.is-off {
+  opacity: 0.55;
+}
+.tpl-list__text {
+  display: grid;
+  flex: 1;
+  gap: var(--space-4);
+  font-size: var(--type-paragraph-small-size);
+}
+.tpl-list__tools {
+  display: flex;
+  gap: var(--space-2);
+}
+@media (max-width: 1023px) {
+  .tpl-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tpl-kinds {
+    position: static;
+  }
+}
+
+/* ───────── Review round (2026-11-08) ───────── */
+/* Name cell: dot, then the name with its origin tag under it (no overlap, wraps cleanly) */
+.scn-table .scn-name {
+  white-space: normal;
+}
+.scn-table .scn-name .scn-dot {
+  margin-top: 7px;
+  vertical-align: top;
+}
+.scn-name__text {
+  display: inline-grid;
+  justify-items: start;
+  gap: var(--space-4);
+  max-width: calc(100% - 20px);
+  vertical-align: top;
+}
+/* Origin tags: one token-based family; colour says how much the row belongs to the alert */
+.scn-origin {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 var(--space-8);
+  border: 1px solid transparent;
+  border-radius: var(--rounded-full);
+  font-size: 11px;
+  font-weight: var(--type-paragraph-medium-weight);
+  line-height: 18px;
+  white-space: nowrap;
+}
+.scn-origin--reference {
+  border-color: var(--color-unofficial-border-1);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+}
+.scn-origin--alert {
+  background: var(--brand-shades-50);
+  color: var(--ext-primary-strong);
+}
+.scn-origin--template {
+  border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-card));
+  background: var(--color-card);
+  color: var(--ext-primary-strong);
+}
+.scn-origin--user {
+  border-color: var(--color-border);
+  background: var(--color-card);
+  color: var(--color-unofficial-foreground-alt, var(--color-foreground));
+}
+.scn-add__item .scn-origin,
+.tpl-list__text .scn-origin {
+  margin-inline-start: var(--space-6);
+}
+/* Figures: amber when they miss the goal, green when they meet it; units sit in the column head */
+.scn-table td.is-bad {
+  color: var(--ext-status-warning-fg);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-table td.is-good {
+  color: var(--ext-status-success-fg);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-table td {
+  white-space: nowrap;
+}
+.scn-table td:nth-child(3) {
+  white-space: normal;
+}
+.scn-table .scn-name {
+  min-width: 220px;
+}
+.scn-table .scn-name {
+  min-width: 168px;
+}
+.scn-table td,
+.scn-table th {
+  padding-inline: var(--space-10, 10px);
+}
+/* Scenario chart (shadcn chart on Recharts) */
+.scn-rchart {
+  height: 280px;
+}
+/* «بازنشانی»: a quiet blue text button */
+.abtn.scn-reset {
+  color: var(--ext-primary-strong);
+}
+.abtn.scn-reset:hover {
+  background: var(--brand-shades-50);
+}
+
+/* ───────── Scenario page v3: engine roles, number fields, table columns, drawer ───────── */
+.scn-page {
+  padding-bottom: calc(var(--scn-foot-h, 96px) + var(--space-16));
+}
+/* Below 1024 px the assistant floats over the content: it sits above the sticky footer */
+@media (max-width: 1023px) {
+  .has-scn-foot .app__fab {
+    bottom: calc(var(--scn-foot-h, 96px) + var(--space-24));
+  }
+}
+.scn-context__from {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-titlebar .status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.scn-titlebar .scn-add {
+  margin-inline-start: auto;
+}
+.scn-add__full {
+  margin-inline-start: var(--space-8);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-add__item.is-off {
+  opacity: 0.5;
+}
+.scn-drawer-btn,
+.scn-vars__close {
+  display: none;
+}
+
+/* Variable: slider + number field + unit */
+.svar__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+.svar__row .svar__range {
+  flex: 1;
+}
+.svar__num {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: none;
+}
+.svar__input {
+  width: 64px;
+  height: 28px;
+  padding: 0 var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-md);
+  background: var(--color-card);
+  color: var(--color-foreground);
+  font: inherit;
+  font-size: var(--type-paragraph-small-size);
+  text-align: right;
+}
+.svar__input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+.svar__input[aria-invalid='true'] {
+  border-color: var(--ext-status-danger-fg);
+}
+.svar__unit {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.svar__undo {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-inline-start: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--rounded-full);
+  background: transparent;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+.svar__undo:hover {
+  background: var(--color-unofficial-accent-0);
+}
+.scn-vars__empty {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-8);
+}
+.scn-vars__empty p {
+  margin: 0;
+  color: var(--color-muted-foreground);
+}
+.scn-vars__locked {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-8);
+}
+.scn-vars__fixed dd {
+  display: grid;
+}
+.scn-adv summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+}
+.scn-adv summary::-webkit-details-marker {
+  display: none;
+}
+.scn-adv[open] summary svg {
+  transform: rotate(180deg);
+}
+
+/* Table: the row's colour on its side bar, short names, action and comparison */
+.scn-table tbody tr {
+  --row: var(--color-primary);
+}
+.scn-table tbody tr.is-selected > :first-child {
+  box-shadow: inset -3px 0 0 var(--row);
+}
+.scn-table .scn-dot {
+  background: var(--row);
+}
+.scn-table tbody tr:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+.scn-num {
+  color: var(--color-muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.scn-name__text,
+.scn-action {
+  display: inline-block;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+.scn-action--none,
+.scn-action--unmatched {
+  color: var(--color-muted-foreground);
+}
+.scn-action--combined {
+  color: var(--color-primary);
+}
+.scn-vs {
+  white-space: nowrap;
+}
+.scn-vs--better {
+  color: var(--ext-status-success-fg);
+}
+.scn-vs--worse {
+  color: var(--ext-status-warning-fg);
+}
+.scn-vs--same {
+  color: var(--color-muted-foreground);
+}
+.scn-until,
+.scn-stale {
+  display: block;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-stale {
+  color: var(--ext-status-warning-fg);
+}
+.scn-chart__skel {
+  height: 280px;
+}
+
+/* Footer: summary, reason when «اعمال» is off, one primary button */
+.scn-foot__sum {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-12);
+  margin: 0;
+}
+.scn-foot__msg {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  margin: var(--space-4) 0 0;
+}
+.scn-foot__msg.is-blocked {
+  color: var(--ext-status-warning-fg);
+}
+
+/* Start page: recent scenarios */
+.scn-recent h3 {
+  margin: 0 0 var(--space-8);
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-recent ul {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.scn-recent li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+}
+.scn-recent li .ov-link {
+  margin-inline-start: auto;
+}
+
+/* Templates settings: role tag and preview */
+.scn-role {
+  padding: 0 var(--space-6, 6px);
+  border-radius: var(--rounded-full);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-role--action {
+  color: var(--color-primary);
+}
+.tpl-preview {
+  padding: var(--space-12);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-lg);
+}
+.tpl-preview dl {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+}
+.tpl-preview dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.tpl-preview dd {
+  margin: 0;
+}
+
+/* Below 1200 px the settings column becomes a side drawer */
+@media (max-width: 1200px) {
+  .scn-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scn-drawer-btn,
+  .scn-vars__close {
+    display: inline-flex;
+  }
+  .scn-vars {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 60;
+    width: min(340px, 92vw);
+    overflow-y: auto;
+    border-radius: 0;
+    transform: translateX(100%);
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    visibility: hidden;
+  }
+  .scn-vars.is-open {
+    transform: none;
+    visibility: visible;
+  }
+  .scn-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 59;
+    background: rgb(0 0 0 / 0.24);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scn-vars {
+    transition: none;
+  }
+}
+
+/* Below 768 px the table becomes stacked cards, each cell with its column name */
+@media (max-width: 768px) {
+  .scn-table thead {
+    display: none;
+  }
+  .scn-table,
+  .scn-table tbody,
+  .scn-table tr,
+  .scn-table td,
+  .scn-table tbody th {
+    display: block;
+    width: 100%;
+  }
+  .scn-table tbody tr {
+    position: relative;
+    margin-bottom: var(--space-12);
+    padding: var(--space-12);
+    border: 1px solid var(--color-border);
+    border-radius: var(--rounded-lg);
+  }
+  .scn-table tbody tr.is-selected {
+    box-shadow: inset -3px 0 0 var(--row);
+  }
+  .scn-table td[data-label]::before {
+    content: attr(data-label) ': ';
+    color: var(--color-muted-foreground);
+    font-size: var(--type-paragraph-mini-size);
+  }
+  .scn-table .scn-rowmenu {
+    position: absolute;
+    inset-block-start: var(--space-8);
+    inset-inline-end: var(--space-8);
+    width: auto;
+  }
+  .scn-foot {
+    flex-wrap: wrap;
+    padding-inline-end: var(--space-16);
+  }
+}
+
+/* Compact table so all ten columns fit beside the settings column */
+.scn-table {
+  min-width: 0;
+}
+.scn-table thead th {
+  padding: var(--space-8) var(--space-6, 6px);
+  white-space: normal;
+  vertical-align: bottom;
+}
+.scn-table td,
+.scn-table tbody th {
+  padding: var(--space-8) var(--space-6, 6px);
+}
+.scn-table tbody tr.is-selected {
+  box-shadow: none;
+}
+.scn-name {
+  max-width: 150px;
+}
+.scn-name .scn-origin {
+  display: table;
+  margin-top: var(--space-2, 2px);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+}
+.scn-name__text {
+  max-width: 112px;
+}
+.scn-action {
+  display: -webkit-box;
+  max-width: 120px;
+  white-space: normal;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.scn-table .scn-chips {
+  max-width: 110px;
+}
+.scn-vs {
+  display: block;
+  max-width: 120px;
+  white-space: normal;
+}
+.scn-conf {
+  display: grid;
+  white-space: nowrap;
+}
+
+/* ───────── v4: one header, cleaner table, settings that fit above the footer ───────── */
+.scn-head__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+.scn-head__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+.scn-head__saved {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-tag {
+  flex: none;
+}
+.scn-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+/* Slider runs left → right (→ raises the value), so its fill does too */
+.svar__range[dir='ltr'] {
+  background: linear-gradient(to right, var(--color-primary) var(--p), var(--color-unofficial-accent-2) var(--p));
+}
+
+/* The settings column scrolls on its own and never runs under the sticky footer */
+@media (min-width: 1201px) {
+  .scn-vars {
+    max-height: calc(100vh - 88px - var(--scn-foot-h, 96px) - var(--space-32, 32px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+.scn-vars__head h3 {
+  display: grid;
+  gap: var(--space-2, 2px);
+  min-width: 0;
+}
+.scn-vars__name {
+  overflow: hidden;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Table v4: fixed columns, one line per cell, quiet header, figures aligned */
+.scn-table.scn-table--v4 {
+  table-layout: fixed;
+  min-width: 0;
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-table--v4 .c-pick {
+  width: 36px;
+}
+.scn-table--v4 .c-name {
+  width: 21%;
+}
+.scn-table--v4 .c-act {
+  width: 17%;
+}
+.scn-table--v4 .c-asm {
+  width: 13%;
+}
+.scn-table--v4 .c-num {
+  width: 10%;
+}
+.scn-table--v4 .c-vs {
+  width: 11%;
+}
+.scn-table--v4 .c-menu {
+  width: 40px;
+}
+.scn-table--v4 thead th {
+  padding: var(--space-10, 10px) var(--space-8);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+  line-height: 1.4;
+  white-space: normal;
+  vertical-align: bottom;
+}
+.scn-table--v4 thead th:first-child {
+  border-start-start-radius: var(--rounded-xl);
+}
+.scn-table--v4 thead th:last-child {
+  border-start-end-radius: var(--rounded-xl);
+}
+.scn-table--v4 td,
+.scn-table--v4 tbody th {
+  overflow: hidden;
+  padding: var(--space-12) var(--space-8);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.scn-table--v4 td:nth-child(n + 5) {
+  font-variant-numeric: tabular-nums;
+}
+.scn-table--v4 .scn-name {
+  min-width: 0;
+  max-width: none;
+}
+.scn-name__line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6, 6px);
+  min-width: 0;
+}
+.scn-table--v4 .scn-name .scn-dot {
+  flex: none;
+  margin: 0;
+  background: var(--row);
+}
+.scn-name__label {
+  overflow: hidden;
+  color: var(--color-foreground);
+  font-weight: var(--type-paragraph-medium-weight);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scn-table--v4 .scn-name .scn-tag {
+  margin-top: var(--space-4);
+  margin-inline-start: 14px;
+}
+.scn-table--v4 .scn-action {
+  display: block;
+  max-width: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scn-table--v4 .scn-tags {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+.scn-table--v4 .scn-vs {
+  display: inline;
+  max-width: none;
+  white-space: nowrap;
+}
+.scn-table--v4 td.is-bad,
+.scn-table--v4 td.is-good {
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.scn-table--v4 .scn-until,
+.scn-table--v4 .scn-stale {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.scn-table--v4 tbody tr.is-selected {
+  background: color-mix(in srgb, var(--color-primary) 5%, var(--color-card));
+}
+.scn-table--v4 tbody tr.is-selected > :first-child {
+  box-shadow: inset -3px 0 0 var(--row);
+}
+.scn-table--v4 .scn-rowmenu {
+  overflow: visible;
+}
+
+/* Footer: one line — what applying does, or why it cannot */
+.scn-foot__msg {
+  margin: 0;
+  color: var(--color-foreground);
+}
+@media (max-width: 768px) {
+  .scn-table.scn-table--v4 {
+    table-layout: auto;
+  }
+  .scn-table--v4 colgroup {
+    display: none;
+  }
+  .scn-table--v4 td,
+  .scn-table--v4 tbody th {
+    white-space: normal;
+  }
+  .scn-head__actions {
+    flex-wrap: wrap;
+  }
+}
+/* v4.1 column balance: figures get the room they need, text columns truncate */
+.scn-table--v4 .c-name {
+  width: 19%;
+}
+.scn-table--v4 .c-act {
+  width: 14%;
+}
+.scn-table--v4 .c-asm {
+  width: 11%;
+}
+.scn-table--v4 .c-num {
+  width: 9%;
+}
+.scn-table--v4 col.c-num:nth-of-type(8),
+.scn-table--v4 col.c-num:nth-of-type(9) {
+  width: 11%;
+}
+.scn-table--v4 .c-vs {
+  width: 12%;
+}
+.scn-table--v4 td,
+.scn-table--v4 tbody th,
+.scn-table--v4 thead th {
+  padding-inline: var(--space-6, 6px);
+}
+.scn-table--v4 .c-asm {
+  width: 10%;
+}
+.scn-table--v4 .c-vs {
+  width: 13%;
+}
+.scn-table--v4 .scn-conf {
+  display: inline;
+  white-space: nowrap;
+}
+/* v4.2 context box: title once, one meta line, actions on the end side */
+.scn-context {
+  flex-wrap: wrap;
+}
+.scn-context .scn-context__text {
+  flex: 1;
+  min-width: 240px;
+}
+.scn-context h2.scn-context__title {
+  margin: 0;
+  font-size: var(--type-paragraph-large-size, 16px);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.scn-context .scn-head__meta {
+  margin-top: var(--space-6, 6px);
+}
+.scn-context .scn-head__actions {
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+/* ───────── Scenario round (2026-11-09) ───────── */
+/* «افزودن سناریو»: primary outline; it opens a modal */
+.abtn--outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  border-color: var(--color-primary);
+  background: var(--color-card);
+  color: var(--color-primary);
+}
+.abtn--outline:hover {
+  background: var(--brand-shades-50);
+}
+.abtn--outline[aria-disabled='true'] {
+  border-color: var(--color-unofficial-border-1);
+  color: var(--color-muted-foreground);
+  cursor: not-allowed;
+}
+.scn-add__list {
+  display: grid;
+  gap: var(--space-4);
+}
+.scn-add__list .scn-add__group:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.scn-add__list .scn-add__manage {
+  margin-top: var(--space-8);
+}
+/* Horizon (۷ / ۱۴ / ۳۰ روز): the token tab style, selected tab raised on the muted track */
+.scn-vars .seg button[aria-checked='true'] {
+  background: var(--color-card);
+  color: var(--color-foreground);
+  font-weight: var(--type-paragraph-medium-weight);
+  box-shadow: var(--shadow-xs);
+}
+/* The add modal sits in the middle of the page (the shared modal is anchored beside the alert panel) */
+.amodal-layer:has(.scn-add__list) .amodal {
+  right: 0;
+  left: 0;
+  width: min(560px, calc(100vw - 32px));
+  margin-inline: auto;
+}
+/* Horizon tabs: compact, hug their labels; the active tab is primary-100 */
+.scn-vars .seg.seg--fill {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  height: auto;
+  display: inline-grid;
+  grid-auto-columns: auto;
+  align-self: flex-start;
+  justify-self: start;
+  width: fit-content;
+  padding: 3px;
+  border-radius: var(--rounded-lg);
+}
+.scn-vars .seg button {
+  min-height: 28px;
+  padding: 0 var(--space-12);
+  border-radius: var(--rounded-md, 6px);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-vars .seg button[aria-checked='true'] {
+  background: var(--brand-shades-100);
+  color: var(--ext-primary-strong);
+  font-weight: var(--type-paragraph-semibold-weight);
+  box-shadow: none;
+}
+/* Sticky footer: its own tint and edge, so it never melts into the white panels under it */
+.scn-foot {
+  border: 1px solid var(--brand-shades-200);
+  background: var(--brand-shades-50);
+  box-shadow: 0 6px 20px -12px rgb(16 24 40 / 0.18);
+}
+/* Five-column table: name carries the action (when different) and changed assumptions */
+.scn-table--v4 .c-name {
+  width: auto;
+}
+.scn-table--v4 .c-num {
+  width: 15%;
+}
+.scn-name__sub {
+  display: block;
+  overflow: hidden;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scn-name__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+.scn-table--v4 .scn-vs--sub {
+  display: block;
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+}
+
+/* ───────── Redesign v5: settings column (two blocks) + results panel ───────── */
+.scn-grid--v5 {
+  grid-template-columns: 320px minmax(0, 1fr);
+}
+.scn-side {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  gap: var(--space-16);
+  align-content: start;
+  min-width: 0;
+}
+.scn-side__close {
+  display: none;
+  justify-self: end;
+}
+.scn-block {
+  display: grid;
+  gap: var(--space-12);
+  padding: var(--space-16);
+}
+.scn-block h3 {
+  margin: 0;
+  font-size: var(--type-paragraph-medium-size, 15px);
+  font-weight: 600;
+}
+.scn-block__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.scn-block__saved {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-block__sub {
+  display: block;
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-block__who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6, 6px);
+}
+.scn-namechip {
+  max-width: 100%;
+  min-width: 0;
+}
+.scn-namechip .scn-dot {
+  margin-inline-end: var(--space-4);
+}
+.scn-namechip__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scn-block__group {
+  display: grid;
+  gap: var(--space-12);
+}
+.scn-block__note {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.7;
+}
+.scn-more {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border: 0;
+  background: none;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: var(--type-paragraph-small-size);
+  cursor: pointer;
+}
+.scn-more:hover {
+  text-decoration: underline;
+}
+
+/* Shared assumptions */
+.scn-shared__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-8);
+}
+.scn-shared__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rounded-md);
+  background: var(--ext-status-warning-bg);
+  color: var(--ext-status-warning-fg);
+}
+.scn-ready {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6, 6px);
+}
+.scn-ready__label {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* VarField v2: label + number on one line, slider full width, source or undo under it */
+.svar--v2 {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.svar--v2.is-changed,
+.svar--v2.is-error {
+  background: none;
+}
+.svar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.svar--v2 .svar__label {
+  min-width: 0;
+  font-size: var(--type-paragraph-small-size);
+}
+.svar--v2 .svar__range {
+  margin: var(--space-4) 0;
+}
+.svar--v2 .svar__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  min-height: 20px;
+}
+.svar--v2.is-changed .svar__input {
+  border-color: var(--ext-status-warning-border);
+  background: var(--ext-status-warning-bg);
+  color: var(--ext-status-warning-fg);
+}
+.svar--v2.is-error .svar__input {
+  border-color: var(--ext-status-danger-fg);
+}
+.svar__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: var(--type-paragraph-mini-size);
+  cursor: pointer;
+}
+.svar__back:hover {
+  text-decoration: underline;
+}
+.svar--sub {
+  margin-inline-start: var(--space-12);
+  padding-inline-start: var(--space-12);
+  border-inline-start: 2px solid var(--color-border);
+}
+.svar--compact .svar__label {
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* Popover (base data, cost) */
+.scn-pop {
+  position: relative;
+  display: inline-flex;
+}
+.scn-pop__btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.scn-pop__box {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-6, 6px));
+  inset-inline-end: 0;
+  z-index: 40;
+  display: grid;
+  gap: var(--space-10, 10px);
+  width: min(320px, 86vw);
+  padding: var(--space-14, 14px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+  box-shadow: var(--shadow-lg);
+  text-align: start;
+  white-space: normal;
+}
+.scn-cost .scn-pop__box {
+  inset-inline-end: auto;
+  inset-inline-start: 0;
+}
+.scn-pop__title {
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-pop__facts {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+}
+.scn-pop__facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-12);
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-pop__facts dt {
+  color: var(--color-muted-foreground);
+}
+.scn-pop__facts dd {
+  display: grid;
+  margin: 0;
+  text-align: end;
+  font-weight: 500;
+}
+.scn-pop__facts .svar__source {
+  font-weight: 400;
+}
+.scn-pop__row {
+  display: flex;
+  justify-content: space-between;
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-pop__note {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.7;
+}
+.scn-pop__box .abtn {
+  justify-self: start;
+}
+
+/* Results panel */
+.scn-results {
+  display: grid;
+  gap: var(--space-16);
+  min-width: 0;
+  padding: var(--space-16) 0;
+}
+.scn-results > :not(.scn-table-wrap) {
+  padding-inline: var(--space-16);
+}
+.scn-results__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+.scn-results__head h3 {
+  margin: 0;
+  font-size: var(--type-paragraph-medium-size, 15px);
+  font-weight: 600;
+}
+.scn-results__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+}
+.scn-assumed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+}
+.scn-results .scn-chart {
+  display: grid;
+  gap: var(--space-8);
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--color-border);
+}
+.scn-results .scn-chart__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.scn-results .scn-chart__note {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-8);
+  margin: 0;
+}
+
+/* Table v5: edge to edge, header on a muted bar, selected row tinted with a start bar */
+.scn-table--v5 {
+  width: 100%;
+  table-layout: fixed;
+}
+.scn-table--v5 col.c-pick {
+  width: 40px;
+}
+.scn-table--v5 col.c-name {
+  width: 25%;
+}
+.scn-table--v5 col.c-cost {
+  width: 15%;
+}
+.scn-table--v5 col.c-risk {
+  width: 19%;
+}
+.scn-table--v5 col.c-menu {
+  width: 44px;
+}
+.scn-table--v5 thead th {
+  background: var(--color-muted);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: 500;
+  text-align: start;
+}
+.scn-table--v5 thead th:first-child,
+.scn-table--v5 tbody tr > :first-child {
+  padding-inline-start: var(--space-16);
+}
+.scn-table--v5 tbody tr.is-selected {
+  background: var(--ext-primary-subtle);
+}
+.scn-table--v5 tbody tr.is-selected > :first-child {
+  box-shadow: inset -3px 0 0 var(--color-primary);
+}
+.scn-table--v5 td,
+.scn-table--v5 tbody th {
+  vertical-align: top;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.scn-table--v5 td > span,
+.scn-table--v5 .scn-risk__why {
+  white-space: normal;
+}
+.scn-table--v5 td > span,
+.scn-table--v5 .scn-name > span {
+  display: block;
+}
+.scn-table--v5 .scn-name__line {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+}
+.scn-table--v5 .scn-name__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.scn-table--v5 .scn-name__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6, 6px);
+  margin-top: var(--space-4);
+}
+.scn-table--v5 .scn-effect,
+.scn-table--v5 .scn-risk__why,
+.scn-table--v5 .scn-until,
+.scn-table--v5 .scn-vs {
+  margin-top: var(--space-2, 2px);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: 400;
+}
+.scn-table--v5 .scn-vs--better {
+  color: var(--ext-status-success-fg);
+}
+.scn-table--v5 .scn-vs--worse {
+  color: var(--ext-status-danger-fg);
+}
+.scn-table--v5 td > .status-chip,
+.scn-table--v5 .scn-name__meta .status-chip {
+  display: inline-flex;
+}
+.scn-cost .scn-pop__btn > span {
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+.scn-manual {
+  margin-top: var(--space-4);
+}
+.scn-th-info {
+  vertical-align: -1px;
+}
+
+/* Type tags */
+.scn-tag--muted {
+  background: var(--color-muted);
+  color: var(--color-muted-foreground);
+}
+.scn-tag--pick {
+  background: var(--ext-primary-subtle);
+  color: var(--ext-primary-strong);
+}
+.scn-tag--warn {
+  background: var(--ext-status-warning-bg);
+  color: var(--ext-status-warning-fg);
+}
+.scn-tag--user {
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-foreground);
+}
+
+/* A figure that just changed lights up for 1.2 s */
+@keyframes scn-flash {
+  from {
+    background: var(--ext-primary-subtle);
+  }
+  to {
+    background: transparent;
+  }
+}
+.scn-flash {
+  border-radius: var(--rounded-sm);
+  animation: scn-flash 1.2s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scn-flash {
+    animation: none;
+  }
+}
+
+/* Every chart label keeps a card-coloured halo so it stays readable over lines */
+.scn-rchart text {
+  paint-order: stroke;
+  stroke: var(--color-card);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.scn-rchart .scn-pill-text {
+  stroke: none;
+}
+
+/* Below 1200 px the settings column is a side drawer */
+@media (max-width: 1200px) {
+  .scn-grid--v5 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scn-side__close {
+    display: inline-flex;
+  }
+  .scn-side {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 60;
+    width: min(360px, 92vw);
+    padding: var(--space-12);
+    overflow-y: auto;
+    background: var(--color-background);
+    box-shadow: var(--shadow-xl);
+    transform: translateX(100%);
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    visibility: hidden;
+  }
+  .scn-side.is-open {
+    transform: none;
+    visibility: visible;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scn-side {
+    transition: none;
+  }
+}
+@media (max-width: 768px) {
+  .scn-table--v5 {
+    table-layout: auto;
+  }
+  .scn-results > .scn-table-wrap {
+    padding-inline: var(--space-12);
+  }
+  .scn-table--v5 tbody tr.is-selected > :first-child {
+    box-shadow: none;
+  }
+  .scn-table--v5 tbody tr.is-selected {
+    box-shadow: inset -3px 0 0 var(--color-primary);
+  }
+}
+
+/* ───────── v5.1: calmer page ───────── */
+/* The popover box is fixed to the viewport (placed by Popover.tsx), so a scrolling table never clips it */
+.scn-pop__box {
+  position: fixed;
+  inset: auto;
+  z-index: 70;
+}
+/* Sum of the prices: set apart, label and figure on one line */
+.scn-pop__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+  margin-top: var(--space-4);
+  padding: var(--space-10, 10px) var(--space-12);
+  border-radius: var(--rounded-md);
+  background: var(--color-muted);
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-pop__total strong {
+  font-size: var(--type-paragraph-medium-size, 15px);
+}
+/* A fact's source: ⓘ beside its label, the source on hover or focus */
+.scn-pop__facts dt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.scn-src {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  color: var(--color-muted-foreground);
+  cursor: help;
+}
+.scn-src:focus-visible {
+  border-radius: 50%;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+.scn-src__tip {
+  position: absolute;
+  inset-block-end: calc(100% + var(--space-6, 6px));
+  inset-inline-start: 50%;
+  z-index: 2;
+  width: max-content;
+  max-width: 220px;
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--rounded-md);
+  background: var(--color-foreground);
+  color: var(--color-card);
+  font-size: var(--type-paragraph-mini-size);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(50%);
+  pointer-events: none;
+}
+.scn-src:hover .scn-src__tip,
+.scn-src:focus-visible .scn-src__tip {
+  opacity: 1;
+  visibility: visible;
+}
+/* ↺ alone: the icon says it */
+.svar--v2 .svar__back {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--rounded-md);
+  color: var(--color-muted-foreground);
+}
+.svar--v2 .svar__back:hover {
+  background: var(--color-muted);
+  color: var(--color-foreground);
+  text-decoration: none;
+}
+.svar--v2 .svar__foot {
+  justify-content: flex-start;
+  min-height: 0;
+}
+.svar__label[title] {
+  cursor: help;
+}
+.scn-revert-icon {
+  width: 28px;
+  height: 28px;
+}
+.scn-manual {
+  white-space: nowrap;
+}
+
+/* ───────── Phase 2 ───────── */
+/* «پیشنهادی»: the reason on hover or focus */
+.scn-tip-host {
+  position: relative;
+  display: inline-flex;
+}
+.scn-tip-host:focus-visible {
+  border-radius: var(--rounded-full);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+.scn-tip-host:hover .scn-src__tip,
+.scn-tip-host:focus-visible .scn-src__tip {
+  opacity: 1;
+  visibility: visible;
+}
+.scn-tip-host .scn-src__tip {
+  inset-block-end: auto;
+  inset-block-start: calc(100% + var(--space-6, 6px));
+  inset-inline-start: 0;
+  max-width: 260px;
+  white-space: normal;
+  transform: none;
+}
+.scn-tip-host .scn-src__tip:empty {
+  display: none;
+}
+
+/* B-5 · Compare two scenarios */
+.scn-cmp {
+  display: grid;
+  gap: var(--space-12);
+  margin-inline: var(--space-16);
+  padding: var(--space-14, 14px);
+  /* The secondary surface (as the secondary buttons): a quiet grey, not the selected row's blue */
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: 14px;
+  background: var(--color-unofficial-accent-0);
+}
+.scn-results > .scn-cmp {
+  padding-inline: var(--space-14, 14px);
+}
+.scn-cmp__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.scn-cmp__head h4 {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6, 6px);
+  margin: 0;
+  font-size: var(--type-paragraph-small-size);
+  font-weight: 600;
+}
+.scn-cmp__sides {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+}
+.scn-cmp__vs {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-cmp__pick {
+  position: relative;
+}
+.scn-cmp__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6, 6px);
+  max-width: 220px;
+  height: 32px;
+  padding: 0 var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-md);
+  background: var(--color-card);
+  color: var(--color-foreground);
+  font: inherit;
+  font-size: var(--type-paragraph-small-size);
+  cursor: pointer;
+}
+.scn-cmp__btn .scn-dot {
+  margin: 0;
+}
+.scn-cmp__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scn-cmp__menu {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-4));
+  inset-inline-start: 0;
+  z-index: 30;
+  min-width: 200px;
+}
+.scn-cmp__menu .tb-menu__item[aria-checked='true'] {
+  background: var(--ext-primary-subtle);
+}
+.scn-cmp__menu .scn-dot {
+  margin-inline-end: var(--space-8);
+}
+.scn-cmp__tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-8);
+}
+.scn-cmp__tile {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-10, 10px) var(--space-12);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+}
+.scn-cmp__label,
+.scn-cmp__line {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-cmp__big {
+  font-size: var(--type-paragraph-medium-size, 16px);
+  font-weight: 600;
+}
+.scn-cmp__big.is-better {
+  color: var(--ext-status-success-fg);
+}
+.scn-cmp__big.is-worse {
+  color: var(--ext-status-danger-fg);
+}
+.scn-cmp__big.is-same {
+  color: var(--color-muted-foreground);
+}
+.scn-cmp__empty {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-small-size);
+}
+
+/* B-3 · «کمترین مقدار کافی» */
+.scn-field {
+  display: grid;
+  gap: var(--space-6, 6px);
+}
+.scn-seek .scn-pop__btn {
+  width: 100%;
+}
+.scn-seek__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6, 6px);
+  width: 100%;
+  padding: var(--space-6, 6px) var(--space-8);
+  border: 1px dashed var(--color-primary);
+  border-radius: var(--rounded-md);
+  color: var(--color-primary);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-seek__btn:hover {
+  background: var(--ext-primary-subtle);
+}
+.scn-seek__rows {
+  display: grid;
+}
+.scn-seek__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-8) 0;
+  border-top: 1px solid var(--color-border);
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-seek__val {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+@media (max-width: 768px) {
+  .scn-cmp__tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ───────── 2026-11-11 · calmer header and folds ───────── */
+/* The alert line: no card, its facts as one muted line */
+.scn-context--plain {
+  padding: var(--space-4) 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+.scn-context__meta {
+  margin: var(--space-4) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-context__meta .is-warn {
+  color: var(--ext-status-warning-fg);
+}
+.scn-sev {
+  font-weight: 600;
+}
+.scn-sev--critical {
+  color: var(--ext-status-danger-fg);
+}
+.scn-sev--high {
+  color: var(--ext-status-warning-fg);
+}
+
+/* «فرض‌های مشترک»: the head folds it */
+.scn-shared__head {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.scn-shared__head:focus-visible {
+  border-radius: var(--rounded-md);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+.scn-shared__chev {
+  color: var(--color-muted-foreground);
+  transition: transform 160ms ease;
+}
+.scn-shared:not(.is-collapsed) .scn-shared__chev {
+  transform: rotate(180deg);
+}
+.scn-shared__body {
+  display: grid;
+  gap: var(--space-12);
+}
+.scn-shared.is-collapsed .scn-shared__body {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scn-shared__chev {
+    transition: none;
+  }
+}
+
+/* «مقایسهٔ دو سناریو»: closed it is one «+» line, no box */
+.scn-cmp:not(.is-open) {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.scn-results > .scn-cmp:not(.is-open) {
+  padding-inline: 0;
+}
+.scn-cmp__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6, 6px);
+  padding: var(--space-4) 0;
+  border: 0;
+  background: none;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: var(--type-paragraph-small-size);
+  font-weight: 600;
+  cursor: pointer;
+}
+.scn-cmp.is-open .scn-cmp__toggle {
+  color: var(--color-foreground);
+}
+.scn-cmp__toggle:hover {
+  text-decoration: underline;
+}
+
+/* A long scenario name ends in «…» inside its own column */
+.scn-table--v5 .scn-name__line {
+  overflow: hidden;
+}
+.scn-table--v5 .scn-name__label {
+  flex: 1;
+  min-width: 0;
+}
+
+.scn-table--v5 .scn-name > .scn-name__line {
+  display: flex;
+}
+
+/* §11 · PDF for a meeting or a manager: A4 landscape. In order: title, the alert line, the changed
+   assumptions, the table (with risk and estimated confidence), the comparison, the chart, a closing note.
+   No chrome, buttons, sliders, drawer, popovers or row menus. */
+.scn-print-title,
+.scn-print-note {
+  display: none;
+}
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .sidebar,
+  .app__sidebar,
+  .topbar,
+  .app__fab,
+  .skip-link,
+  .page-header,
+  .scn-head__actions,
+  .scn-side,
+  .scn-scrim,
+  .scn-foot,
+  .scn-results__tools,
+  .scn-pop__box,
+  .scn-rowmenu,
+  .scn-cmp:not(.is-open),
+  .scn-cmp__toggle svg,
+  .scn-cmp__btn svg,
+  .scn-cmp__sides .aicon-btn,
+  .scn-assumed .ov-link,
+  .scn-chart__note,
+  .svar__range,
+  .scn-table input[type='radio'] {
+    display: none !important;
+  }
+  .scn-print-title {
+    display: block;
+    margin: 0 0 var(--space-12);
+    font-size: 18px;
+  }
+  .scn-print-note {
+    display: block;
+    margin: var(--space-12) 0 0;
+    color: var(--color-muted-foreground);
+    font-size: 11px;
+  }
+  .app__main,
+  .app__body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  body.has-scn-foot {
+    padding-bottom: 0 !important;
+  }
+  .scn-grid,
+  .scn-grid--v5 {
+    display: block;
+  }
+  .ov-panel {
+    box-shadow: none;
+  }
+  .scn-results {
+    margin-top: var(--space-12);
+  }
+  .scn-table-wrap {
+    overflow: visible !important;
+  }
+  .scn-table-wrap,
+  .scn-cmp,
+  .scn-chart {
+    break-inside: avoid;
+  }
+  .scn-cmp__toggle,
+  .scn-cmp__btn,
+  .scn-pop__btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-foreground);
+    text-decoration: none;
+  }
+}
+
+/* §9 · A goal and, under it, what it is measured against */
+.scn-seek__goal {
+  display: grid;
+  gap: var(--space-2, 2px);
+}
+
+/* 2026-11-14 · A scenario's colour is a short vertical line everywhere (table, settings, footer, pickers) */
+.scn-page .scn-dot {
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+.scn-table--v5 .scn-name .scn-dot {
+  margin-top: 2px;
+}
+/* «فرض‌های مشترک» without its icon: title, then the count and the arrow */
+.scn-shared__head {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+/* 2026-11-14 · Slimmer sliders: 4 px track, 14 px thumb */
+.svar--v2 .svar__range {
+  height: 4px;
+}
+.svar--v2 .svar__range::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+.svar--v2 .svar__range::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-width: 2px;
+}
+
+/* Compare tile: each side's figure after its colour line, «در برابر» between (same order as the pickers) */
+.scn-cmp__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6, 6px);
+}
+.scn-cmp__line .scn-dot {
+  height: 12px;
+  margin: 0;
+}
+
+/* ───────── scenario-fixes (2026-11-14) ───────── */
+/* §1 · Beside a figure: how it differs from «بدون اقدام» (green better, amber worse); nothing when equal */
+.scn-table--v5 td > .scn-mark {
+  display: inline-block;
+  margin-inline-start: var(--space-6, 6px);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.scn-mark--better {
+  color: var(--ext-status-success-fg);
+}
+.scn-mark--worse {
+  color: var(--ext-status-warning-fg);
+}
+/* §3 · A unit's rejection under the name */
+.scn-rejected {
+  white-space: nowrap;
+}
+/* §7 · A row whose arrival is after the horizon */
+.scn-table--v5 .scn-late {
+  margin-top: var(--space-2, 2px);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: 400;
+}
+.scn-horizon {
+  cursor: help;
+}
+/* §5 · Cost, item by item, read only */
+.scn-costline {
+  display: grid;
+  gap: var(--space-2, 2px);
+  padding: var(--space-6, 6px) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--type-paragraph-small-size);
+}
+
+/* ───────── 2026-11-14 · Table like a plain list: a soft rounded header bar, thin row lines, nothing else ───────── */
+@media (min-width: 769px) {
+  .scn-results > .scn-table-wrap {
+    padding-inline: var(--space-16);
+  }
+  .scn-table.scn-table--v5 {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .scn-table--v5 thead th {
+    padding-block: var(--space-10, 10px);
+    border: 0;
+    background: var(--color-muted);
+    color: var(--color-foreground);
+    font-size: var(--type-paragraph-mini-size);
+    font-weight: 500;
+  }
+  .scn-table--v5 thead th:first-child {
+    border-start-start-radius: var(--rounded-lg);
+    border-end-start-radius: var(--rounded-lg);
+  }
+  .scn-table--v5 thead th:last-child {
+    border-start-end-radius: var(--rounded-lg);
+    border-end-end-radius: var(--rounded-lg);
+  }
+  .scn-table--v5 thead th:first-child,
+  .scn-table--v5 tbody tr > :first-child {
+    padding-inline-start: var(--space-12);
+  }
+  .scn-table--v5 td,
+  .scn-table--v5 tbody th {
+    padding-block: var(--space-14, 14px);
+    border-bottom: 1px solid var(--color-unofficial-border-1);
+  }
+  .scn-table--v5 tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  /* Selected: a tint only, no bar */
+  .scn-table--v5 tbody tr.is-selected,
+  .scn-table--v5 tbody tr.is-selected > :first-child {
+    box-shadow: none;
+  }
+  .scn-table--v5 tbody tr.is-selected > * {
+    background: var(--ext-primary-subtle);
+  }
+  .scn-table--v5 tbody tr.is-selected {
+    background: none;
+  }
+}
+/* The arrow beside a figure: an icon in line with its amount */
+.scn-table--v5 td > .scn-mark > span[aria-hidden] {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* ───────── 2026-11-14 · Compare pickers as the design system's select; ⇄ instead of «در برابر» ───────── */
+.scn-cmp__btn.ds-select__trigger {
+  min-width: 0;
+  max-width: 240px;
+  height: 36px;
+  gap: var(--space-6, 6px);
+  padding: 0 var(--space-10, 10px);
+  border-radius: var(--rounded-lg);
+}
+.scn-cmp__btn .scn-cmp__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.scn-cmp__swap {
+  color: var(--color-muted-foreground);
+}
+.scn-cmp__line .scn-cmp__sep {
+  flex: none;
+  color: var(--color-muted-foreground);
+}
+
+/* ───────── 2026-11-14 (2) ───────── */
+/* «بازگشت به هشدار»: a text link, arrow after the words */
+.scn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6, 6px);
+  padding: var(--space-6, 6px) 0;
+  border: 0;
+  background: none;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: var(--type-paragraph-small-size);
+  font-weight: 500;
+  cursor: pointer;
+}
+.scn-back:hover {
+  text-decoration: underline;
+}
+.scn-back:focus-visible {
+  border-radius: var(--rounded-sm);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+/* Compare: fixed-width pickers (the name shortens with «…»), smaller type */
+.scn-cmp__btn.ds-select__trigger {
+  flex: none;
+  width: 220px;
+  max-width: 100%;
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-cmp__btn .ds-select__value {
+  min-width: 0;
+}
+.scn-cmp__big {
+  font-size: var(--type-paragraph-small-size);
+}
+/* A figure's difference sits on its own line, aligned with the figure */
+.scn-table--v5 td > .scn-mark {
+  display: flex;
+  margin: var(--space-2, 2px) 0 0;
+}
+/* Risk: the level and, beside it, the confidence; the reason is on hover */
+.scn-table--v5 .scn-risk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6, 6px);
+}
+.scn-risk__conf {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  white-space: nowrap;
+}
+
+/* ───────── 2026-11-14 (3) ───────── */
+/* Footer: the same margin on both sides at every width (the old 88 px room for the assistant is gone:
+   the assistant now sits above the footer) */
+.scn-page .scn-foot {
+  padding-inline: var(--space-20);
+}
+@media (max-width: 768px) {
+  .scn-page .scn-foot {
+    padding-inline: var(--space-16);
+  }
+}
+/* Figures in the table carry no colour of their own (the risk chip and the arrows say good or bad) */
+.scn-table--v5 td.is-bad,
+.scn-table--v5 td.is-good {
+  color: inherit;
+}
+/* A dependent field (e.g. «زمان رسیدن انتقال»): a soft nested card under its parent, no side line */
+.svar--v2.svar--sub {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-10, 10px) var(--space-12);
+  border: 0;
+  border-radius: var(--rounded-lg);
+  background: var(--color-unofficial-accent-0);
+}
+/* 8-ح · A two-action row the alert cannot record */
+.scn-tag--blocked {
+  border: 1px dashed var(--color-unofficial-border-3, var(--color-border));
+  background: transparent;
+  color: var(--color-muted-foreground);
+}
+/* 8-ه · A row just added lights up for a moment */
+@keyframes scn-row-new {
+  from {
+    background: var(--ext-primary-subtle);
+  }
+  to {
+    background: transparent;
+  }
+}
+.scn-table--v5 tbody tr.scn-row--new > * {
+  animation: scn-row-new 1.2s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scn-table--v5 tbody tr.scn-row--new > * {
+    animation: none;
+  }
+}
+/* 8-ج/د · «+ افزودن سناریو» and its menu */
+.scn-addmenu {
+  position: relative;
+}
+.scn-addmenu > .abtn[aria-disabled] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.scn-addmenu__menu {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-6, 6px));
+  inset-inline-end: 0;
+  z-index: 40;
+  width: min(360px, 86vw);
+  max-height: min(480px, 70vh);
+  overflow-y: auto;
+}
+.scn-addmenu__group {
+  margin: 0;
+  padding: var(--space-8) var(--space-12) var(--space-4);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: 500;
+}
+.scn-addmenu__none {
+  margin: 0;
+  padding: var(--space-4) var(--space-12) var(--space-8);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-addmenu__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  width: 100%;
+  text-align: start;
+}
+.scn-addmenu__item[aria-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.scn-addmenu__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-muted-foreground);
+}
+.scn-addmenu__text {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+}
+.scn-addmenu__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6, 6px);
+  font-size: var(--type-paragraph-small-size);
+  font-weight: 600;
+}
+.scn-addmenu__line {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.scn-addmenu__chip {
+  font-weight: 400;
+}
+.scn-addmenu__chev {
+  flex: none;
+  margin-top: 3px;
+  color: var(--color-muted-foreground);
+  transition: transform 160ms ease;
+}
+.scn-addmenu__chev.is-open {
+  transform: rotate(180deg);
+}
+.scn-addmenu__sub {
+  margin-inline-start: var(--space-16);
+  padding-inline-start: var(--space-8);
+  border-inline-start: 1px solid var(--color-unofficial-border-1);
+}
+.scn-addmenu__link {
+  display: block;
+  color: var(--color-primary);
+  font-size: var(--type-paragraph-small-size);
+  text-decoration: none;
+}
+/* 8-ز · Templates page: a note, not an error */
+.tpl-note {
+  margin: 0;
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--rounded-md);
+  background: var(--ext-status-warning-bg);
+  color: var(--ext-status-warning-fg);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* ───────── 2026-11-14 (4) ───────── */
+/* A blocked footer line in dark grey, not warning colour */
+.scn-foot__msg.is-blocked {
+  color: var(--color-unofficial-mid-alt);
+}
+/* 16 px above, below and beside the apply button */
+.scn-page .scn-foot {
+  padding-block: var(--space-16);
+  padding-inline-end: var(--space-16);
+}
+/* Table header text in grey */
+.scn-table--v5 thead th {
+  color: var(--color-muted-foreground);
+}
+/* Cost: no dotted underline */
+.scn-cost .scn-pop__btn > span {
+  text-decoration: none;
+}
+/* Title and «داده‌ی مبنا» side by side */
+.scn-results__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-10, 10px);
+}
+
+/* ───────── 2026-11-14 (5) ───────── */
+/* The backdrop belongs to the narrow-screen drawer only */
+@media (min-width: 1201px) {
+  .scn-scrim {
+    display: none;
+  }
+}
+/* Compare: one strip, figures divided by thin vertical lines, no cards */
+.scn-cmp__tiles {
+  gap: 0;
+}
+.scn-cmp__tile {
+  padding: var(--space-4) var(--space-14, 14px);
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.scn-cmp__tile + .scn-cmp__tile {
+  border-inline-start: 1px solid var(--color-unofficial-border-1);
+}
+.scn-cmp__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.scn-cmp__label svg {
+  flex: none;
+  color: var(--color-muted-foreground);
+}
+@media (max-width: 768px) {
+  .scn-cmp__tile:nth-child(odd) {
+    border-inline-start: 0;
+  }
+  .scn-cmp__tile:nth-child(n + 3) {
+    padding-top: var(--space-10, 10px);
+    border-top: 1px solid var(--color-unofficial-border-1);
+  }
+}
+/* The action in the footer: medium weight */
+.scn-foot__msg:not(.is-blocked) {
+  font-weight: 500;
+}
+/* ⓘ in the chart title and the risk header, as on the dashboard */
+.scn-chart__head h3 {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6, 6px);
+}
+.scn-th-guide {
+  margin-inline-start: var(--space-4);
+  vertical-align: middle;
+}
+
+/* ───────── 2026-11-14 (6) ───────── */
+/* «بدون اقدام»: the baseline, in grey */
+.scn-table--v5 tbody tr.is-reference .scn-name__label,
+.scn-table--v5 tbody tr.is-reference td {
+  color: var(--color-muted-foreground);
+  font-weight: 400;
+}
+.scn-table--v5 tbody tr.is-reference td * {
+  font-weight: 400;
+}
+/* Compare: dividers that can be seen on the grey surface */
+.scn-cmp__tile + .scn-cmp__tile {
+  border-inline-start-color: var(--color-unofficial-border-3);
+}
+@media (max-width: 768px) {
+  .scn-cmp__tile:nth-child(n + 3) {
+    border-top-color: var(--color-unofficial-border-3);
+  }
+}
+/* Compare: closed or open, the same full-width box; the bar opens and closes it */
+.scn-cmp:not(.is-open),
+.scn-results > .scn-cmp:not(.is-open) {
+  padding: var(--space-4) var(--space-14, 14px);
+  border: 1px solid var(--color-unofficial-border-1);
+  background: var(--color-unofficial-accent-0);
+}
+.scn-cmp__head {
+  flex-wrap: nowrap;
+}
+.scn-cmp__toggle {
+  flex: 1;
+  justify-content: space-between;
+  gap: var(--space-8);
+  min-height: 40px;
+  padding: 0;
+  color: var(--color-foreground);
+}
+.scn-cmp__toggle svg {
+  flex: none;
+  color: var(--color-muted-foreground);
+}
+.scn-cmp__toggle:hover {
+  text-decoration: none;
+}
+.scn-cmp__toggle:hover svg {
+  color: var(--color-foreground);
+}
+.scn-cmp.is-open .scn-cmp__head {
+  flex-wrap: wrap;
+}
+.scn-cmp.is-open .scn-cmp__toggle {
+  flex: 1 1 100%;
+}
+.scn-cmp.is-open .scn-cmp__sides {
+  margin-inline-start: auto;
+}
+/* Add menu: one rhythm for every entry; icon and chevron centred on the title */
+.scn-addmenu__menu {
+  gap: 0;
+  padding: var(--space-6);
+}
+.scn-addmenu__group {
+  padding: var(--space-8) var(--space-10, 10px) var(--space-4);
+}
+.scn-addmenu__none {
+  padding: var(--space-2) var(--space-10, 10px) var(--space-8);
+}
+.scn-addmenu .scn-addmenu__item {
+  align-items: center;
+  gap: var(--space-8);
+  min-height: 0;
+  padding: var(--space-8) var(--space-10, 10px);
+}
+.scn-addmenu__icon,
+.scn-addmenu__chev {
+  align-self: center;
+  margin-top: 0;
+}
+.scn-addmenu__sub {
+  display: grid;
+  margin-block: var(--space-2) var(--space-4);
+  margin-inline-start: var(--space-18, 18px);
+  padding-inline-start: var(--space-4);
+}
+.scn-addmenu__sub .scn-addmenu__item {
+  padding-block: var(--space-6, 6px);
+}
+.scn-addmenu .scn-addmenu__link {
+  display: flex;
+  align-items: center;
+  min-height: 0;
+  padding: var(--space-8) var(--space-10, 10px);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.scn-addmenu .tb-menu__sep {
+  margin-block: var(--space-4);
+}
+
+/* ───────── 2026-11-14 (7) ───────── */
+/* Compare: the same padding open or closed, so the bar does not move */
+.scn-cmp,
+.scn-results > .scn-cmp,
+.scn-cmp:not(.is-open),
+.scn-results > .scn-cmp:not(.is-open) {
+  padding: var(--space-4) var(--space-14, 14px);
+}
+.scn-cmp.is-open,
+.scn-results > .scn-cmp.is-open {
+  padding-bottom: var(--space-14, 14px);
+}
+/* Compare: the two pickers centred */
+.scn-cmp.is-open .scn-cmp__sides {
+  justify-content: center;
+  margin-inline: auto;
+}
+/* Compare: room on both sides of each divider */
+.scn-cmp__tile {
+  padding-inline: var(--space-20, 20px);
+}
+@media (min-width: 769px) {
+  .scn-cmp__tile:first-child {
+    padding-inline-start: 0;
+  }
+  .scn-cmp__tile:last-child {
+    padding-inline-end: 0;
+  }
+}
+@media (max-width: 768px) {
+  .scn-cmp__tile:nth-child(odd) {
+    padding-inline-start: 0;
+  }
+  .scn-cmp__tile:nth-child(even) {
+    padding-inline-end: 0;
+  }
+}
+/* Table: hover and selection as soft rounded bars */
+@media (min-width: 769px) {
+  .scn-table--v5 tbody tr:hover,
+  .scn-table--v5 tbody tr.is-selected {
+    background: none;
+    box-shadow: none;
+  }
+  .scn-table--v5 tbody tr > * {
+    transition: background-color 140ms var(--ext-ease);
+  }
+  .scn-table--v5 tbody tr:hover > * {
+    background: var(--color-unofficial-accent-0);
+  }
+  .scn-table--v5 tbody tr.is-selected > * {
+    background: var(--ext-primary-subtle);
+  }
+  .scn-table--v5 tbody tr:is(:hover, .is-selected) > * {
+    border-bottom-color: transparent;
+  }
+  .scn-table--v5 tbody tr:is(:hover, .is-selected) > :first-child {
+    border-start-start-radius: var(--rounded-lg);
+    border-end-start-radius: var(--rounded-lg);
+  }
+  .scn-table--v5 tbody tr:is(:hover, .is-selected) > :last-child {
+    border-start-end-radius: var(--rounded-lg);
+    border-end-end-radius: var(--rounded-lg);
+  }
+  .scn-table--v5 tbody tr.is-selected > :first-child {
+    box-shadow: none;
+  }
+}
+/* «داده‌ی مبنا»: underlined text, clearly clickable */
+.scn-basedata .scn-pop__btn {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.scn-basedata__link {
+  color: var(--color-primary);
+  font-size: var(--type-paragraph-small-size);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.scn-basedata .scn-pop__btn:hover .scn-basedata__link {
+  text-decoration-thickness: 2px;
+}
+
+/* ───────── 2026-11-15 ───────── */
+/* «افزودن سناریو»: 36 px high */
+.scn-addmenu > .abtn {
+  height: 36px;
+  min-height: 36px;
+  padding-block: 0;
+}
+/* Compare: back to four cards */
+.scn-cmp__tiles {
+  gap: var(--space-8);
+}
+.scn-cmp__tile,
+.scn-cmp__tile:first-child,
+.scn-cmp__tile:last-child,
+.scn-cmp__tile:nth-child(odd),
+.scn-cmp__tile:nth-child(even) {
+  padding: var(--space-10, 10px) var(--space-12);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+}
+.scn-cmp__tile + .scn-cmp__tile {
+  border-inline-start-color: var(--color-unofficial-border-1);
+}
+@media (max-width: 768px) {
+  .scn-cmp__tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .scn-cmp__tile:nth-child(n + 3) {
+    border-top: 1px solid var(--color-unofficial-border-1);
+  }
+}
+/* Compare: the two pickers on the start (right) side */
+.scn-cmp.is-open .scn-cmp__sides {
+  justify-content: flex-start;
+  margin-inline: 0;
+}
+/* Title and «داده‌ی مبنا» on one centre line */
+.scn-results__title,
+.scn-results__title .scn-pop,
+.scn-results__title .scn-pop__btn {
+  display: inline-flex;
+  align-items: center;
+}
+.scn-results__title h3,
+.scn-basedata__link {
+  line-height: 1.6;
+}
+
+/* ───────── scenario-cost-fix (2026-11-15): the action's cost, and «خالص» under it ───────── */
+.scn-table--v5 td > .scn-net {
+  display: block;
+  margin: var(--space-2, 2px) 0 0;
+}
+.scn-mark--same {
+  color: var(--color-muted-foreground);
+}
+.scn-costsum,
+.scn-costnet > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-6, 6px) 0;
+  font-size: var(--type-paragraph-small-size);
+}
+.scn-costnet {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+.scn-costnet > div > span:first-child {
+  color: var(--color-muted-foreground);
+}
+.scn-costnet__total strong {
+  font-weight: 600;
+}
+
+/* ───────── 2026-11-15 (2) ───────── */
+/* «داده‌ی مبنا» beside the alert's title; the facts open on hover or focus */
+.scn-context__titleline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-12);
+}
+.scn-basehover {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  cursor: help;
+}
+.scn-basehover:focus-visible .scn-basedata__link {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.scn-basehover__pop {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-8));
+  inset-inline-start: 0;
+  z-index: 60;
+  display: none;
+  gap: var(--space-10, 10px);
+  width: min(320px, 86vw);
+  padding: var(--space-14, 14px) var(--space-16);
+  border-radius: var(--rounded-xl);
+  background: var(--color-card);
+  box-shadow:
+    0 16px 40px -12px rgb(16 24 40 / 0.22),
+    0 2px 6px rgb(16 24 40 / 0.06);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-small-size);
+  font-weight: 400;
+  cursor: default;
+}
+/* A bridge over the gap, so the pointer can move into the box */
+.scn-basehover__pop::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(-1 * var(--space-8));
+  height: var(--space-8);
+}
+.scn-basehover:hover .scn-basehover__pop,
+.scn-basehover:focus-within .scn-basehover__pop {
+  display: grid;
+}
+
+/* «کمترین مقدار کافی»: a raised surface of its own, no border; each goal a soft card */
+.scn-seek .scn-pop__box {
+  gap: var(--space-12);
+  width: min(340px, 86vw);
+  padding: var(--space-16);
+  border: 0;
+  border-radius: var(--rounded-xl);
+  background: var(--color-card);
+  box-shadow:
+    0 18px 44px -14px rgb(16 24 40 / 0.26),
+    0 2px 8px rgb(16 24 40 / 0.07);
+}
+.scn-seek .scn-pop__title {
+  font-size: var(--type-paragraph-medium-size, 15px);
+}
+.scn-seek__rows {
+  gap: var(--space-8);
+}
+.scn-seek__row {
+  padding: var(--space-10, 10px) var(--space-12);
+  border-top: 0;
+  border-radius: var(--rounded-lg);
+  background: var(--color-unofficial-accent-0);
+}
+.scn-seek__row .scn-seek__goal strong,
+.scn-seek__goal > span:first-child {
+  font-weight: 500;
+}
+.scn-seek__val {
+  margin-inline-start: auto;
+  font-weight: 600;
+}
+.scn-seek .scn-pop__note {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}

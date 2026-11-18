@@ -1,0 +1,129 @@
+/* Sign-in flow additions (errors, review banners, recovery); the base card lives in auth.css */
+.auth-field__error {
+  color: var(--ext-status-danger-fg);
+  font-size: var(--type-paragraph-mini-size);
+}
+.auth-field.is-invalid .auth-field__control {
+  border-color: color-mix(in srgb, var(--raw-red-500) 55%, var(--color-card));
+}
+.auth-field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+/* «رمز عبور را فراموش کرده‌اید؟» under the password, on the end (left) side */
+.auth-forgot {
+  align-self: flex-end;
+  color: var(--ext-primary-strong);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+  text-decoration: none;
+}
+.auth-forgot:hover {
+  text-decoration: underline;
+}
+.auth-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-bottom: var(--space-16);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid color-mix(in srgb, var(--raw-red-500) 30%, var(--color-card));
+  border-radius: var(--rounded-xl);
+  background: var(--ext-status-danger-bg);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-small-size);
+}
+.auth-banner > svg {
+  flex: none;
+  color: var(--ext-status-danger-fg);
+}
+.auth-banner p {
+  margin: 0;
+}
+.auth-form__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+/* Recovery sent: neutral message and the way back */
+.auth-sent {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-12);
+  text-align: center;
+}
+.auth-sent p {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  line-height: 1.8;
+  animation: auth-sent-rise 360ms var(--ext-ease) 380ms backwards;
+}
+
+/*
+ * Success badge micro-interaction. Final state is the resting style; keyframes only describe the entry,
+ * so base.css's reduced-motion rule leaves a static, complete badge.
+ */
+.auth-sent__badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--rounded-full);
+  background: var(--ext-primary-subtle);
+  color: var(--ext-primary-strong);
+  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--brand-shades-600) 60%, transparent);
+  animation: auth-sent-pop 520ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+/* One soft ripple when the check lands */
+.auth-sent__badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid var(--brand-shades-600);
+  opacity: 0;
+  animation: auth-sent-ripple 900ms var(--ext-ease) 720ms;
+}
+.auth-sent__mail {
+  animation: auth-sent-rise 320ms var(--ext-ease) 120ms backwards;
+}
+.auth-sent__check {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: auth-sent-draw 380ms var(--ext-ease) 460ms backwards;
+}
+
+@keyframes auth-sent-pop {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+@keyframes auth-sent-rise {
+  from {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+}
+@keyframes auth-sent-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes auth-sent-ripple {
+  from {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+.auth-form__submit--link {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  text-decoration: none;
+}

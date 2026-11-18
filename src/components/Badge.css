@@ -1,0 +1,41 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0 var(--space-8);
+  min-height: 22px;
+  border: 1px solid var(--badge-border);
+  border-radius: var(--rounded-full);
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: var(--type-paragraph-mini-line);
+  font-weight: var(--type-paragraph-medium-weight);
+  white-space: nowrap;
+}
+
+.badge--neutral {
+  --badge-fg: var(--ext-status-neutral-fg);
+  --badge-bg: var(--ext-status-neutral-bg);
+  --badge-border: var(--ext-status-neutral-border);
+}
+.badge--info {
+  --badge-fg: var(--ext-status-info-fg);
+  --badge-bg: var(--ext-status-info-bg);
+  --badge-border: var(--ext-status-info-border);
+}
+.badge--success {
+  --badge-fg: var(--ext-status-success-fg);
+  --badge-bg: var(--ext-status-success-bg);
+  --badge-border: var(--ext-status-success-border);
+}
+.badge--warning {
+  --badge-fg: var(--ext-status-warning-fg);
+  --badge-bg: var(--ext-status-warning-bg);
+  --badge-border: var(--ext-status-warning-border);
+}
+.badge--danger {
+  --badge-fg: var(--ext-status-danger-fg);
+  --badge-bg: var(--ext-status-danger-bg);
+  --badge-border: var(--ext-status-danger-border);
+}

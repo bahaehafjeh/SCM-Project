@@ -1,0 +1,272 @@
+.app {
+  display: grid;
+  grid-template-columns: var(--ext-sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+  transition: grid-template-columns 240ms var(--ext-ease);
+}
+.app--rail {
+  grid-template-columns: var(--ext-rail-width) minmax(0, 1fr);
+}
+
+/* In RTL the first grid column sits on the right, as in the reference. */
+.app__sidebar {
+  position: sticky;
+  top: 0;
+  /* Above the sticky header so the edge handle is never covered */
+  z-index: 30;
+  height: 100vh;
+  min-width: 0;
+  /* Floating card: gap on all sides (reference) */
+  padding: var(--space-12);
+  padding-inline-end: 0;
+}
+
+.app__drawer-close {
+  display: none;
+}
+
+/* Collapse handle attached to the sidebar's inner edge, level with the logo */
+.app__rail-toggle {
+  position: absolute;
+  top: 40px;
+  inset-inline-end: -12px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-full);
+  background: var(--color-card);
+  color: var(--color-unofficial-foreground-alt);
+  box-shadow: var(--ext-shadow-float);
+  cursor: pointer;
+  transition:
+    background-color 160ms var(--ext-ease),
+    color 160ms var(--ext-ease),
+    box-shadow 200ms var(--ext-ease),
+    transform 200ms var(--ext-ease);
+}
+.app__rail-toggle:hover {
+  color: var(--color-primary);
+  box-shadow: var(--ext-shadow-hover);
+  transform: scale(1.08);
+}
+.app__rail-toggle:active {
+  transform: scale(0.94);
+}
+/* In RTL the sidebar is on the right: pointing right collapses it, pointing left expands it */
+.app__rail-toggle svg {
+  transition: transform 240ms var(--ext-ease);
+}
+.app--rail .app__rail-toggle svg {
+  transform: rotate(180deg);
+}
+
+.app__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app__main {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  /* The title sits 16px under the breadcrumb in the top bar (crumb text ends 22px above the bar edge) */
+  margin-top: -6px;
+  padding: 0 var(--space-24) var(--space-96);
+  outline: none;
+}
+
+/* Floating assistant entry (docs/04 T15) */
+.app__fab {
+  position: fixed;
+  inset-inline-end: var(--space-24);
+  bottom: var(--space-24);
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  height: 44px;
+  padding: 0 var(--space-20);
+  border-radius: var(--rounded-full);
+  background: var(--ext-primary-strong);
+  color: var(--color-primary-foreground);
+  font-weight: var(--type-paragraph-medium-weight);
+  text-decoration: none;
+  box-shadow:
+    0 10px 24px -8px color-mix(in srgb, var(--color-primary) 60%, transparent),
+    var(--shadow-sm);
+  transition:
+    transform 200ms var(--ext-ease),
+    box-shadow 200ms var(--ext-ease);
+}
+/* While scrolling it shrinks to its icon so it covers less content; hover or focus brings the label back */
+.app__fab span {
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    max-width 240ms var(--ext-ease),
+    opacity 200ms var(--ext-ease);
+}
+.app__fab--compact {
+  padding-inline: 13px;
+  gap: 0;
+}
+.app__fab--compact span {
+  max-width: 0;
+  opacity: 0;
+}
+.app__fab--compact:hover,
+.app__fab--compact:focus-visible {
+  padding-inline: var(--space-20);
+  gap: var(--space-8);
+}
+.app__fab--compact:hover span,
+.app__fab--compact:focus-visible span {
+  max-width: 120px;
+  opacity: 1;
+}
+.app__fab:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 28px -8px color-mix(in srgb, var(--color-primary) 70%, transparent),
+    var(--shadow-sm);
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-16);
+  top: -100px;
+  z-index: 50;
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius);
+  background: var(--ext-primary-strong);
+  color: var(--color-primary-foreground);
+}
+.skip-link:focus {
+  top: var(--space-8);
+}
+
+@media (min-width: 1280px) {
+  .app__main {
+    padding-inline: var(--space-32);
+  }
+}
+
+/* Drawer below desktop width */
+@media (max-width: 1023px) {
+  .app,
+  .app--rail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .app__main {
+    padding-inline: var(--space-16);
+  }
+  .app__sidebar {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 40;
+    width: min(var(--ext-sidebar-width), 86vw);
+    transform: translateX(100%);
+    visibility: hidden;
+    /* Hide only after the slide-out ends… */
+    transition:
+      transform 220ms var(--ext-ease),
+      visibility 0s linear 220ms;
+  }
+  .app--menu-open .app__sidebar {
+    transform: none;
+    visibility: visible;
+    /* …but become visible (and focusable) immediately on open. */
+    transition:
+      transform 220ms var(--ext-ease),
+      visibility 0s;
+  }
+  .app__rail-toggle {
+    display: none;
+  }
+  .app__drawer-close {
+    position: absolute;
+    top: var(--space-16);
+    inset-inline-end: var(--space-12);
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--color-foreground);
+    cursor: pointer;
+  }
+  .app__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    background: var(--color-unofficial-backdrop);
+    animation: backdrop-in 200ms var(--ext-ease);
+  }
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .app__fab span {
+    display: none;
+  }
+  .app__fab {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+    inset-inline-end: var(--space-16);
+    bottom: var(--space-16);
+  }
+}
+
+/* The assistant button sits at the foot of the sidebar on desktop, so it never covers page content */
+@media (min-width: 1024px) {
+  .app__fab {
+    inset-inline-end: auto;
+    inset-inline-start: calc(var(--space-12) + var(--space-16));
+    bottom: calc(var(--space-12) + var(--space-16));
+    z-index: 31;
+  }
+  .app--rail .app__fab {
+    inset-inline-start: calc(var(--space-12) + (var(--ext-rail-width) - var(--space-12) - 44px) / 2);
+    gap: 0;
+    padding-inline: 13px;
+  }
+  .app--rail .app__fab span {
+    max-width: 0;
+    opacity: 0;
+  }
+}
+
+/* Page gutter (owner decision 2026-11-15): 150 px between the content and the window edge, and between
+   the content and the sidebar, on wide screens; the top bar follows it so everything lines up. Below
+   1440 px it stays 32 px, where 150 would squeeze the content. */
+.app {
+  --page-gutter: var(--space-32);
+}
+@media (min-width: 1440px) {
+  .app {
+    --page-gutter: 100px;
+  }
+  .app__main {
+    max-width: none;
+    padding-inline: var(--page-gutter);
+  }
+  .app .topbar {
+    padding-inline: var(--page-gutter);
+  }
+}

@@ -1,0 +1,95 @@
+@font-face {
+  font-family: 'Vazir FD-WOL';
+  src: url('/fonts/Vazir-Light-FD-WOL.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazir FD-WOL';
+  src: url('/fonts/Vazir-FD-WOL.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazir FD-WOL';
+  src: url('/fonts/Vazir-Medium-FD-WOL.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+/* No DemiBold file ships with Vazir FD-WOL; token weight 600 resolves to this face (docs/02 §5). */
+@font-face {
+  font-family: 'Vazir FD-WOL';
+  src: url('/fonts/Vazir-Bold-FD-WOL.ttf') format('truetype');
+  font-weight: 600 700;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--color-foreground);
+  background: var(--ext-canvas);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ext-page-bg);
+  background-attachment: fixed;
+  font-size: var(--type-paragraph-small-size);
+  line-height: var(--type-paragraph-small-line);
+  font-weight: var(--type-paragraph-weight);
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--ext-primary-strong);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ext-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--rounded-sm);
+}
+
+/* Latin technical identifiers (HS codes, entity keys, Gregorian ISO dates) */
+.latin {
+  font-family: var(--font-latin);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

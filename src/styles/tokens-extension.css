@@ -1,0 +1,130 @@
+/*
+ * Minimal, documented extensions to the Figma token set (docs/02 §5).
+ * Every value aliases an existing primitive; nothing here introduces a new colour.
+ */
+:root {
+  /* Accessibility fixes (Discovery §6.5) */
+  --ext-focus-ring: var(--brand-shades-600);            /* T4: token ring #E5E5E5 is 1.26:1 */
+  --ext-primary-strong: var(--brand-shades-700);        /* T3: 5.63:1 with white, for small text/buttons */
+  --ext-border-input: var(--color-unofficial-border-5); /* T13: visible input boundary (≥3:1) */
+  --ext-text-muted-on-muted: var(--color-unofficial-mid-alt); /* T5 */
+
+  /* Surfaces: page canvas vs. content surfaces */
+  --ext-canvas: var(--color-unofficial-accent-0);
+  --ext-primary-subtle: var(--brand-shades-100);
+  --ext-primary-subtle-fg: var(--brand-shades-800);
+
+  /* Status (T1) — meaning, not decoration */
+  --ext-status-success-fg: var(--raw-emerald-700);
+  --ext-status-success-bg: var(--raw-emerald-50);
+  --ext-status-success-border: var(--raw-emerald-200);
+  --ext-status-warning-fg: var(--raw-amber-800);
+  --ext-status-warning-bg: var(--raw-amber-50);
+  --ext-status-warning-border: var(--raw-amber-200);
+  --ext-status-danger-fg: var(--raw-red-700); /* red-600 on red-50 is 4.41:1 */
+  --ext-status-danger-bg: var(--color-unofficial-destructive-subtle);
+  --ext-status-danger-border: var(--raw-red-200);
+  --ext-status-info-fg: var(--brand-shades-800);
+  --ext-status-info-bg: var(--brand-shades-50);
+  --ext-status-info-border: var(--brand-shades-200);
+  --ext-status-neutral-fg: var(--color-unofficial-mid-alt);
+  --ext-status-neutral-bg: var(--color-muted);
+  --ext-status-neutral-border: var(--color-border);
+
+  /* Categorical chart palette (T1), ordered for adjacent-hue separation */
+  --ext-chart-1: var(--raw-blue-600);
+  --ext-chart-2: var(--raw-orange-500);
+  --ext-chart-3: var(--raw-emerald-600);
+  --ext-chart-4: var(--raw-violet-500);
+  --ext-chart-5: var(--raw-amber-500);
+  --ext-chart-6: var(--raw-cyan-600);
+  --ext-chart-7: var(--raw-rose-500);
+  --ext-chart-8: var(--raw-slate-500);
+  --ext-chart-track: var(--color-muted);
+  /* Hatch for not-collected / unknown — never a colour that reads as a value */
+  --ext-hatch: repeating-linear-gradient(-45deg, var(--color-border) 0 4px, transparent 4px 8px);
+  /* Alert severity: red / orange / yellow, chosen to stay distinguishable (brand orange is too close to red) */
+  --ext-sev-critical: var(--raw-red-600);
+  --ext-sev-high: var(--raw-orange-500);
+  --ext-sev-medium: var(--raw-yellow-400);
+  /* Lighter hatch for large «not covered» surfaces */
+  --ext-hatch-soft: repeating-linear-gradient(-45deg, var(--color-border) 0 1.5px, transparent 1.5px 7px);
+
+  --ext-sidebar-width: 288px; /* includes the 12px float gap */
+  --ext-rail-width: 96px;
+
+  /* Page canvas: very faint brand tint, 4% primary + 4% secondary over the neutral canvas */
+  --ext-page-bg:
+    radial-gradient(1100px 700px at 100% 0%, color-mix(in srgb, var(--brand-shades-600) 4%, transparent), transparent 70%),
+    radial-gradient(1000px 700px at 0% 100%, color-mix(in srgb, var(--raw-orange-600) 4%, transparent), transparent 70%),
+    var(--ext-canvas);
+
+  /* Auth screens: the same primary/secondary pair as --ext-page-bg, at login-screen strength */
+  --ext-auth-bg:
+    radial-gradient(900px 700px at 0% 30%, color-mix(in srgb, var(--brand-shades-600) 22%, transparent), transparent 70%),
+    radial-gradient(800px 600px at 100% 100%, color-mix(in srgb, var(--raw-orange-600) 14%, transparent), transparent 70%),
+    radial-gradient(700px 500px at 85% 0%, color-mix(in srgb, var(--brand-shades-600) 10%, transparent), transparent 70%),
+    var(--ext-canvas);
+
+  /* Elevation for surfaces without borders (token shadow-sm has an exported spread error) */
+  --ext-shadow-float: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -12px rgb(0 0 0 / 0.08);
+  --ext-shadow-hover: 0 1px 2px rgb(16 24 40 / 0.025), 0 10px 28px -14px rgb(16 24 40 / 0.07);
+  /* Soft drop-shadow for SVG marks on hover */
+  --ext-shadow-mark: drop-shadow(0 3px 6px rgb(16 24 40 / 0.07));
+
+  /* Supplied logo artwork colours (brand asset, not UI tokens) */
+  --ext-logo-word: #0b1c50;
+  --ext-logo-sub: #56647c;
+  /* Motion: short, decelerating; removed under prefers-reduced-motion (base.css) */
+  --ext-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ext-dur: 200ms;
+  --ext-topbar-height: 64px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ext-focus-ring: var(--brand-shades-400);
+    --ext-primary-strong: var(--brand-shades-400);
+    --ext-border-input: var(--color-unofficial-border-5);
+    --ext-canvas: var(--color-unofficial-body-background);
+    --ext-primary-subtle: var(--brand-shades-950);
+    --ext-primary-subtle-fg: var(--brand-shades-200);
+    --ext-status-success-fg: var(--raw-emerald-300);
+    --ext-status-success-bg: var(--raw-emerald-950);
+    --ext-status-success-border: var(--raw-emerald-800);
+    --ext-status-warning-fg: var(--raw-amber-300);
+    --ext-status-warning-bg: var(--raw-amber-950);
+    --ext-status-warning-border: var(--raw-amber-800);
+    --ext-status-danger-border: var(--raw-red-800);
+    --ext-status-danger-fg: var(--color-unofficial-destructive-text);
+    --ext-status-info-fg: var(--brand-shades-200);
+    --ext-status-info-bg: var(--brand-shades-950);
+    --ext-status-info-border: var(--brand-shades-800);
+    --ext-chart-1: var(--raw-blue-400);
+    --ext-logo-word: var(--color-foreground);
+    --ext-logo-sub: var(--color-muted-foreground);
+  }
+}
+
+:root[data-theme='dark'] {
+  --ext-focus-ring: var(--brand-shades-400);
+  --ext-primary-strong: var(--brand-shades-400);
+  --ext-border-input: var(--color-unofficial-border-5);
+  --ext-canvas: var(--color-unofficial-body-background);
+  --ext-primary-subtle: var(--brand-shades-950);
+  --ext-primary-subtle-fg: var(--brand-shades-200);
+  --ext-status-success-fg: var(--raw-emerald-300);
+  --ext-status-success-bg: var(--raw-emerald-950);
+  --ext-status-success-border: var(--raw-emerald-800);
+  --ext-status-warning-fg: var(--raw-amber-300);
+  --ext-status-warning-bg: var(--raw-amber-950);
+  --ext-status-warning-border: var(--raw-amber-800);
+  --ext-status-danger-border: var(--raw-red-800);
+  --ext-status-danger-fg: var(--color-unofficial-destructive-text);
+  --ext-status-info-fg: var(--brand-shades-200);
+  --ext-status-info-bg: var(--brand-shades-950);
+  --ext-status-info-border: var(--brand-shades-800);
+  --ext-chart-1: var(--raw-blue-400);
+  --ext-logo-word: var(--color-foreground);
+  --ext-logo-sub: var(--color-muted-foreground);
+}
