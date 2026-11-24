@@ -1,0 +1,3007 @@
+/* ───────── Alerts × scenarios (prompt §6–§8): panel parts, modals, forecast chart ───────── */
+.apanel {
+  width: min(600px, calc(100vw - 24px));
+}
+/* Phones: the panel is a full-screen sheet */
+@media (max-width: 640px) {
+  .apanel.apanel--overlay {
+    width: 100%;
+  }
+}
+.apanel__sla {
+  color: var(--ext-status-danger-fg);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.apanel__head .apanel__meta {
+  margin: var(--space-8) 0 0;
+}
+.apanel__head .apanel__title {
+  margin-top: var(--space-2);
+}
+/* Row: type icon before the text, severity in words at the end */
+.alert__type {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rounded-lg);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+}
+.alert__row .sev-chip {
+  flex: none;
+}
+/* Source and freshness under a number */
+.asource {
+  display: block;
+  margin-top: var(--space-6);
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+  font-weight: var(--type-paragraph-regular-weight, 400);
+}
+.alead p {
+  margin: 0;
+}
+.alead strong {
+  font-weight: var(--type-paragraph-bold-weight);
+}
+.ablock__aside {
+  margin-inline-start: auto;
+}
+.aai {
+  color: var(--ext-primary-strong);
+  font-size: 11px;
+  font-weight: var(--type-paragraph-medium-weight);
+}
+/* Drivers with their share */
+.adrivers {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.adrivers li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-lg);
+  font-size: var(--type-paragraph-small-size);
+  line-height: 1.7;
+}
+.adrivers__share {
+  flex: none;
+  padding: 0 var(--space-8);
+  border-radius: var(--rounded-full);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-unofficial-foreground-alt, var(--color-foreground));
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.arule {
+  margin: 0;
+  color: var(--color-unofficial-foreground-alt, var(--color-foreground));
+  font-size: var(--type-paragraph-small-size);
+  line-height: 1.8;
+}
+.arule__id {
+  display: inline-block;
+  margin-inline-end: var(--space-8);
+  padding: 0 var(--space-8);
+  border-radius: var(--rounded-md);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-foreground);
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+}
+/* «بدون اقدام» reference row */
+.anoaction {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  margin: 0;
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--rounded-lg);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-unofficial-foreground-alt, var(--color-foreground));
+  font-size: var(--type-paragraph-small-size);
+}
+.anoaction__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  color: var(--ext-status-danger-fg);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.anoaction__tag::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ext-status-danger-fg);
+}
+/* Option card: radio + title + meta, then the type's two metrics */
+.aopt--card {
+  display: grid;
+  gap: var(--space-10, 10px);
+  align-items: stretch;
+}
+.aopt__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+/* The option's two outcome figures on one line, «label: value │ label: value», like «بدون اقدام» */
+.ametrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-4) 0;
+  padding-block-start: var(--space-8);
+  border-block-start: 1px solid var(--color-border);
+  font-size: var(--type-paragraph-mini-size);
+}
+.ametrics__cell {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding-inline: var(--space-10, 10px);
+  border-inline-start: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.ametrics__cell:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+.ametrics__label {
+  color: var(--color-muted-foreground);
+}
+.ametrics__label::after {
+  content: ':';
+}
+.ametrics__value {
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.ametrics--pending {
+  display: block;
+  color: var(--color-muted-foreground);
+}
+.aweak {
+  margin-inline-start: var(--space-6);
+  padding: 0 var(--space-6);
+  border-radius: var(--rounded-full);
+  background: var(--ext-status-warning-bg);
+  color: var(--ext-status-warning-fg);
+  font-size: 11px;
+}
+.achange {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.achange s {
+  margin-inline: var(--space-4);
+}
+.achange strong {
+  color: var(--ext-primary-strong);
+}
+.afrom {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--rounded-lg);
+  background: var(--brand-shades-50);
+  color: var(--ext-primary-strong);
+  font-size: var(--type-paragraph-mini-size);
+}
+.afrom .ov-link {
+  margin-inline-start: auto;
+  font-size: var(--type-paragraph-mini-size);
+}
+.aothers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  width: 100%;
+  padding: var(--space-10, 10px) var(--space-14, 14px);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--rounded-xl);
+  background: transparent;
+  color: var(--color-muted-foreground);
+  font: inherit;
+  font-size: var(--type-paragraph-mini-size);
+  text-align: start;
+  cursor: pointer;
+}
+.aothers strong {
+  color: var(--color-foreground);
+}
+.aothers[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+.aapplied {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid color-mix(in srgb, var(--raw-emerald-500) 35%, var(--color-card));
+  border-radius: var(--rounded-xl);
+  background: var(--ext-status-success-bg);
+  color: var(--ext-status-success-fg);
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.aapplied .ov-link {
+  margin-inline-start: auto;
+}
+.adone__icon--sm {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  flex: none;
+}
+.adone__icon--sm svg {
+  width: 14px;
+  height: 14px;
+}
+.adone__icon--sm::after {
+  display: none;
+}
+.ascenario {
+  display: grid;
+  gap: var(--space-6);
+}
+.abtn--secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  border-color: var(--color-unofficial-border-1);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-foreground);
+  text-decoration: none;
+}
+.abtn--secondary:hover {
+  background: var(--color-unofficial-accent-2);
+}
+.abtn--block {
+  width: 100%;
+  border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-card));
+  background: var(--brand-shades-50);
+  color: var(--ext-primary-strong);
+  line-height: 40px;
+}
+.abtn--block:hover {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-card));
+}
+.abtn--ghost {
+  border-color: transparent;
+  background: transparent;
+}
+/* Footer: back on the start side, reject, then the primary action at the end */
+.apanel__foot .abtn--secondary {
+  order: 1;
+}
+.apanel__foot .abtn--ghost {
+  order: 2;
+}
+.apanel__foot .abtn--primary,
+.apanel__foot .abtn--danger {
+  order: 3;
+  flex: 1;
+}
+.astep__summary--btn {
+  display: block;
+  width: 100%;
+  border: 0;
+  font: inherit;
+  font-size: var(--type-paragraph-small-size);
+  text-align: start;
+  cursor: pointer;
+}
+.astep__summary--btn:hover {
+  background: var(--color-unofficial-accent-2);
+}
+/* Follow-up status card */
+.astatus {
+  display: grid;
+  gap: var(--space-10, 10px);
+  padding: var(--space-14, 14px) var(--space-16);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, var(--color-card));
+  border-radius: var(--rounded-xl);
+  background: color-mix(in srgb, var(--color-primary) 4%, var(--color-card));
+}
+.astatus__done {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.7;
+}
+.astatus__state {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin: 0;
+  font-size: var(--type-paragraph-regular-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.astatus__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+.astatus__bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-6) var(--space-12);
+}
+.astatus__label {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.astatus__value {
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.aprogress {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: var(--rounded-full);
+  background: var(--color-unofficial-accent-2);
+}
+.aprogress::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--p);
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+.aprogress__mark {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  border-inline-start: 1.5px dashed var(--color-unofficial-border-4, var(--color-border));
+}
+.aprogress__legend {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: space-between;
+  padding-inline-start: 46%;
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+.astatus__close {
+  margin: 0;
+  color: var(--ext-primary-strong);
+  font-size: var(--type-paragraph-mini-size);
+}
+/* History: newest first, each with its actor or system */
+.ahistory {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ahistory li {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding-block: var(--space-8);
+  padding-inline-start: var(--space-16);
+}
+.ahistory li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 2px;
+  top: 15px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+.ahistory li:first-child::before {
+  background: var(--color-primary);
+}
+.ahistory li + li {
+  border-top: 1px solid var(--color-unofficial-border-1);
+}
+.ahistory__text {
+  font-size: var(--type-paragraph-small-size);
+  line-height: 1.7;
+}
+.ahistory__meta {
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+/* Forecast chart */
+.afc {
+  margin: 0;
+}
+.afc svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  direction: ltr;
+  overflow: visible;
+}
+.afc__band {
+  fill: var(--color-primary);
+  opacity: 0.12;
+}
+.afc__main {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.afc__main--forecast {
+  stroke-dasharray: 5 4;
+}
+.afc__actual {
+  fill: none;
+  stroke: var(--color-foreground);
+  stroke-width: 2;
+}
+.afc__ref {
+  fill: none;
+  stroke: var(--ext-status-danger-fg);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+.afc__other {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1.25;
+}
+.afc__marker line {
+  stroke: var(--color-foreground);
+  stroke-width: 1;
+}
+.afc__marker rect {
+  fill: var(--color-foreground);
+}
+.afc__marker text {
+  fill: var(--color-card);
+  font-size: 10px;
+  font-weight: 600;
+}
+.afc__marker.is-warn line {
+  stroke: var(--raw-orange-600);
+}
+.afc__marker.is-warn rect {
+  fill: var(--raw-orange-600);
+}
+.alegend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-12);
+  margin: var(--space-8) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.alegend__key {
+  display: inline-block;
+  width: 16px;
+  height: 0;
+  margin-inline-end: -6px;
+  border-top: 2px solid var(--color-primary);
+}
+.alegend__key--band {
+  height: 8px;
+  border: 0;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+.alegend__key--actual {
+  border-top-color: var(--color-foreground);
+}
+.alegend__key--ref {
+  border-top: 2px dashed var(--ext-status-danger-fg);
+}
+.alegend__key--other {
+  border-top-color: var(--color-border);
+}
+
+/* Modals over the panel: snooze and reject */
+.amodal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+.amodal-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(15 23 42 / 0.28);
+  animation: ov-fade 160ms var(--ext-ease);
+}
+.amodal {
+  position: absolute;
+  top: 8vh;
+  left: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  width: min(600px, calc(100vw - 32px));
+  max-height: 84vh;
+  border-radius: var(--rounded-2xl);
+  background: var(--color-card);
+  box-shadow: 0 24px 64px -16px rgb(16 24 40 / 0.35);
+  outline: none;
+  animation: tb-pop 200ms var(--ext-ease);
+}
+.amodal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-20) var(--space-20) var(--space-12);
+}
+.amodal__title {
+  margin: 0;
+  font-size: var(--type-paragraph-large-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.amodal__sub {
+  margin: var(--space-4) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-small-size);
+}
+.amodal__body {
+  display: grid;
+  gap: var(--space-14, 14px);
+  padding: 0 var(--space-20) var(--space-16);
+  overflow-y: auto;
+}
+.amodal__foot {
+  display: flex;
+  gap: var(--space-8);
+  padding: var(--space-14, 14px) var(--space-20) var(--space-20);
+  border-top: 1px solid var(--color-unofficial-border-1);
+}
+.amodal__foot .abtn--primary,
+.amodal__foot .abtn--danger {
+  order: 2;
+  flex: 1;
+}
+.amodal__foot .abtn--ghost {
+  order: 1;
+  border-color: var(--color-unofficial-border-1);
+}
+.amodal__q {
+  margin: 0;
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.amodal__hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.8;
+}
+.seg--fill {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+}
+.acost {
+  display: grid;
+  gap: var(--space-12);
+  padding: var(--space-14, 14px) var(--space-16);
+  border: 1px solid;
+  border-radius: var(--rounded-xl);
+}
+.acost--danger {
+  border-color: color-mix(in srgb, var(--raw-red-500) 30%, var(--color-card));
+  background: var(--ext-status-danger-bg);
+}
+.acost--warning {
+  border-color: color-mix(in srgb, var(--raw-amber-500) 35%, var(--color-card));
+  background: var(--ext-status-warning-bg);
+}
+.acost__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin: 0;
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.acost--danger .acost__title svg {
+  color: var(--ext-status-danger-fg);
+}
+.acost--warning .acost__title svg {
+  color: var(--ext-status-warning-fg);
+}
+.acost .afc {
+  padding: var(--space-6);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+}
+.acost__figs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8);
+  margin: 0;
+}
+.acost__figs > div {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+}
+.acost__figs--plain > div {
+  border: 1px solid var(--color-unofficial-border-1);
+}
+.acost__figs dt {
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+.acost__figs dd {
+  margin: 0;
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.acost__figs dd.is-danger {
+  color: var(--ext-status-danger-fg);
+}
+.asafe {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+  padding: var(--space-12) var(--space-14, 14px);
+  border-radius: var(--rounded-xl);
+  background: var(--brand-shades-50);
+}
+.asafe > svg {
+  flex: none;
+  color: var(--ext-primary-strong);
+}
+.asafe.is-late {
+  background: var(--ext-status-danger-bg);
+}
+.asafe__text {
+  flex: 1;
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.8;
+}
+.asafe__text p {
+  margin: 0;
+}
+.asafe__title {
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.areasons {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.areasons legend {
+  margin-bottom: var(--space-8);
+}
+.areasons__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8);
+}
+.aopt--compact {
+  padding: var(--space-8) var(--space-12);
+}
+.afield__req {
+  color: var(--ext-status-danger-fg);
+}
+.alink-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-14, 14px);
+  border-radius: var(--rounded-xl);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-small-size);
+  text-decoration: none;
+}
+.alink-row:hover {
+  background: var(--color-unofficial-accent-2);
+}
+.alink-row__go {
+  margin-inline-start: auto;
+  color: var(--ext-primary-strong);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+
+/* ───────── Phase 2: states (prompt §11), flags, evidence for every type ───────── */
+.status-chip--danger {
+  background: var(--ext-status-danger-bg);
+  color: var(--ext-status-danger-fg);
+}
+.status-chip--warn {
+  background: var(--ext-status-warning-bg);
+  color: var(--ext-status-warning-fg);
+}
+.apanel__sla.is-passed {
+  padding: 1px var(--space-8);
+  border-radius: var(--rounded-full);
+  background: var(--ext-status-danger-bg);
+}
+/* Banners at the top of the panel body: soft lock, SLA passed, stale data, re-opened, read-only */
+.abanner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+  margin-bottom: var(--space-14, 14px);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 25%, var(--color-card));
+  border-radius: var(--rounded-xl);
+  background: var(--brand-shades-50);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.8;
+}
+.abanner > svg {
+  flex: none;
+  color: var(--ext-primary-strong);
+}
+.abanner p {
+  flex: 1;
+  margin: 0;
+}
+.abanner--danger {
+  border-color: color-mix(in srgb, var(--raw-red-500) 30%, var(--color-card));
+  background: var(--ext-status-danger-bg);
+}
+.abanner--danger > svg {
+  color: var(--ext-status-danger-fg);
+}
+.abanner--warning {
+  border-color: color-mix(in srgb, var(--raw-amber-500) 35%, var(--color-card));
+  background: var(--ext-status-warning-bg);
+}
+.abanner--warning > svg {
+  color: var(--ext-status-warning-fg);
+}
+/* Stale data: the figures are greyed so they read as «as of then» */
+.apanel__body.is-stale .alead strong,
+.apanel__body.is-stale .aimpact__value,
+.apanel__body.is-stale .ametrics__value {
+  color: var(--color-muted-foreground);
+}
+.apanel__body.is-stale .achart,
+.apanel__body.is-stale .afc,
+.apanel__body.is-stale .aevi {
+  opacity: 0.6;
+}
+.ametrics__cell .ov-skel {
+  display: inline-block;
+  width: 56px;
+  height: 12px;
+}
+/* Related alerts and incident children */
+.arelated {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.arelated li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-lg);
+}
+.arelated__link {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-small-size);
+  text-decoration: none;
+}
+.arelated__link:hover {
+  color: var(--ext-primary-strong);
+}
+.arelated__link.is-muted {
+  color: var(--color-muted-foreground);
+}
+/* Route schematic (stopped shipment) */
+.aroute {
+  padding: var(--space-12);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-xl);
+}
+.aroute__line {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.aroute__stop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+  padding-block: var(--space-6);
+  font-size: var(--type-paragraph-small-size);
+}
+.aroute__stop:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 5px;
+  top: 22px;
+  bottom: -8px;
+  border-inline-start: 2px dashed var(--color-border);
+}
+.aroute__stop.is-done:not(:last-child)::before {
+  border-inline-start-style: solid;
+  border-color: var(--color-primary);
+}
+.aroute__dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-card);
+}
+.aroute__stop.is-done .aroute__dot {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+.aroute__stop.is-here .aroute__dot {
+  border-color: var(--raw-red-500);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--raw-red-500) 18%, transparent);
+}
+.aroute__stop.is-next {
+  color: var(--color-muted-foreground);
+}
+.aroute__here {
+  padding: 0 var(--space-6);
+  border-radius: var(--rounded-full);
+  background: var(--ext-status-danger-bg);
+  color: var(--ext-status-danger-fg);
+  font-size: 11px;
+}
+/* SLA timer */
+.asla {
+  display: grid;
+  gap: var(--space-8);
+  padding: var(--space-12);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-xl);
+}
+.aprogress--over {
+  background: var(--raw-red-500);
+}
+.asla__text {
+  margin: 0;
+  font-size: var(--type-paragraph-small-size);
+}
+.asla__text strong {
+  color: var(--ext-status-danger-fg);
+}
+.aevi .alegend {
+  margin-top: var(--space-6);
+}
+
+/* ───────── Review round (2026-11-08): layout, history, undo, impact, timelines, progress ───────── */
+/* Alerts page: the detail takes two thirds; the panel fills its column */
+.apanel.apanel--inline {
+  top: calc(var(--ext-topbar-height) + var(--space-8));
+  width: auto;
+  height: calc(100vh - var(--ext-topbar-height) - var(--space-24));
+}
+
+/* History: a button in the header opens it as an activity list */
+.ahist-wrap {
+  position: relative;
+}
+.ahist {
+  position: absolute;
+  top: calc(100% + var(--space-8));
+  inset-inline-end: 0;
+  z-index: 40;
+  width: min(340px, calc(100vw - 48px));
+  max-height: min(440px, 60vh);
+  overflow-y: auto;
+  padding: var(--space-16);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-2xl);
+  background: var(--color-card);
+  box-shadow:
+    0 18px 48px -16px rgb(16 24 40 / 0.24),
+    0 2px 6px rgb(16 24 40 / 0.06);
+  animation: ahist-in 180ms var(--ext-ease);
+}
+@keyframes ahist-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.ahist__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  margin: 0 0 var(--space-12);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.ahist__count {
+  padding: 0 var(--space-6);
+  border-radius: var(--rounded-full);
+  background: var(--color-unofficial-accent-0);
+  font-size: 11px;
+}
+
+/* Activity timeline (history, shipment steps, route): a ring per entry on one thin line */
+.ahist__list,
+.atl {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+.ahist__list li,
+.atl__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  padding-block: 0 var(--space-16);
+  padding-inline-start: var(--space-24);
+}
+.ahist__list li:last-child,
+.atl__step:last-child {
+  padding-bottom: 0;
+}
+.ahist__list li::before,
+.atl__dot {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  background: var(--color-card);
+}
+.ahist__list li.is-system::before {
+  border-color: var(--color-unofficial-border-4, var(--color-border));
+}
+.ahist__list li:not(:last-child)::after,
+.atl__step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 5px;
+  top: 21px;
+  bottom: 3px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--color-border);
+}
+.ahist__text,
+.atl__label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-medium-weight);
+  line-height: 1.6;
+}
+.ahist__meta,
+.atl__meta {
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+.atl__body {
+  display: grid;
+  gap: 2px;
+}
+.atl__step .atl__dot {
+  border-color: var(--color-unofficial-border-4, var(--color-border));
+}
+.atl__step.is-done .atl__dot {
+  border-color: var(--color-primary);
+  background: var(--color-card);
+}
+.atl__step.is-late:not(.is-done) .atl__dot {
+  border-color: var(--raw-red-500);
+}
+.atl__step:not(.is-done) .atl__label {
+  color: var(--color-muted-foreground);
+}
+.atl__step.is-done:not(:last-child)::before {
+  background: color-mix(in srgb, var(--color-primary) 35%, var(--color-card));
+}
+/* Route stops share the ring */
+.aroute__stop.is-done .aroute__dot {
+  background: var(--color-card);
+}
+
+/* Undo notice: what was taken back, and that the choice is kept */
+.aundo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+  padding: var(--space-8) var(--space-8) var(--space-8) var(--space-12);
+  border-radius: var(--rounded-xl);
+  background: var(--brand-shades-50);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.8;
+  animation: ahist-in 200ms var(--ext-ease);
+}
+.aundo > svg {
+  flex: none;
+  color: var(--ext-primary-strong);
+}
+.aundo p {
+  flex: 1;
+  margin: 0;
+}
+
+/* «بدون اقدام» baseline card: read-only, dashed, compared against */
+.aopt.aopt--base {
+  border-style: dashed;
+  background: var(--color-unofficial-accent-0);
+  cursor: default;
+}
+.aopt.aopt--base:hover {
+  border-color: var(--color-unofficial-border-1);
+}
+.aopt--base .ametrics__cell {
+  background: none;
+}
+.aopt__base-dot {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 2px dashed var(--color-unofficial-border-4, var(--color-border));
+  border-radius: 50%;
+}
+.aopt__base-tag {
+  flex: none;
+  align-self: flex-start;
+  padding: 1px var(--space-8);
+  border-radius: var(--rounded-full);
+  background: var(--color-card);
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+
+/* Decision note: compact */
+.afield__input--sm {
+  min-height: 60px;
+}
+
+/* Follow-up progress: a striped track, a soft glowing fill */
+.aprogress {
+  height: 10px;
+  overflow: visible;
+  background: repeating-linear-gradient(-55deg, color-mix(in srgb, var(--color-primary) 24%, transparent) 0 2px, transparent 2px 7px), color-mix(in srgb, var(--color-primary) 6%, var(--color-card));
+}
+.aprogress::before {
+  min-width: 10px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-primary) 70%, var(--color-card)), var(--color-primary));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-primary) 45%, transparent);
+  transition: width 600ms var(--ext-ease);
+}
+.aprogress.aprogress--over {
+  background: repeating-linear-gradient(-55deg, color-mix(in srgb, var(--raw-red-500) 25%, transparent) 0 2px, transparent 2px 6px), var(--ext-status-danger-bg);
+}
+.aprogress.aprogress--over::before {
+  background: var(--raw-red-500);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--raw-red-500) 40%, transparent);
+}
+.aprogress__mark {
+  top: -3px;
+  bottom: -3px;
+}
+
+/* Effect on the chain: one strip, three cells split by thin lines; icon → what → how much */
+.aimpact {
+  gap: 0;
+  padding-block: var(--space-14, 14px);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-xl);
+}
+.aimpact__tile {
+  justify-items: center;
+  align-content: start;
+  gap: var(--space-4);
+  padding: 0 var(--space-10, 10px);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  text-align: center;
+}
+.aimpact__tile + .aimpact__tile {
+  border-inline-start: 1px solid var(--color-unofficial-border-1);
+}
+.aimpact__icon {
+  width: 32px;
+  height: 32px;
+  margin-block-end: var(--space-4);
+}
+.aimpact__label {
+  order: 0;
+}
+.aimpact__value {
+  font-size: var(--type-paragraph-regular-size);
+}
+
+/* Evidence charts: hover shows the nearest point */
+.achart,
+.afc {
+  position: relative;
+}
+.achart__hit {
+  fill: transparent;
+  pointer-events: all;
+  cursor: crosshair;
+}
+.achart__guide {
+  stroke: var(--color-unofficial-border-4, var(--color-border));
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+.afc__dot {
+  fill: var(--color-card);
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  pointer-events: none;
+}
+.afc__dot--other {
+  stroke: var(--color-muted-foreground);
+}
+.achart__tip {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+  padding: var(--space-6) var(--space-10, 10px);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+  box-shadow: 0 8px 24px -10px rgb(16 24 40 / 0.22);
+  color: var(--color-foreground);
+  font-size: 11px;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(12px, -50%);
+}
+.achart__tip.is-left {
+  transform: translate(calc(-100% - 12px), -50%);
+}
+.achart .achart__tip {
+  left: calc(var(--space-8) + (100% - 2 * var(--space-8)) * var(--tx));
+  top: calc(var(--space-8) + (100% - var(--space-8)) * var(--ty));
+}
+.afc .achart__tip {
+  left: calc(100% * var(--tx));
+  top: calc(100% * var(--ty));
+}
+.achart__tip-title {
+  color: var(--color-muted-foreground);
+}
+.achart__tip-line strong {
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+
+/* Effect on the chain, as the reference: neutral icon tiles, one-line label, bold figure; thin dividers only */
+.aimpact {
+  padding-block: var(--space-4);
+  border: 0;
+  border-radius: 0;
+}
+.aimpact__tile {
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-4) var(--space-8);
+}
+.aimpact__icon {
+  width: 34px;
+  height: 34px;
+  margin-block-end: var(--space-8);
+  border-radius: var(--rounded-lg);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-unofficial-foreground-alt, var(--color-muted-foreground));
+}
+.aimpact__label {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.aimpact__value {
+  max-width: 100%;
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-regular-size);
+  font-weight: var(--type-paragraph-bold-weight);
+  line-height: 1.6;
+}
+/* A link-styled button gets no browser chrome */
+button.ov-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: var(--type-paragraph-medium-weight);
+  cursor: pointer;
+}
+
+/* ───────── Review round (2026-11-08, b) ───────── */
+/* Title: name | place, the place smaller and grey */
+.apanel__sep {
+  margin-inline: var(--space-8);
+  color: var(--color-border);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+}
+.apanel__place {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+/* Back to the alert this one was opened from */
+.aparent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  max-width: 100%;
+  margin-bottom: var(--space-10, 10px);
+  padding: var(--space-4) var(--space-10, 10px);
+  border-radius: var(--rounded-full);
+  background: var(--brand-shades-50);
+  color: var(--ext-primary-strong);
+  font-size: var(--type-paragraph-mini-size);
+  text-decoration: none;
+  transition: background-color 160ms var(--ext-ease);
+}
+.aparent:hover {
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-card));
+}
+.aparent span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.aparent strong {
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+
+/* «بدون اقدام»: a flat reference strip, unlike the selectable cards */
+.abase {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-14, 14px);
+  border-radius: var(--rounded-xl);
+  background: var(--color-unofficial-accent-0);
+}
+.abase__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin: 0;
+  font-size: var(--type-paragraph-small-size);
+}
+.abase__head strong {
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.abase__tag {
+  padding: 0 var(--space-8);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-full);
+  background: var(--color-card);
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+  line-height: 18px;
+}
+.abase__lead {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.abase__figs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-20);
+  margin: var(--space-4) 0 0;
+}
+.abase__figs > div {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-6);
+}
+.abase__figs dt {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.abase__figs dd {
+  margin: 0;
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.abase__figs dd.is-bad {
+  color: var(--ext-status-warning-fg);
+}
+.abase__figs dd.is-good {
+  color: var(--ext-status-success-fg);
+}
+/* The choice: a real heading, tied to the button below */
+.achoose {
+  margin-top: var(--space-6);
+}
+.achoose__title {
+  margin: 0;
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-regular-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.achoose__hint {
+  margin: var(--space-2) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* Impact: smaller figures; a count with names behind it is underlined and opens a tip */
+.aimpact__value {
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.aimpact__more {
+  position: relative;
+  border-bottom: 1px dashed currentColor;
+  cursor: help;
+  outline: none;
+}
+.aimpact__more:focus-visible {
+  border-radius: 2px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 35%, transparent);
+}
+.aimpact__tip {
+  position: absolute;
+  bottom: calc(100% + var(--space-8));
+  left: 50%;
+  z-index: 5;
+  display: grid;
+  gap: var(--space-6);
+  width: max-content;
+  max-width: 240px;
+  padding: var(--space-8) var(--space-10, 10px);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+  box-shadow: 0 10px 28px -12px rgb(16 24 40 / 0.22);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+  text-align: start;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 140ms var(--ext-ease),
+    transform 140ms var(--ext-ease),
+    visibility 140ms;
+}
+.aimpact__more:hover .aimpact__tip,
+.aimpact__more:focus-visible .aimpact__tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+.aimpact__tip-title {
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+.aimpact__tip-list {
+  display: grid;
+  gap: var(--space-4);
+}
+.aimpact__tip-list > span::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-inline-end: var(--space-6);
+  border-radius: 50%;
+  background: var(--color-primary);
+  vertical-align: middle;
+}
+
+/* Warehouse filter: the same compact select as the alerts card */
+.ov-actions--compact .ds-select__trigger {
+  min-width: 120px;
+  height: 32px;
+  padding: 0 var(--space-10, 10px);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* ───────── Review round (2026-11-08, c) ───────── */
+/* Icon button, small: the top bar's round icon button at panel scale */
+.tb-icon.tb-icon--sm {
+  width: 34px;
+  height: 34px;
+}
+.apanel__tools {
+  gap: var(--space-6);
+}
+/* «رد پیشنهاد»: a quiet button that still reads as a refusal */
+.abtn.abtn--ghost-danger {
+  color: var(--ext-status-danger-fg);
+}
+.abtn.abtn--ghost-danger:hover {
+  background: var(--ext-status-danger-bg);
+}
+/* Selected option: a thin, faint halo instead of a heavy ring */
+.aopt.is-selected {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 6%, transparent);
+}
+
+/* «خلاصه هوشمند روزانه» beside «آخرین محاسبه» */
+.ov-meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-12);
+}
+.dsum {
+  position: relative;
+}
+.dsum__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  height: 32px;
+  padding: 0 var(--space-12) 0 var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-full);
+  background: var(--color-card);
+  color: var(--color-foreground);
+  font: inherit;
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+  cursor: pointer;
+  transition:
+    box-shadow 200ms var(--ext-ease),
+    transform 200ms var(--ext-ease);
+}
+.dsum__btn:hover,
+.dsum__btn[aria-expanded='true'] {
+  box-shadow: var(--ext-shadow-hover);
+  transform: translateY(-1px);
+}
+/* The AI mark: the assistant button's own icon and colour */
+.dsum__icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--rounded-full);
+  background: var(--ext-primary-strong);
+  color: var(--color-primary-foreground);
+}
+.dsum__icon--lg {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--rounded-lg);
+}
+.dsum__pop {
+  position: absolute;
+  top: calc(100% + var(--space-8));
+  inset-inline-end: 0;
+  z-index: 30;
+  display: grid;
+  gap: var(--space-12);
+  width: min(380px, calc(100vw - 32px));
+  padding: var(--space-16);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-2xl);
+  background: var(--color-card);
+  box-shadow:
+    0 18px 48px -16px rgb(16 24 40 / 0.24),
+    0 2px 6px rgb(16 24 40 / 0.06);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-small-size);
+  text-align: start;
+  animation: ahist-in 180ms var(--ext-ease);
+}
+.dsum__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+}
+.dsum__title {
+  display: grid;
+  flex: 1;
+}
+.dsum__title strong {
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.dsum__title span {
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+.dsum__list {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.8;
+}
+.dsum__list li {
+  position: relative;
+  padding-inline-start: var(--space-14, 14px);
+}
+.dsum__list li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ext-primary-strong);
+}
+.dsum__list strong {
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.dsum__cta {
+  justify-self: start;
+  color: var(--ext-primary-strong);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+  text-decoration: none;
+}
+.dsum__cta:hover {
+  text-decoration: underline;
+}
+.dsum__note {
+  margin: 0;
+  padding-top: var(--space-10, 10px);
+  border-top: 1px solid var(--color-unofficial-border-1);
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+
+/* ───────── Dashboard alerts fixes (2026-11-08, d) ───────── */
+/* 12, 7, 8 · Row: a dot while unseen; severity in words · place · time left (red under an hour) */
+.alert__unseen {
+  flex: none;
+  align-self: center;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+.alert__meta {
+  gap: var(--space-4) var(--space-8);
+}
+.alert__meta > li.alert__sep::before {
+  content: '·';
+  margin-inline-end: var(--space-4);
+  color: var(--color-muted-foreground);
+}
+.alert__meta > .alert__sev {
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.alert__sla.is-urgent {
+  color: var(--ext-status-danger-fg);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.chip.chip--clear {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.alerts__empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-6);
+  padding: var(--space-24) var(--space-16);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-small-size);
+  list-style: none;
+  text-align: center;
+}
+
+/* 7 · Header deadline: quiet, red under an hour or past */
+.apanel__sla {
+  color: var(--color-muted-foreground);
+}
+.apanel__sla.is-urgent {
+  color: var(--ext-status-danger-fg);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+
+/* 10 · History button: a count, and a dot for news since it was last opened */
+.tb-icon__count {
+  position: absolute;
+  top: -6px;
+  inset-inline-end: -6px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--space-4);
+  border: 2px solid var(--color-card);
+  border-radius: var(--rounded-full);
+  background: var(--color-unofficial-accent-2);
+  color: var(--color-foreground);
+  font-size: 10px;
+  font-weight: var(--type-paragraph-semibold-weight);
+  line-height: 1;
+}
+.tb-icon--sm .tb-icon__dot {
+  top: -2px;
+  inset-inline-start: -2px;
+  inset-inline-end: auto;
+  background: var(--color-primary);
+}
+.tb-icon.tb-icon--sm {
+  width: var(--space-32);
+  height: var(--space-32);
+}
+
+/* 19 · A message about this alert, at the top of the current step */
+.amsg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin: 0 0 var(--space-12);
+  padding: var(--space-8) var(--space-8) var(--space-8) var(--space-12);
+  border-radius: var(--rounded-xl);
+  background: var(--ext-status-success-bg);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  animation: ahist-in 200ms var(--ext-ease);
+}
+.amsg__text {
+  flex: 1;
+}
+
+/* 14 · Folded blocks: the title is the toggle and shows how many items are inside */
+.ablock__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.ablock__count {
+  padding: 0 var(--space-6);
+  border-radius: var(--rounded-full);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.ablock__chev {
+  color: var(--color-muted-foreground);
+  transition: transform 200ms var(--ext-ease);
+}
+.ablock--fold.is-open .ablock__chev {
+  transform: rotate(180deg);
+}
+.ablock--fold:not(.is-open) .ablock__title {
+  margin-bottom: 0;
+}
+.arule-line {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* 15 · «+ افزودن توضیح» */
+.anote-add {
+  align-self: flex-start;
+  justify-self: start;
+  font-size: var(--type-paragraph-small-size);
+}
+
+/* Footer: buttons never overlap; the primary takes the rest of the row */
+.apanel__foot .abtn {
+  flex: none;
+  white-space: nowrap;
+}
+.apanel__foot .abtn--primary,
+.apanel__foot .abtn--danger {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 5 · Snooze: disabled choices, the critical-deadline note, a neutral box */
+.seg button:disabled,
+.chip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.amodal__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+  margin: 0;
+  padding: var(--space-8) var(--space-10, 10px);
+  border-radius: var(--rounded-lg);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.8;
+}
+.amodal__note > svg {
+  flex: none;
+  margin-top: 3px;
+}
+.acost--neutral {
+  border-color: var(--color-unofficial-border-1);
+  background: var(--color-unofficial-accent-0);
+}
+.acost__figs dd.is-warning {
+  color: var(--ext-status-warning-fg);
+}
+
+/* 21 · Reject: a standard grey disabled button, and why */
+.abtn.abtn--danger:disabled {
+  border-color: var(--color-unofficial-border-1);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+  opacity: 1;
+}
+.areasons__hint {
+  margin: var(--space-6) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* 22 · Evidence chart axis */
+.achart__grid {
+  stroke: var(--color-unofficial-border-1);
+}
+.achart__tick,
+.achart__unit {
+  fill: var(--color-muted-foreground);
+  font-size: 10px;
+}
+
+/* 6 · Rows of other cards that have an open alert */
+.stock-filters {
+  margin-block-end: var(--space-12);
+}
+/* Low-stock status chips: same dot colours as the table meters */
+.chip--stock-danger .chip__dot {
+  background: var(--raw-red-500);
+}
+.chip--stock-warning .chip__dot {
+  background: var(--raw-amber-500);
+}
+.stock-empty {
+  padding: var(--space-16) 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-small-size);
+  text-align: center;
+}
+.stock-row.has-alert {
+  cursor: pointer;
+}
+.stock__alert {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-inline-start: var(--space-8);
+  font-size: 11px;
+  font-weight: var(--type-paragraph-medium-weight);
+  vertical-align: middle;
+}
+.stock__alert-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.stock__alert--critical {
+  color: var(--ext-status-danger-fg);
+}
+.stock__alert--critical .stock__alert-dot {
+  background: var(--ext-sev-critical);
+}
+.stock__alert--high,
+.stock__alert--medium {
+  color: var(--ext-status-warning-fg);
+}
+.stock__alert--high .stock__alert-dot {
+  background: var(--ext-sev-high);
+}
+.stock__alert--medium .stock__alert-dot {
+  background: var(--ext-sev-medium);
+}
+.ship__alerts {
+  margin-top: var(--space-12);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-unofficial-border-1);
+}
+.ship__alerts-title {
+  margin: 0 0 var(--space-6);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.ship__alerts ul {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ship__alert {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-6) var(--space-8);
+  border-radius: var(--rounded-lg);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-small-size);
+  text-decoration: none;
+}
+.ship__alert:hover {
+  background: var(--color-unofficial-accent-0);
+}
+.ship__alert .stock__alert {
+  margin: 0;
+}
+.ship__alert-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Impact tips at the strip ends open inward, so they never widen the panel */
+.aimpact__tile:first-child .aimpact__tip {
+  right: -8px;
+  left: auto;
+  transform: translate(0, 4px);
+}
+.aimpact__tile:last-child .aimpact__tip {
+  right: auto;
+  left: -8px;
+  transform: translate(0, 4px);
+}
+.aimpact__tile:first-child .aimpact__more:hover .aimpact__tip,
+.aimpact__tile:first-child .aimpact__more:focus-visible .aimpact__tip,
+.aimpact__tile:last-child .aimpact__more:hover .aimpact__tip,
+.aimpact__tile:last-child .aimpact__more:focus-visible .aimpact__tip {
+  transform: translate(0, 0);
+}
+
+/* Choose heading: small and grey, a label for the options rather than a title */
+.achoose__title {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+/* Confidence: a tag at the card's end (left) */
+.aopt__conf {
+  flex: none;
+  align-self: flex-start;
+  margin-inline-start: auto;
+  padding: 1px var(--space-8);
+  border-radius: var(--rounded-full);
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+  font-weight: var(--type-paragraph-medium-weight);
+  white-space: nowrap;
+}
+.aopt__conf.is-weak {
+  background: var(--ext-status-warning-bg);
+  color: var(--ext-status-warning-fg);
+}
+.aopt.is-recommended .aopt__conf {
+  margin-top: var(--space-6);
+}
+
+/* «خلاصه هوشمند روزانه»: a purple outline button with the iconsax magic-star (owner, 2026-11-08) */
+.dsum__btn {
+  padding: 0 var(--space-12);
+  border-color: var(--raw-violet-500);
+  color: var(--raw-violet-700);
+}
+.dsum__btn:hover,
+.dsum__btn[aria-expanded='true'] {
+  background: var(--raw-violet-50);
+  box-shadow: none;
+}
+.dsum__btn svg {
+  flex: none;
+  color: var(--raw-violet-600);
+}
+.dsum__icon--lg {
+  background: var(--raw-violet-50);
+  color: var(--raw-violet-600);
+}
+.dsum__list li::before {
+  background: var(--raw-violet-500);
+}
+.dsum__cta {
+  color: var(--raw-violet-700);
+}
+
+/* «بدون اقدام» on one line: the label, then short facts split by thin rules */
+.abase {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6) var(--space-12);
+  padding: var(--space-10, 10px) var(--space-14, 14px);
+}
+.abase__title {
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.abase__facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) 0;
+  margin: 0;
+  padding: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  list-style: none;
+}
+.abase__facts li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding-inline: var(--space-10, 10px);
+  border-inline-start: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.abase__facts b {
+  color: var(--color-foreground);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.abase__facts b.is-bad {
+  color: var(--ext-status-warning-fg);
+}
+.abase__facts b.is-good {
+  color: var(--ext-status-success-fg);
+}
+/* Confidence tag: medium weight, a little larger to read */
+.aopt__conf {
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+  color: var(--color-unofficial-foreground-alt, var(--color-foreground));
+}
+
+/* The first fact follows the title directly: no rule before it */
+.abase__facts li:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+/* Severity gauge in the rows */
+.sev-gauge {
+  flex: none;
+}
+
+/* Alerts page: the detail opens smoothly on the left. The list column eases from full width to half while
+   the detail column grows from nothing; the panel keeps its final width (no text reflow), is clipped at the
+   page edge while the column grows, and fades in from the left. */
+.apage {
+  container-type: inline-size;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0fr);
+  column-gap: 0;
+  overflow-x: clip;
+  transition:
+    grid-template-columns 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    column-gap 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.apage.has-detail {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: var(--space-20);
+}
+.apanel.apanel--inline {
+  justify-self: start;
+  width: calc((100cqi - var(--space-20)) / 2);
+  animation: apanel-enter 640ms cubic-bezier(0.22, 1, 0.36, 1) 60ms both;
+}
+@keyframes apanel-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+/* Dashboard: the side panel slides in a little slower and softer, the backdrop fades with it */
+.apanel.apanel--overlay {
+  animation: apanel-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.apanel-scrim {
+  animation: ov-fade 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .apage {
+    transition: none;
+  }
+  .apanel.apanel--inline,
+  .apanel.apanel--overlay,
+  .apanel-scrim {
+    animation: none;
+  }
+}
+
+/* Option card: how long a choice lasts when the horizon ends with under a week of stock */
+.aopt__until {
+  display: block;
+  margin-top: var(--space-4);
+  color: var(--ext-status-warning-fg);
+  font-size: var(--type-paragraph-mini-size);
+}
+.status-chip--ok {
+  background: var(--ext-status-success-bg);
+  color: var(--ext-status-success-fg);
+}
+
+/* Back from the scenario page: success row inside the decision step, with undo */
+.aapplied {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--rounded-lg);
+  background: var(--ext-status-success-bg);
+  color: var(--ext-status-success-fg);
+  font-size: var(--type-paragraph-small-size);
+}
+.aapplied p {
+  flex: 1;
+  margin: 0;
+}
+.aassumed {
+  display: block;
+  margin-top: var(--space-4);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* ───────── Alert panel round (2026-11-09) ───────── */
+/* Folding titles: the whole row is the toggle, the chevron sits at the far (left) end */
+.apanel .ablock__toggle {
+  flex: 1;
+  min-height: 24px;
+}
+.apanel .ablock__chev {
+  margin-inline-start: auto;
+}
+/* Effect on the chain: icon and label on one row, the figure under them */
+.apanel .aimpact__tile {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  justify-items: start;
+  column-gap: var(--space-6);
+  row-gap: var(--space-4);
+  text-align: start;
+}
+.apanel .aimpact__icon {
+  grid-row: 1;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+}
+.apanel .aimpact__icon svg {
+  width: 14px;
+  height: 14px;
+}
+.apanel .aimpact__label {
+  grid-row: 1;
+}
+.apanel .aimpact__value {
+  grid-column: 1 / -1;
+}
+/* Stock evidence chart (shadcn chart on Recharts): fixed height, its own frame like the other evidence */
+.astock {
+  margin: 0;
+  padding: var(--space-12) var(--space-12) var(--space-4) var(--space-4);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-xl);
+  background: var(--color-card);
+}
+.astock__chart {
+  height: 190px;
+}
+
+/* ───────── Alert panel round 2 (2026-11-09) ───────── */
+/* Folding blocks («چرا این اتفاق افتاد؟», related): one bordered row, opens in place */
+.apanel .ablock--fold {
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-xl);
+}
+.apanel .ablock--fold .ablock__title {
+  margin: 0;
+}
+.apanel .ablock--fold.is-open .ablock__title {
+  margin-bottom: var(--space-8);
+}
+.apanel .ablock__count {
+  padding: 1px var(--space-8);
+}
+/* Effect on the chain: the three tiles share one frame, same grey as the folding blocks */
+.apanel .aimpact {
+  padding: var(--space-8) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-xl);
+}
+/* Step connector: dashed; light blue once the step is passed */
+.apanel .astep:not(:last-child)::before {
+  width: 0;
+  border-radius: 0;
+  background: none;
+  border-inline-start: 2px dashed var(--color-border);
+}
+.apanel .astep.is-done:not(:last-child)::before {
+  background: none;
+  border-inline-start-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-card));
+}
+/* Hint under «ادامه در سناریوسازی»: info icon keeps its size */
+.apanel .amodal__hint svg {
+  flex: none;
+}
+/* Timeline evidence (shipment milestones): date · node on a dashed rail · milestone; framed like the other evidence */
+.atime {
+  display: grid;
+  margin: 0;
+  padding: var(--space-16) var(--space-12);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-xl);
+  list-style: none;
+}
+.atime__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 76px 16px minmax(0, 1fr);
+  column-gap: var(--space-12);
+  align-items: start;
+  padding-bottom: var(--space-20);
+}
+.atime__step:last-child {
+  padding-bottom: 0;
+}
+/* Rail: dashed, under the node column; light blue once the milestone is passed */
+.atime__step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: calc(76px + var(--space-12) + 7px);
+  top: 22px;
+  bottom: 2px;
+  border-inline-start: 2px dashed var(--color-border);
+}
+.atime__step.is-done:not(:last-child)::before {
+  border-inline-start-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-card));
+}
+.atime__when {
+  padding-top: 2px;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.6;
+}
+.atime__node {
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--rounded-full);
+  background: var(--color-card);
+}
+.atime__step.is-done .atime__node {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+.atime__step.is-late:not(.is-done) .atime__node {
+  border-color: var(--raw-orange-700);
+}
+.atime__body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.atime__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-regular-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+  line-height: 1.6;
+}
+.atime__late {
+  padding: 1px var(--space-8);
+  border-radius: var(--rounded-full);
+  background: var(--ext-status-danger-bg);
+  color: var(--ext-status-danger-fg);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.atime__meta {
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.atime__meta:empty {
+  display: none;
+}
+
+/* ───────── Alert panel round 3 (2026-11-09) ───────── */
+/* Reasons inside the «چرا» frame: no frame of their own */
+.apanel .ablock--fold .adrivers li {
+  padding: var(--space-6) 0;
+  border: 0;
+  border-radius: 0;
+}
+/* Data source: an info icon beside the block title; the source shows on hover / focus */
+.ablock__aside:has(.ainfo) {
+  margin-inline-start: 0;
+}
+.ainfo {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--rounded-full);
+  color: var(--color-muted-foreground);
+  cursor: help;
+}
+.ablock__title .ainfo svg {
+  color: var(--color-muted-foreground);
+}
+.ainfo:hover,
+.ainfo:focus-visible {
+  outline: none;
+  background: var(--brand-shades-100);
+}
+.ainfo:hover svg,
+.ainfo:focus-visible svg {
+  color: var(--ext-primary-strong);
+}
+.ainfo__tip {
+  position: absolute;
+  top: calc(100% + var(--space-6));
+  inset-inline-start: 0;
+  z-index: 5;
+  width: max-content;
+  max-width: 240px;
+  padding: var(--space-6) var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+  box-shadow: 0 8px 20px -12px rgb(16 24 40 / 0.18);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 140ms var(--ext-ease);
+}
+.ainfo:hover .ainfo__tip,
+.ainfo:focus-visible .ainfo__tip {
+  opacity: 1;
+  visibility: visible;
+}
+/* History: blue title, a proper count chip; the icon badge reads as a counter */
+.ahist__title {
+  color: var(--ext-primary-strong);
+  font-size: var(--type-paragraph-small-size);
+}
+.ahist__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--space-6);
+  background: var(--brand-shades-100);
+  color: var(--ext-primary-strong);
+  font-size: 11px;
+  font-weight: var(--type-paragraph-medium-weight);
+  line-height: 1;
+}
+.apanel__tools .tb-icon__count {
+  top: -4px;
+  inset-inline-end: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 var(--space-4);
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: var(--type-paragraph-semibold-weight);
+  line-height: 1;
+}
+
+/* ───────── Alert panel round 4 (2026-11-09) ───────── */
+/* Passed step: blue tick, solid light-blue line to the next step */
+.apanel .astep.is-done .astep__num {
+  background: var(--brand-shades-100);
+  color: var(--color-primary);
+}
+.apanel .astep.is-done:not(:last-child)::before {
+  border-inline-start-style: solid;
+  border-inline-start-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-card));
+}
+/* Close: a plain icon, no button frame */
+.tb-icon.tb-icon--plain {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+.tb-icon.tb-icon--plain:hover {
+  background: var(--color-unofficial-accent-0);
+}
+/* Selected alert in the list: grey edge, not blue */
+.alert.is-open {
+  border-color: color-mix(in srgb, var(--color-foreground) 18%, var(--color-card));
+}
+/* One tooltip look everywhere (chart, impact, info) */
+.achart__tip,
+.aimpact__tip,
+.ainfo__tip {
+  padding: var(--space-6) var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-lg);
+  background: var(--color-card);
+  box-shadow: 0 8px 20px -12px rgb(16 24 40 / 0.18);
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: var(--type-paragraph-regular-weight, 400);
+}
+/* History count on the clock icon: a quiet neutral counter */
+.apanel__tools .tb-icon__count {
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  box-shadow: 0 0 0 2px var(--color-card);
+  color: var(--color-muted-foreground);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+/* Reject: reasons in medium weight; the link arrow is a pack icon */
+.areasons .aopt__title {
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.alink-row__go {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+/* Cost of waiting / no action: figures sit on the tint, split by thin lines (no white boxes) */
+.acost__figs {
+  row-gap: var(--space-12);
+  column-gap: 0;
+}
+.acost__figs > div,
+.acost__figs--plain > div {
+  padding: 0 var(--space-12);
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.acost__figs > div:not(:nth-child(3n + 1)) {
+  border-inline-start: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+/* Dashboard list: snoozed alerts left the list; one quiet line says how many and where */
+.alerts__snoozed {
+  margin: var(--space-8) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+
+/* ───────── Alerts round 5 (2026-11-10) ───────── */
+/* Severity reads apart at a glance: critical red · high orange · medium yellow */
+.alert__sev--high {
+  color: var(--raw-orange-700);
+}
+.alert__sev--medium {
+  color: var(--raw-yellow-700);
+}
+/* History: the dot alone says «something new»; no count on the clock */
+.apanel__tools .tb-icon__count {
+  display: none;
+}
+/* Alert tabs: the active one in medium blue; the count sits in parentheses on the same line */
+.apage__bar .seg button {
+  white-space: nowrap;
+}
+.apage__bar .seg button[aria-selected='true'] {
+  color: var(--ext-primary-strong);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.apage__bar .seg button[aria-selected='true'] .seg__count {
+  color: inherit;
+}
+/* Timeline evidence: smaller nodes, 14px milestones */
+.atime__node {
+  width: 12px;
+  height: 12px;
+  margin-top: 5px;
+}
+.atime__step {
+  grid-template-columns: 76px 12px minmax(0, 1fr);
+}
+.atime__step:not(:last-child)::before {
+  inset-inline-start: calc(76px + var(--space-12) + 5px);
+  top: 20px;
+}
+.atime__title {
+  font-size: var(--type-paragraph-small-size);
+}
+/* Effect on the chain: icons on primary-100 */
+.apanel .aimpact__icon {
+  background: var(--brand-shades-100);
+  color: var(--ext-primary-strong);
+}
+
+/* ───────── Inline «رد پیشنهاد» on the suggested card (2026-11-10) ───────── */
+/* The card is a holder; the radio inside picks, so it keeps the old card layout */
+.aopt--card {
+  position: relative;
+  cursor: default;
+}
+.aopt__pick {
+  display: grid;
+  gap: var(--space-10, 10px);
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.aopt__pick:focus-visible {
+  border-radius: var(--rounded-lg);
+  outline: 2px solid var(--ext-focus-ring);
+  outline-offset: 4px;
+}
+/* «این پیشنهاد مناسب نیست»: a quiet text button under the figures, aligned with the card text (not red) */
+.aopt__reject-link {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: var(--space-4);
+  margin-inline-start: 30px;
+  padding: 2px var(--space-6);
+  border: 0;
+  border-radius: var(--rounded-md, 6px);
+  background: none;
+  color: var(--color-muted-foreground);
+  font: inherit;
+  font-size: var(--type-paragraph-mini-size);
+  cursor: pointer;
+}
+.aopt__reject-link:hover,
+.aopt__reject-link:focus-visible {
+  outline: none;
+  background: var(--color-unofficial-accent-0);
+  color: var(--color-foreground);
+}
+/* Rejected suggestion: dimmed, last, still selectable; its chip carries the reason and the undo */
+.aopt.is-rejected .aopt__title,
+.aopt.is-rejected .ametrics {
+  opacity: 0.55;
+}
+.aopt__rejected {
+  justify-self: end;
+  margin-inline-end: 0;
+}
+.aopt__rejected .ov-link {
+  font-size: inherit;
+}
+/* While the form is open, the rest of the step is out of reach */
+.is-dimmed {
+  opacity: 0.45;
+}
+/* The form, under the figures of the same card */
+.areject {
+  display: grid;
+  gap: var(--space-10, 10px);
+  padding-top: var(--space-10, 10px);
+  border-top: 1px dashed var(--color-border);
+}
+.areject__title {
+  margin: 0;
+  font-size: var(--type-paragraph-small-size);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.areject__cost {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+  margin: 0;
+  padding: var(--space-8) var(--space-10, 10px);
+  border-radius: var(--rounded-lg);
+  background: var(--color-unofficial-accent-0);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: 1.8;
+}
+.areject__cost > svg {
+  flex: none;
+  margin-top: 4px;
+  color: var(--color-muted-foreground);
+}
+.areject__reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+.areject__reasons .chip[aria-checked='true'] {
+  border-color: var(--color-foreground);
+  background: var(--color-foreground);
+  color: var(--color-card);
+}
+.areject__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+}
+.areject__note {
+  margin-inline-start: auto;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.abtn--danger-outline {
+  border-color: color-mix(in srgb, var(--raw-red-500) 55%, var(--color-card));
+  background: none;
+  color: var(--ext-status-danger-fg);
+}
+.abtn--danger-outline:hover:not(:disabled) {
+  background: var(--ext-status-danger-bg);
+}
+.abtn--danger-outline:disabled {
+  border-color: var(--color-border);
+  color: var(--color-muted-foreground);
+  cursor: not-allowed;
+}
+.apanel__foot-hint {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.amsg:focus {
+  outline: none;
+}
+.apanel__foot:has(.apanel__foot-hint) {
+  flex-wrap: wrap;
+}
+.apanel__foot .apanel__foot-hint {
+  order: 9;
+}
+/* Reject form: the cost line reads as a caution (yellow), not a neutral note */
+.areject__cost {
+  background: var(--ext-status-warning-bg);
+}
+.areject__cost > svg {
+  color: var(--ext-status-warning-fg);
+}
+/* «این پیشنهاد مناسب نیست» sits on the end (left) side of the card */
+.aopt__reject-link {
+  justify-self: end;
+  margin-inline-start: 0;
+}
+/* Tracking rows: values in medium weight and a softer grey; tones (e.g. green «ثبت شد») keep their colour */
+.apanel .arows dd {
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.apanel .arows dd:not([class]) {
+  color: var(--color-unofficial-foreground-alt);
+}
+/* Alert tabs: the active one bold */
+.apage__bar .seg button[aria-selected='true'] {
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+/* Panel blocks: the title stands clear of its content (evidence, effect on the chain, folded blocks) */
+.apanel .ablock__title {
+  margin-bottom: var(--space-12);
+}
+.apanel .ablock--fold:not(.is-open) .ablock__title {
+  margin-bottom: 0;
+}
+/* Open «علت‌ها»: roomier rows, softer text */
+.apanel .ablock--fold .adrivers {
+  gap: var(--space-4);
+}
+.apanel .ablock--fold .adrivers li {
+  padding: var(--space-8) 0;
+  color: var(--color-unofficial-foreground-alt);
+}
+.apanel .ablock--fold .asource {
+  display: block;
+  margin-top: var(--space-8);
+}
+.apanel .ablock--fold.is-open .ablock__title {
+  margin-bottom: var(--space-12);
+}
+
+/* An option a unit turned down: kept in view, cannot be chosen */
+.aopt.is-unit-rejected {
+  opacity: 0.75;
+}
+.aopt.is-unit-rejected .aopt__pick {
+  cursor: not-allowed;
+}
+.aopt__unit {
+  justify-self: start;
+  margin-bottom: var(--space-6, 6px);
+}
+
+/* Manager: «ارجاع دوباره» inside the panel (no second layer) */
+.areassign {
+  display: grid;
+  gap: var(--space-10, 10px);
+  padding: var(--space-14, 14px);
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-xl);
+  background: var(--color-card);
+}
+.areassign__foot {
+  display: flex;
+  gap: var(--space-8);
+}
+/* Actions this user may not take stay in view, dimmed, with who can in the tooltip */
+.aopt__reject-link:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Follow-up: expected arrival in normal text; a late arrival in amber (not red) */
+.astatus__close.astatus__eta {
+  color: var(--color-foreground);
+}
+.astatus__late {
+  color: var(--ext-status-warning-fg);
+  font-weight: var(--type-paragraph-semibold-weight);
+}
+.astats__v--muted {
+  color: var(--color-muted-foreground);
+}
+
+/* Alerts page tabs: the count in the same small box the notification tabs use */
+.seg__count.seg__count--chip {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  margin-inline-start: var(--space-6, 6px);
+  padding: 0 4px;
+  border-radius: 6px;
+  background: var(--color-border);
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+.apage__bar .seg button[aria-selected='true'] .seg__count--chip {
+  background: var(--ext-primary-subtle);
+  color: var(--ext-primary-strong);
+}
+.apage__bar .seg button {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Secondary part of a banner line (when, what next): grey beside the main statement */
+.abanner__muted {
+  color: var(--color-muted-foreground);
+}
+
+/* Rejection reasons: soft filled chips, no border */
+.areject__reasons .chip {
+  border-color: transparent;
+  background: var(--color-muted);
+}
+.areject__reasons .chip:hover {
+  border-color: transparent;
+}
+
+/* Severity in a row: a soft pill with the same padding around every level */
+.alert__meta > .alert__sev {
+  padding: 1px var(--space-8) 1px var(--space-6, 6px);
+  border-radius: 999px;
+  line-height: 1.6;
+}
+.alert__meta > .alert__sev--critical {
+  background: var(--ext-status-danger-bg);
+}
+.alert__meta > .alert__sev--high {
+  background: color-mix(in srgb, var(--raw-orange-500) 10%, var(--color-card));
+}
+.alert__meta > .alert__sev--medium {
+  background: color-mix(in srgb, var(--raw-yellow-500) 14%, var(--color-card));
+}
+
+/* ───────── «اثر روی زنجیره» on all seven stages (2026-11-15) ─────────
+   One row per stage in the chain's order; a line joins the dots. Filled dot = the alert's own
+   figure; hollow dot = a sample until that stage's data is connected. Colour = how strong. */
+.achain {
+  position: relative;
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.achain__row {
+  --c: var(--color-border);
+  position: relative;
+  display: grid;
+  grid-template-columns: 12px 92px minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-10, 10px);
+  padding: var(--space-8) 0;
+  font-size: var(--type-paragraph-small-size);
+}
+.achain__row + .achain__row {
+  border-top: 1px solid var(--color-unofficial-border-1);
+}
+/* The chain line between the dots */
+.achain__row::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 5px;
+  width: 2px;
+  background: var(--color-border);
+}
+.achain__row:first-child::before {
+  inset-block-start: 50%;
+}
+.achain__row:last-child::before {
+  inset-block-end: 50%;
+}
+.achain__row.is-high {
+  --c: var(--ext-sev-critical);
+}
+.achain__row.is-medium {
+  --c: var(--ext-sev-high);
+}
+.achain__row.is-low {
+  --c: var(--raw-yellow-500);
+}
+.achain__row.is-none {
+  --c: var(--color-border);
+}
+.achain__dot {
+  position: relative;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--c);
+  border-radius: 50%;
+  background: var(--c);
+  align-self: center;
+}
+.achain__row.is-sample .achain__dot {
+  background: var(--color-card);
+}
+.achain__stage {
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+.achain__text {
+  min-width: 0;
+  color: var(--color-foreground);
+}
+.achain__row.is-sample .achain__text,
+.achain__row.is-none .achain__text {
+  color: var(--color-muted-foreground);
+}
+.achain__more {
+  border-bottom: 1px dashed currentColor;
+  font-weight: 600;
+  cursor: help;
+}
+.achain__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6, 6px);
+  margin: var(--space-8) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+}
+.achain__key {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--color-unofficial-mid-alt);
+  border-radius: 50%;
+  background: var(--color-unofficial-mid-alt);
+}
+.achain__key.is-sample {
+  margin-inline-start: var(--space-8);
+  background: var(--color-card);
+}
+
+/* «سنجیدن در سناریوسازی»: the same full-width tinted button, in the secondary colour (orange) */
+.ascenario .abtn--block {
+  border-color: color-mix(in srgb, var(--color-secondary) 30%, var(--color-card));
+  background: color-mix(in srgb, var(--color-secondary) 8%, var(--color-card));
+  color: var(--color-unofficial-secondary-hover, var(--color-secondary));
+}
+.ascenario .abtn--block:hover {
+  background: color-mix(in srgb, var(--color-secondary) 14%, var(--color-card));
+}
+/* Facts and figures in a row: the divider lives in the gap before each item and the row clips at its
+   edge, so the first item of any line (wrapped or not) has none and starts flush. «بدون اقدام»: its
+   sentence takes a line of its own, then the figures */
+.ametrics,
+.abase__facts {
+  column-gap: 21px;
+  overflow: hidden;
+}
+.ametrics__cell,
+.ametrics__cell:first-child,
+.abase__facts li,
+.abase__facts li:first-child {
+  position: relative;
+  padding-inline: 0;
+  border-inline-start: 0;
+}
+.ametrics__cell::before,
+.abase__facts li:has(.abase__k)::before {
+  content: '';
+  position: absolute;
+  inset-block: 15%;
+  inset-inline-start: -11px;
+  width: 1px;
+  background: var(--color-border);
+}
+.abase__facts li:not(:has(.abase__k)) {
+  flex-basis: 100%;
+  white-space: normal;
+}
+
+/* ───────── Alerts page (2026-11-15) ───────── */
+/* Severity and place in fixed columns, so every row's figures line up under each other */
+.alert__meta > .alert__sev {
+  justify-content: center;
+  min-width: 68px;
+}
+.alerts--page .alert__meta {
+  flex-wrap: nowrap;
+}
+.alerts--page .alert__meta > li:nth-child(2) {
+  width: 180px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Notices (failed sync, in someone's hands, stale data…): plain coloured text on the end side */
+.alert__notes {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2, 2px) var(--space-12);
+  max-width: 40%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--type-paragraph-mini-size);
+  font-weight: 500;
+}
+.alert__note {
+  white-space: nowrap;
+}
+.alert__note--danger {
+  color: var(--ext-status-danger-fg);
+}
+.alert__note--warn {
+  color: var(--ext-status-warning-fg);
+}
+.alert__note--info {
+  color: var(--ext-status-info-fg);
+}
+.alert__note--muted {
+  color: var(--color-muted-foreground);
+}
+/* The type select: 36 px, like the other controls */
+.alerts-page .alerts-filters .ds-select__trigger {
+  height: 36px;
+}
+
+/* The alerts page fits the window (2026-11-15): header and filters stay, only the cards scroll; the
+   panel beside them is as tall as the list, so its footer buttons never need a page scroll */
+@media (min-width: 768px) {
+  .app__main:has(.apage--fit) {
+    padding-bottom: 0;
+  }
+  .apage--fit {
+    height: var(--apage-h, auto);
+    align-items: stretch;
+  }
+  .apage--fit > .apage__list {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .apage--fit > .apage__list > .alerts--page {
+    flex: 1;
+    min-height: 0;
+    margin-inline: calc(-1 * var(--space-4));
+    padding: var(--space-2, 2px) var(--space-4) var(--space-12);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  .apage--fit > .apanel--inline {
+    position: relative;
+    top: auto;
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+/* «پیگیری»: the action's real state; the dot says which (waiting, under way, late, blocked, done) */
+.astatus__line {
+  margin: 0;
+  color: var(--color-foreground);
+  font-size: var(--type-paragraph-small-size);
+}
+.astatus--wait .astatus__dot {
+  background: var(--color-muted-foreground);
+}
+.astatus--late .astatus__dot {
+  background: var(--ext-sev-critical);
+}
+.astatus--late .astatus__line {
+  color: var(--ext-status-danger-fg);
+}
+.astatus--warn .astatus__dot {
+  background: var(--ext-sev-high);
+}
+.astatus--done .astatus__dot {
+  background: var(--raw-emerald-500);
+}
+.astatus__open {
+  justify-self: start;
+  font-size: var(--type-paragraph-mini-size);
+}

@@ -1,0 +1,260 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--color-unofficial-border-1);
+  border-radius: var(--rounded-3xl);
+  background: var(--color-card);
+  box-shadow: var(--ext-shadow-float);
+  overflow: hidden;
+}
+
+/* Brand */
+.sb-brand {
+  display: flex;
+  align-items: center;
+  padding: var(--space-20) var(--space-20) var(--space-16);
+  border-block-end: 1px solid var(--color-unofficial-border-1);
+}
+.logo {
+  display: block;
+  line-height: 0;
+}
+.logo svg {
+  width: 150px;
+  height: auto;
+}
+.logo--mark svg {
+  width: 36px;
+  height: 36px;
+}
+.logo__word {
+  fill: var(--ext-logo-word);
+}
+.logo__sub {
+  fill: var(--ext-logo-sub);
+}
+
+/* Navigation */
+.sb-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-8) var(--space-12) var(--space-16);
+}
+/* Section title followed by a hairline, 14px above and below */
+.sb-section__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-block: 14px;
+  padding-inline: var(--space-8);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: var(--type-paragraph-mini-line);
+  color: var(--color-muted-foreground);
+  white-space: nowrap;
+}
+.sb-list,
+.sb-children {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sb-collapse {
+  display: grid;
+  grid-template-rows: 1fr;
+  margin-block: var(--space-2) var(--space-4);
+  transition:
+    grid-template-rows 260ms var(--ext-ease),
+    margin 260ms var(--ext-ease),
+    opacity 200ms var(--ext-ease);
+}
+.sb-collapse[data-open='false'] {
+  grid-template-rows: 0fr;
+  margin-block: 0;
+  opacity: 0;
+}
+.sb-collapse > .sb-children {
+  min-height: 0;
+  overflow: hidden;
+}
+/* Tree guides: a trunk under the group icon and a rounded branch to each item */
+.sb-children {
+  --sb-tree: var(--color-border);
+  margin-block: 0;
+  margin-inline-start: 21px;
+  padding-inline-start: 14px;
+}
+.sb-children > li {
+  position: relative;
+}
+.sb-children > li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-inline-start: -14px;
+  width: 10px;
+  height: 50%;
+  border-inline-start: 1px solid var(--sb-tree);
+  border-block-end: 1px solid var(--sb-tree);
+  border-end-start-radius: 8px;
+}
+/* From the top of the tree down to the selected item, the trunk fades from white into blue */
+.sb-children {
+  position: relative;
+}
+.sb-children[data-active]::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  inset-inline-start: 0;
+  width: 1px;
+  /* rows are 34px tall with a 2px gap; stop at the selected row's branch (its middle) */
+  height: calc(var(--sb-active) * 36px + 17px);
+  background: linear-gradient(to bottom, transparent, var(--color-primary));
+  pointer-events: none;
+}
+/* The branch leading to the current page turns brand blue */
+.sb-children > li:has([aria-current='page'])::before {
+  border-color: var(--color-primary);
+  /* Fades in from the trunk's top (white) to full blue at the branch */
+  mask-image: linear-gradient(to bottom, transparent, #000 85%);
+}
+.sb-children > li::before {
+  transition: border-color 200ms var(--ext-ease);
+}
+.sb-children > li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: calc(-1 * var(--space-2));
+  inset-inline-start: -14px;
+  border-inline-start: 1px solid var(--sb-tree);
+}
+/* The tree ends at the selected item: no trunk under its branch, no guides for the items below it */
+.sb-children > li:has([aria-current='page'])::after,
+.sb-children > li:has([aria-current='page']) ~ li::before,
+.sb-children > li:has([aria-current='page']) ~ li::after {
+  display: none;
+}
+
+.sb-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10, 10px);
+  width: 100%;
+  min-height: 40px;
+  padding: 0 var(--space-12);
+  border: 0;
+  border-radius: var(--rounded-lg);
+  background: transparent;
+  color: var(--color-foreground);
+  font: inherit;
+  font-size: var(--type-paragraph-small-size);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  transition:
+    background-color 160ms var(--ext-ease),
+    color 160ms var(--ext-ease);
+}
+.sb-link__icon {
+  flex: none;
+  color: var(--color-unofficial-foreground-alt);
+  transition:
+    color 160ms var(--ext-ease),
+    transform 200ms var(--ext-ease);
+}
+.sb-link:hover .sb-link__icon {
+  transform: scale(1.08);
+}
+.sb-link:active {
+  transform: scale(0.985);
+}
+.sb-link__label {
+  flex: 1;
+  min-width: 0;
+}
+.sb-link:hover {
+  background: var(--color-accent);
+  color: var(--color-foreground);
+}
+.sb-link:hover .sb-link__icon {
+  color: var(--color-foreground);
+}
+/* Selected item: 1px border that starts blue at the right (start) edge and fades away across the item */
+.sb-link[aria-current='page'] {
+  --sb-sel-bg: var(--ext-primary-subtle);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--sb-sel-bg), var(--sb-sel-bg)) padding-box,
+    linear-gradient(to left, color-mix(in srgb, var(--color-primary) 70%, transparent), transparent 75%) border-box;
+  color: var(--ext-primary-strong);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.sb-link[aria-current='page'] .sb-link__icon {
+  color: var(--color-primary);
+}
+.sb-link--child {
+  min-height: 34px;
+  padding-inline: var(--space-8);
+  color: var(--color-unofficial-foreground-alt);
+  font-size: var(--type-paragraph-small-size);
+}
+.sb-link--child[aria-current='page'] {
+  color: var(--ext-primary-strong);
+  font-weight: var(--type-paragraph-medium-weight);
+}
+.sb-link--child[aria-current='page'] .sb-link__icon {
+  color: var(--color-primary);
+}
+/* «به‌زودی» reads as a quiet note, not a label */
+.sb-link .badge {
+  border: 0;
+  font-weight: 400;
+}
+.sb-link--soon .sb-link__label,
+.sb-link--soon .sb-link__icon {
+  color: var(--color-muted-foreground);
+}
+.sb-group--active > .sb-link__label {
+  color: var(--color-foreground);
+}
+.sb-group__chevron {
+  color: var(--color-muted-foreground);
+  transition: transform 200ms var(--ext-ease);
+}
+.sb-group[aria-expanded='false'] .sb-group__chevron {
+  transform: rotate(90deg);
+}
+
+/* Rail mode (collapsed, desktop only) */
+.app--rail .sb-brand {
+  justify-content: center;
+  padding-inline: 0;
+}
+.app--rail .sb-section__label,
+.app--rail .sb-link__label,
+.app--rail .sb-link .badge,
+.app--rail .sb-group__chevron,
+.app--rail .sb-collapse {
+  display: none;
+}
+.app--rail .sb-nav {
+  padding-inline: var(--space-8);
+}
+.app--rail .sb-link {
+  justify-content: center;
+  padding: 0;
+}
+.app--rail .sb-section + .sb-section {
+  margin-block-start: var(--space-8);
+  padding-block-start: var(--space-8);
+  border-block-start: 1px solid var(--color-unofficial-border-1);
+}
+.app--rail .sb-section:first-child {
+  padding-block-start: var(--space-8);
+}

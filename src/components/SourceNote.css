@@ -1,0 +1,34 @@
+.source-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  color: var(--color-muted-foreground);
+  font-size: var(--type-paragraph-mini-size);
+  line-height: var(--type-paragraph-mini-line);
+}
+
+.source-note__icon {
+  flex: none;
+  margin-block-start: 1px;
+}
+
+.source-note dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-20);
+  margin: 0;
+}
+
+.source-note dl > div {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.source-note dt::after {
+  content: ':';
+}
+
+.source-note dd {
+  margin: 0;
+  color: var(--color-unofficial-foreground-alt);
+}
