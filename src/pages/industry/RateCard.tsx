@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { ChartContainer, ChartTooltip } from '../../components/ui/chart'
+<<<<<<< HEAD
 import { Select } from '../../components/ui/Select'
 import { rateItems, rateRows } from '../../lib/industry/derive'
 import type { RateRow } from '../../lib/industry/derive'
@@ -14,6 +15,22 @@ const TOP = 18
 const PANES = [
   { key: 'usd', title: 'دلار بر تن', color: 'var(--raw-emerald-600)', axis: fixedTicks(2200, 550), unit: 'دلار بر تن' },
   { key: 'rial', title: 'میلیون ریال بر تن', color: 'var(--raw-blue-600)', axis: fixedTicks(3400, 850), unit: 'میلیون ریال بر تن' },
+=======
+import { rateItems, rateRows } from '../../lib/industry/derive'
+import type { RateRow } from '../../lib/industry/derive'
+import { fa, niceTicks } from '../../lib/industry/format'
+import { Select } from '../../components/ui/Select'
+import { MONTH_AXIS, Card, Tip, stateOf, tipLabel } from './parts'
+import type { CardCtx } from './parts'
+import { RangeNavigator } from './RangeNavigator'
+import { useWheelZoom } from './useWheelZoom'
+
+const H = 250
+const TOP = 14
+const PANES = [
+  { key: 'usd', title: 'دلار بر تن', color: 'var(--raw-emerald-600)', unit: 'دلار بر تن' },
+  { key: 'rial', title: 'میلیون ریال بر تن', color: 'var(--raw-blue-600)', unit: 'میلیون ریال بر تن' },
+>>>>>>> scm-v1/main
 ] as const
 const DEFAULT_ITEM = 'روغن خام|داخلی'
 /** The company's own FX rate for its purchases (not in the file yet) */
@@ -25,6 +42,7 @@ export function RateCard({ ctx }: { ctx: CardCtx }) {
   const [picked, setPicked] = useState(DEFAULT_ITEM)
   const item = items.find((s) => s.key === picked) ?? items[0]
   const all = ctx.ds && item ? rateRows(ctx.ds, ctx.range, item.key) : []
+<<<<<<< HEAD
   // Wheel zoom: both charts share one window; a double-click or «نمایش همه» shows the whole range
   const [win, setWin] = useState<[number, number] | null>(null)
   useEffect(() => setWin(null), [ctx.range.from, ctx.range.to])
@@ -36,18 +54,41 @@ export function RateCard({ ctx }: { ctx: CardCtx }) {
   const inset = { left: 4 + 50, right: 10 }
   useWheelZoom(rialEl, all.length > 12 ? all.length : 0, view, setWin, inset)
   useWheelZoom(usdEl, all.length > 12 ? all.length : 0, view, setWin, inset)
+=======
+  // Default to the latest 12 months when longer ranges are active so curves never crowd; RangeNavigator & wheel let users pan/zoom
+  const showNav = all.length > 12
+  const [win, setWin] = useState<[number, number] | null>(null)
+  useEffect(() => setWin(null), [ctx.range.from, ctx.range.to])
+  const view: [number, number] = showNav && win && win[1] < all.length ? win : showNav ? [all.length - 12, all.length - 1] : [0, Math.max(0, all.length - 1)]
+  const zoomed = view[0] > 0 || view[1] < all.length - 1
+  const rows = showNav ? all.slice(view[0], view[1] + 1) : all
+  const navValues = all.map((r) => (ctx.unit === 'usd' ? (r.usd ?? r.rial) : r.rial))
+  const rialEl = useRef<HTMLDivElement>(null)
+  const usdEl = useRef<HTMLDivElement>(null)
+  const inset = { left: 4 + 54, right: 10 }
+  useWheelZoom(rialEl, showNav ? all.length : 0, view, setWin, inset)
+  useWheelZoom(usdEl, showNav ? all.length : 0, view, setWin, inset)
+>>>>>>> scm-v1/main
   return (
     <Card
       ctx={ctx}
       state={stateOf(ctx, all.length > 0)}
       title="نرخ خرید: ریالی و دلاری"
       subtitle={`نرخ‌های ماهانه ${item?.label ?? ''}`}
+<<<<<<< HEAD
       guide="نرخ‌های ماهانه؛ با چرخ موس روی نمودار بزرگ‌نمایی کنید و با دوبار کلیک کل بازه را ببینید. نرخ ارز شرکت فقط برای خریدهای وارداتی طبقه‌بندی‌شده. مبلغ دلاری و نرخ دلاری از 1404/04 موجود است. نقطه‌ای که از محور بالاتر می‌رود با مثلث و مقدار نشان داده شده است."
+=======
+      guide={`نرخ‌های ماهانه خرید؛${showNav ? ' با چرخ موس روی نمودار بزرگ‌نمایی کنید، یا نوار پایین را بکشید؛ دوبار کلیک کل بازه را نشان می‌دهد.' : ''} نرخ ارز شرکت فقط برای خریدهای وارداتی طبقه‌بندی‌شده. مبلغ دلاری و نرخ دلاری از 1404/04 موجود است.`}
+>>>>>>> scm-v1/main
       actions={
         item && (
           <div className="ind-bactions">
             {zoomed && (
+<<<<<<< HEAD
               <button type="button" className="ind-filter__clear is-on" onClick={() => setWin(null)}>
+=======
+              <button type="button" className="ind-filter__clear is-on" onClick={() => setWin([0, all.length - 1])}>
+>>>>>>> scm-v1/main
                 نمایش همه
               </button>
             )}
@@ -60,8 +101,14 @@ export function RateCard({ ctx }: { ctx: CardCtx }) {
         {/* Visual order right → left: rial, then dollar */}
         {[PANES[1], PANES[0]].map((p) => {
           const vals = rows.map((r) => r[p.key]).filter((v): v is number => v != null)
+<<<<<<< HEAD
           return (
             <div key={p.key} ref={p.key === 'rial' ? rialEl : usdEl} onDoubleClick={() => setWin(null)}>
+=======
+          const axis = niceTicks(Math.max(0, ...vals), 6)
+          return (
+            <div key={p.key} ref={p.key === 'rial' ? rialEl : usdEl} onDoubleClick={() => showNav && setWin([0, all.length - 1])}>
+>>>>>>> scm-v1/main
               <p className="ind-rate__title">{p.title}</p>
               <ChartContainer
                 config={{ [p.key]: { label: p.title, color: p.color } }}
@@ -79,7 +126,11 @@ export function RateCard({ ctx }: { ctx: CardCtx }) {
                   </defs>
                   <CartesianGrid vertical={false} strokeDasharray="2 4" />
                   <XAxis {...MONTH_AXIS} />
+<<<<<<< HEAD
                   <YAxis domain={[0, p.axis.max]} ticks={p.axis.ticks} allowDataOverflow tickFormatter={(v: number) => fa(v, 0)} tickLine={false} axisLine={{ stroke: 'var(--color-border)' }} width={50} />
+=======
+                  <YAxis domain={[0, axis.max]} ticks={axis.ticks} tickFormatter={(v: number) => fa(v, 0)} tickLine={false} axisLine={{ stroke: 'var(--color-border)' }} width={54} />
+>>>>>>> scm-v1/main
                   <ChartTooltip
                     content={({ active, label: l, payload }) => {
                       const row = payload?.[0]?.payload as RateRow | undefined
@@ -98,6 +149,7 @@ export function RateCard({ ctx }: { ctx: CardCtx }) {
                     connectNulls={false}
                     isAnimationActive={false}
                     activeDot={{ r: 4, fill: p.color, stroke: 'var(--color-card)' }}
+<<<<<<< HEAD
                     dot={(d: { cx?: number; cy?: number; value?: number | [number, number] | null; index?: number }) => {
                       const v = Array.isArray(d.value) ? d.value[1] : d.value
                       if (v == null || d.cx == null || d.cy == null) return <g key={`${p.key}-${d.index}`} />
@@ -105,6 +157,9 @@ export function RateCard({ ctx }: { ctx: CardCtx }) {
                       // No dots: the line shows the trend; only a value above the axis is marked
                       return <g key={`${p.key}-${d.index}`} />
                     }}
+=======
+                    dot={false}
+>>>>>>> scm-v1/main
                   />
                 </AreaChart>
               </ChartContainer>
@@ -126,6 +181,10 @@ export function RateCard({ ctx }: { ctx: CardCtx }) {
           )
         })}
       </div>
+<<<<<<< HEAD
+=======
+      {showNav && <RangeNavigator months={all.map((r) => r.month)} values={navValues} win={view} onChange={setWin} color="var(--raw-blue-600)" inset={{ left: 58, right: 10 }} />}
+>>>>>>> scm-v1/main
     </Card>
   )
 }

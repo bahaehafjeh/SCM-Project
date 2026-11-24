@@ -1,10 +1,17 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+<<<<<<< HEAD
 import { Database, Download, Link2, MapPinOff, PanelRightOpen, X } from 'lucide-react'
 import { routeById as routeConfigById } from '../../config/routes'
 import { PageHeader } from '../../components/PageHeader'
 import { AlertToast } from '../../components/overview/AlertRow'
 import { notify } from '../../lib/alertStore'
+=======
+import { Database, MapPinOff, PanelRightOpen, X } from 'lucide-react'
+import { routeById as routeConfigById } from '../../config/routes'
+import { PageHeader } from '../../components/PageHeader'
+import { AlertToast } from '../../components/overview/AlertRow'
+>>>>>>> scm-v1/main
 import { COUNTRY_FA, MODE_LABEL, MONTHS, ROUTES, chokepointById, routeById } from '../../data/routes'
 import type { Mode, Month } from '../../data/routes'
 import { filterRoutes, hasRouteFilters } from '../../lib/routes/metrics'
@@ -16,7 +23,11 @@ import { MapView } from './MapView'
 import { TimeLapse, ViewBar, ZoomColumn } from './MapControls'
 import { MapFooter } from './MapFooter'
 import { DetailPanel } from './DetailPanel'
+<<<<<<< HEAD
 import { RoutesTable, downloadCsv } from './RoutesTable'
+=======
+import { RoutesTable } from './RoutesTable'
+>>>>>>> scm-v1/main
 import type { TableTab } from './RoutesTable'
 import { fa, gregorianMonth } from './format'
 import '../../components/overview/overview.css'
@@ -114,11 +125,14 @@ export function RoutesPage() {
     return () => window.removeEventListener('resize', fit)
   }, [compact])
 
+<<<<<<< HEAD
   const copyLink = () =>
     navigator.clipboard?.writeText(window.location.href).then(
       () => notify('لینک کپی شد'),
       () => notify('کپی لینک انجام نشد'),
     )
+=======
+>>>>>>> scm-v1/main
   const onCp = useCallback((id: string) => select({ cp: id, route: null }), [select])
   const onRoute = useCallback((id: string) => select({ route: id }), [select])
 
@@ -147,12 +161,15 @@ export function RoutesPage() {
               <Database size={14} aria-hidden="true" />
               داده: {gregorianMonth(MONTHS[0])} تا {gregorianMonth(MONTHS[MONTHS.length - 1])} · ماه آخر ناقص
             </span>
+<<<<<<< HEAD
             <button type="button" className="rhead__btn" onClick={() => downloadCsv(view === 'table' ? tableTab : 'cps', f)} aria-label="خروجی CSV همین نما" title="خروجی CSV همین نما">
               <Download size={16} aria-hidden="true" />
             </button>
             <button type="button" className="rhead__btn" onClick={copyLink} aria-label="کپی لینک همین نما" title="کپی لینک همین نما">
               <Link2 size={16} aria-hidden="true" />
             </button>
+=======
+>>>>>>> scm-v1/main
           </div>
         }
       />

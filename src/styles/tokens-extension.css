@@ -46,7 +46,7 @@
   /* Alert severity: red / orange / yellow, chosen to stay distinguishable (brand orange is too close to red) */
   --ext-sev-critical: var(--raw-red-600);
   --ext-sev-high: var(--raw-orange-500);
-  --ext-sev-medium: var(--raw-yellow-400);
+  --ext-sev-medium: var(--raw-yellow-600);
   /* Lighter hatch for large «not covered» surfaces */
   --ext-hatch-soft: repeating-linear-gradient(-45deg, var(--color-border) 0 1.5px, transparent 1.5px 7px);
 

@@ -4,7 +4,11 @@ import { parseCsv } from './data'
 import { DEFAULT_RANGE, indexRecords, totalsOf } from './derive'
 import { sampleHistory } from './sample'
 import { fxSeries } from './fx'
+<<<<<<< HEAD
 import { fxCsv, fxKpis, fxRecords, fxTableRows, fxYearCounts } from './fxflows'
+=======
+import { fxBalanceRows, fxBalanceYears, fxCsv, fxKpis, fxRecords, fxTableRows, fxUseTrendRows, fxYearCounts } from './fxflows'
+>>>>>>> scm-v1/main
 import { sampleSales } from './sales'
 
 const real = parseCsv(csv)
@@ -38,6 +42,31 @@ describe('«منابع و مصارف ارزی»', () => {
     expect(fxYearCounts(rows, ds, DEFAULT_RANGE).reduce((a, y) => a + y.n, 0)).toBe(t.length)
     expect(fxCsv(t).split('\n')).toHaveLength(t.length + 1)
   })
+<<<<<<< HEAD
+=======
+  it('builds 4-item FX use trends honoring global unit and keeping missing USD months null', () => {
+    const usd = fxUseTrendRows(rows, ds, DEFAULT_RANGE, 'amount', 'usd')
+    const mr = fxUseTrendRows(rows, ds, DEFAULT_RANGE, 'amount', 'mr')
+    const m1404_02_usd = usd.find((x) => x.month === '1404/02')!
+    const m1404_02_mr = mr.find((x) => x.month === '1404/02')!
+    expect(m1404_02_usd['raw-USD']).toBeNull()
+    expect(m1404_02_mr['raw-USD']).toBeGreaterThan(0)
+  })
+  it('computes monthly and yearly FX balance keeping full sources and uses with hatched gap extensions', () => {
+    const monthly = fxBalanceRows(rows, ds, DEFAULT_RANGE, 'mr')
+    const end = monthly.find((x) => x.month === '1405/06')!
+    expect(end.hatched).toBe(false)
+    expect(end.surplus).toBeCloseTo(Math.max(0, (end.sources ?? 0) - (end.uses ?? 0)), 6)
+    expect(end.deficit).toBeCloseTo(Math.max(0, (end.uses ?? 0) - (end.sources ?? 0)), 6)
+    const maxSide = Math.max(end.sources ?? 0, end.uses ?? 0)
+    expect((end.sources ?? 0) + (end.deficit ?? 0)).toBeCloseTo(maxSide, 6)
+    expect((end.uses ?? 0) + (end.surplus ?? 0)).toBeCloseTo(maxSide, 6)
+    expect(end.net).toBeCloseTo((end.sources ?? 0) - (end.uses ?? 0), 6)
+    const years = fxBalanceYears(monthly)
+    expect(years.length).toBeGreaterThan(1)
+    expect(years.every((y) => !y.hatched && y.net != null)).toBe(true)
+  })
+>>>>>>> scm-v1/main
 })
 
 describe('the rate KPI and the rate chart agree', () => {

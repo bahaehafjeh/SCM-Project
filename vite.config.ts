@@ -6,5 +6,9 @@ export default defineConfig({
   plugins: [react()],
   // shadcn convention: "@/components/ui/*", "@/lib/utils"
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+<<<<<<< HEAD
   server: { port: 5173 },
+=======
+  server: { host: '0.0.0.0', port: 3000, allowedHosts: true },
+>>>>>>> scm-v1/main
 })

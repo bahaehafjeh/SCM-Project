@@ -33,7 +33,11 @@ export function TrendCard({ ctx }: { ctx: CardCtx }) {
   const showNav = all.length > 12
   const [win, setWin] = useState<[number, number] | null>(null)
   useEffect(() => setWin(null), [ctx.range.from, ctx.range.to])
+<<<<<<< HEAD
   const view: [number, number] = showNav && win && win[1] < all.length ? win : showNav && all.length > 36 ? [all.length - 36, all.length - 1] : [0, Math.max(0, all.length - 1)]
+=======
+  const view: [number, number] = showNav && win && win[1] < all.length ? win : showNav ? [all.length - 12, all.length - 1] : [0, Math.max(0, all.length - 1)]
+>>>>>>> scm-v1/main
   const rows = showNav ? all.slice(view[0], view[1] + 1) : all
   // The mouse wheel over the chart zooms the same window
   const zoomEl = useRef<HTMLDivElement>(null)
@@ -44,6 +48,10 @@ export function TrendCard({ ctx }: { ctx: CardCtx }) {
     return v.length ? (mode === 'rate' ? v.reduce((t, x) => t + x, 0) / v.length : v.reduce((t, x) => t + x, 0)) : null
   })
   const axis = trendAxis(mode, ctx.unit, rows, ids)
+<<<<<<< HEAD
+=======
+
+>>>>>>> scm-v1/main
   const unit = mode === 'amount' ? UNIT_LABEL[ctx.unit] : mode === 'qty' ? 'تن' : 'میلیون ریال بر تن'
   const dec = mode === 'rate' ? 1 : mode === 'qty' ? 0 : 1
   const guide =
@@ -84,7 +92,18 @@ export function TrendCard({ ctx }: { ctx: CardCtx }) {
   const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : p.length >= MAX_TREND ? p : [...p, id]))
 
   return (
+<<<<<<< HEAD
     <Card ctx={ctx} state={stateOf(ctx, has)} title="روند خرید مواد اولیه" subtitle="برترین مواد بر اساس مبلغ خرید در بازه؛ حداکثر ۸ قلم" guide={guide} actions={<Seg label="شاخص روند" value={mode} options={MODES} onChange={setMode} />}>
+=======
+    <Card
+      ctx={ctx}
+      state={stateOf(ctx, has)}
+      title="روند خرید مواد اولیه"
+      subtitle="برترین مواد بر اساس مبلغ خرید در بازه؛ حداکثر ۸ قلم"
+      guide={guide}
+      actions={<Seg label="شاخص روند" value={mode} options={MODES} onChange={setMode} />}
+    >
+>>>>>>> scm-v1/main
       <div ref={box} className="ind-chips" role="group" aria-label="مواد">
         {visible.map((s) => {
           const on = picked.includes(s.id)
@@ -127,9 +146,26 @@ export function TrendCard({ ctx }: { ctx: CardCtx }) {
             <XAxis {...MONTH_AXIS} />
             <YAxis domain={[0, axis.max]} ticks={axis.ticks} padding={{ bottom: 12 }} allowDataOverflow tickFormatter={(v: number) => fa(v, 0)} tickLine={false} axisLine={{ stroke: 'var(--color-border)' }} width={60} />
             <ChartTooltip
+<<<<<<< HEAD
               content={({ active, label, payload }) => (
                 <Tip active={active} label={tipLabel(label)} items={(payload ?? []).filter((p) => p.value != null).map((p) => ({ key: String(p.dataKey), name: SERIES.find((s) => s.id === p.dataKey)?.label, color: SERIES.find((s) => s.id === p.dataKey)!.color, value: `${fa(Number(p.value), dec)} ${unit}` }))} />
               )}
+=======
+              content={({ active, label, payload }) => {
+                const items = (payload ?? [])
+                  .filter((p) => p.value != null)
+                  .map((p) => {
+                    const id = String(p.dataKey)
+                    return {
+                      key: id,
+                      name: SERIES.find((s) => s.id === id)?.label,
+                      color: SERIES.find((s) => s.id === id)!.color,
+                      value: `${fa(Number(p.value), dec)} ${unit}`,
+                    }
+                  })
+                return <Tip active={active} label={tipLabel(label)} items={items} />
+              }}
+>>>>>>> scm-v1/main
             />
             {shown.map((s) => (
               <Line
@@ -141,9 +177,15 @@ export function TrendCard({ ctx }: { ctx: CardCtx }) {
                 strokeLinejoin="round"
                 isAnimationActive={false}
                 activeDot={{ r: 4, fill: s.color, stroke: 'var(--color-card)' }}
+<<<<<<< HEAD
                 dot={(p: { cx?: number; cy?: number; value?: number | null; index?: number }) => {
                   if (p.value == null || p.cx == null || p.cy == null) return <g key={`${s.id}-${p.index}`} />
                     return <circle key={`${s.id}-${p.index}`} cx={p.cx} cy={p.cy} r={3} fill="var(--color-card)" stroke={s.color} strokeWidth={1.5} />
+=======
+                dot={rows.length > 18 ? false : (p: { cx?: number; cy?: number; value?: number | null; index?: number }) => {
+                  if (p.value == null || p.cx == null || p.cy == null) return <g key={`${s.id}-${p.index}`} />
+                  return <circle key={`${s.id}-${p.index}`} cx={p.cx} cy={p.cy} r={3} fill="var(--color-card)" stroke={s.color} strokeWidth={1.5} />
+>>>>>>> scm-v1/main
                 }}
               />
             ))}

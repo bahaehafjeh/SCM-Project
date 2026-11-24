@@ -100,8 +100,25 @@ export function OverflowMark({ cx, top, color, text }: { cx: number; top: number
   )
 }
 
+<<<<<<< HEAD
 /** Tooltip in the system's look (chart-tip): month, then one line per series */
 export function Tip({ active, label, items, foot }: { active?: boolean; label?: ReactNode; items: { key: string; name: ReactNode; color: string; value: ReactNode }[]; foot?: ReactNode }) {
+=======
+/** Tooltip in the system's look (chart-tip): month, items list, optional summary row, and optional action footer */
+export function Tip({
+  active,
+  label,
+  items,
+  summary,
+  foot,
+}: {
+  active?: boolean
+  label?: ReactNode
+  items: { key: string; name: ReactNode; color: string; value: ReactNode }[]
+  summary?: { label: ReactNode; value: ReactNode }
+  foot?: ReactNode
+}) {
+>>>>>>> scm-v1/main
   if (!active || !items.length) return null
   return (
     <div className="chart-tip" dir="rtl">
@@ -115,6 +132,15 @@ export function Tip({ active, label, items, foot }: { active?: boolean; label?: 
           </li>
         ))}
       </ul>
+<<<<<<< HEAD
+=======
+      {summary && (
+        <div className="chart-tip__summary">
+          <span className="chart-tip__summary-name">{summary.label}</span>
+          <span className="chart-tip__summary-value">{summary.value}</span>
+        </div>
+      )}
+>>>>>>> scm-v1/main
       {foot && <p className="chart-tip__foot">{foot}</p>}
     </div>
   )

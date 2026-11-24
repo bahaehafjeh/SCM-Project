@@ -190,12 +190,19 @@ export function trendRows(ds: Dataset, r: Range, mode: TrendMode, unit: Unit, id
     return row
   })
 }
+<<<<<<< HEAD
 /** Fixed design axes in thousand USD; nice ticks from the data in million rial */
 export function trendAxis(mode: TrendMode, unit: Unit, rows: ChartRow[], keys: string[]) {
   const top = Math.max(0, ...rows.flatMap((row) => keys.map((k) => Number(row[k] ?? 0))))
   // The spec's fixed scales, unless a point would rise above them
   const fixed = mode === 'qty' ? fixedTicks(50000, 12500) : mode === 'rate' ? fixedTicks(3400, 850) : unit === 'usd' ? fixedTicks(60000, 15000) : null
   return fixed && top <= fixed.max ? fixed : niceTicks(top)
+=======
+/** Tight nice ticks from the visible rows so lines don't get squashed at the bottom */
+export function trendAxis(_mode: TrendMode, _unit: Unit, rows: ChartRow[], keys: string[]) {
+  const top = Math.max(0, ...rows.flatMap((row) => keys.map((k) => Number(row[k] ?? 0))))
+  return niceTicks(top, 7)
+>>>>>>> scm-v1/main
 }
 
 // ── «ترکیب خرید مواد اولیه» (§9) ──
@@ -338,10 +345,17 @@ export function splitYears(ds: Dataset, r: Range, mode: SplitMode, unit: Unit): 
   })
 }
 export function splitAxis(mode: SplitMode, unit: Unit, rows: SplitRow[], byYear = false) {
+<<<<<<< HEAD
   if (byYear && mode === 'amount') return niceTicks(Math.max(0, ...rows.flatMap((x) => [Math.abs(x.imp ?? 0), Math.abs(x.dom ?? 0)])))
   if (mode === 'share') return fixedTicks(100, 50)
   if (unit === 'usd') return fixedTicks(60000, 20000)
   return niceTicks(Math.max(0, ...rows.flatMap((x) => [Math.abs(x.imp ?? 0), Math.abs(x.dom ?? 0)])))
+=======
+  if (byYear && mode === 'amount') return niceTicks(Math.max(0, ...rows.flatMap((x) => [Math.abs(x.imp ?? 0), Math.abs(x.dom ?? 0)])), 5)
+  if (mode === 'share') return fixedTicks(100, 25)
+  if (unit === 'usd') return fixedTicks(60000, 15000)
+  return niceTicks(Math.max(0, ...rows.flatMap((x) => [Math.abs(x.imp ?? 0), Math.abs(x.dom ?? 0)])), 5)
+>>>>>>> scm-v1/main
 }
 
 // ── «تجمعی سال مالی» (§5, §11): a fixed sample until the API exists ──

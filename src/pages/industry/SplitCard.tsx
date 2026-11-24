@@ -5,14 +5,22 @@ import { ChartContainer, ChartTooltip } from '../../components/ui/chart'
 import { BY_YEAR_AFTER, UNIT_LABEL, dataMonthsIn, splitAxis, splitRows, splitYears } from '../../lib/industry/derive'
 import type { SplitMode, SplitRow, SplitYear } from '../../lib/industry/derive'
 import { fa } from '../../lib/industry/format'
+<<<<<<< HEAD
 import { MONTH_NAMES, faDigits, monthOf, yearOf } from '../../lib/industry/months'
+=======
+import { faDigits, monthOf, yearOf } from '../../lib/industry/months'
+>>>>>>> scm-v1/main
 import { MONTH_AXIS, Card, Seg, Tip, barPath, stateOf, tipLabel } from './parts'
 import type { CardCtx } from './parts'
 
 const H = 300
 const IMP = 'var(--raw-orange-500)'
 const DOM = 'var(--raw-blue-600)'
+<<<<<<< HEAD
 const POP_W = 340
+=======
+const POP_W = 390
+>>>>>>> scm-v1/main
 
 /** Rounded only at the outer end: the top above the axis, the bottom below it */
 const outerEnd =
@@ -59,7 +67,12 @@ export function SplitCard({ ctx }: { ctx: CardCtx }) {
     return () => (document.removeEventListener('keydown', key), document.removeEventListener('pointerdown', down))
   }, [open])
   const width = wrap.current?.clientWidth ?? 600
+<<<<<<< HEAD
   const popLeft = open ? Math.max(0, Math.min(width - POP_W, open.x - POP_W / 2)) : 0
+=======
+  const popW = Math.min(POP_W, width)
+  const popLeft = open ? Math.max(0, Math.min(width - popW, open.x - popW / 2)) : 0
+>>>>>>> scm-v1/main
   const yearMonths = open ? monthly.filter((r) => yearOf(r.month) === open.year) : []
   const yMax = Math.max(1e-9, ...yearMonths.flatMap((r) => [Math.abs(r.imp ?? 0), Math.abs(r.dom ?? 0)]))
 
@@ -143,6 +156,10 @@ export function SplitCard({ ctx }: { ctx: CardCtx }) {
                     active={active && !open}
                     label={byYear && row ? yearTip(row as SplitYear) : tipLabel(label)}
                     items={items(row)}
+<<<<<<< HEAD
+=======
+                    summary={mode === 'amount' && row && !row.hatched ? { label: 'جمع کل', value: fmt((row.imp ?? 0) + Math.abs(row.dom ?? 0)) } : undefined}
+>>>>>>> scm-v1/main
                     foot={
                       byYear ? (
                         <>
@@ -160,6 +177,7 @@ export function SplitCard({ ctx }: { ctx: CardCtx }) {
         </ChartContainer>
 
         {open && (
+<<<<<<< HEAD
           <div className="ind-ypop" role="dialog" aria-label={`ماه‌های سال ${faDigits(String(open.year))}`} style={{ left: popLeft, width: POP_W }}>
             <div className="ind-ypop__head">
               <b>ماه‌های سال {faDigits(String(open.year))}</b>
@@ -170,6 +188,19 @@ export function SplitCard({ ctx }: { ctx: CardCtx }) {
             <ChartContainer config={{ imp: { label: 'وارداتی', color: IMP }, dom: { label: 'داخلی', color: DOM } }} className="ind-ypop__chart" style={{ height: 120 }}>
               <BarChart data={yearMonths} margin={{ top: 4, right: 2, bottom: 0, left: 2 }} stackOffset="sign" barCategoryGap="22%">
                 <XAxis dataKey="month" interval={0} tickFormatter={(m: string) => MONTH_NAMES[monthOf(m) - 1].slice(0, 3)} tickLine={false} axisLine={false} tickMargin={4} fontSize={10} />
+=======
+          <div className="ind-ypop" role="dialog" aria-label={`ماه‌های سال ${faDigits(String(open.year))}`} style={{ left: popLeft, width: popW }}>
+            <div className="ind-ypop__head">
+              <b>ماه‌های سال {faDigits(String(open.year))}</b>
+              <button type="button" className="ind-ypop__close" aria-label="بستن" onClick={() => setOpen(null)}>
+                <X size={15} aria-hidden="true" />
+              </button>
+            </div>
+            <ChartContainer config={{ imp: { label: 'وارداتی', color: IMP }, dom: { label: 'داخلی', color: DOM } }} className="ind-ypop__chart" style={{ height: 148 }}>
+              <BarChart data={yearMonths} margin={{ top: 8, right: 6, bottom: 2, left: 2 }} stackOffset="sign" barCategoryGap="24%">
+                <CartesianGrid vertical={false} strokeDasharray="2 4" />
+                <XAxis dataKey="month" interval={0} tickFormatter={(m: string) => faDigits(String(monthOf(m)).padStart(2, '0'))} tickLine={false} axisLine={false} tickMargin={6} fontSize={11} />
+>>>>>>> scm-v1/main
                 <YAxis hide domain={[-yMax, yMax]} />
                 <ReferenceLine y={0} stroke="var(--color-border)" />
                 <ChartTooltip
@@ -177,11 +208,27 @@ export function SplitCard({ ctx }: { ctx: CardCtx }) {
                   position={{ y: 0 }}
                   allowEscapeViewBox={{ x: true, y: true }}
                   wrapperStyle={{ zIndex: 40, pointerEvents: 'none' }}
+<<<<<<< HEAD
                   content={({ active, label, payload }) => (
                     <div className="ind-tip-above">
                       <Tip active={active} label={tipLabel(label)} items={items(payload?.[0]?.payload as SplitRow | undefined)} />
                     </div>
                   )}
+=======
+                  content={({ active, label, payload }) => {
+                    const row = payload?.[0]?.payload as SplitRow | undefined
+                    return (
+                      <div className="ind-tip-above">
+                        <Tip
+                          active={active}
+                          label={tipLabel(label)}
+                          items={items(row)}
+                          summary={mode === 'amount' && row && !row.hatched ? { label: 'جمع کل', value: fmt((row.imp ?? 0) + Math.abs(row.dom ?? 0)) } : undefined}
+                        />
+                      </div>
+                    )
+                  }}
+>>>>>>> scm-v1/main
                 />
                 <Bar dataKey="imp" stackId="s" shape={outerEnd(true, 3)} isAnimationActive={false} />
                 <Bar dataKey="dom" stackId="s" shape={outerEnd(false, 3)} isAnimationActive={false} />
