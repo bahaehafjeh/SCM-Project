@@ -177,3 +177,125 @@ export function fxKpis(rows: FxRecord[], fx: Map<string, FxRow>, ds: Dataset, ra
     ],
   }
 }
+<<<<<<< HEAD
+=======
+
+// ── «روند اقلام ارزی»: ۴ قلم مصارف ──
+export type FxTrendMode = 'amount' | 'fx' | 'rate'
+export type FxUseItemId = 'raw-USD' | 'raw-CNY' | 'other-AED' | 'raw-EUR'
+export interface FxUseItemDef {
+  id: FxUseItemId
+  item: string
+  currency: Currency
+  label: string
+  shortLabel: string
+  color: string
+}
+export const FX_USE_ITEMS: FxUseItemDef[] = [
+  { id: 'raw-USD', item: 'خرید مواد اولیه', currency: 'USD', label: 'مصارف · خرید مواد اولیه · USD', shortLabel: 'خرید مواد اولیه (USD)', color: 'var(--raw-blue-600)' },
+  { id: 'raw-CNY', item: 'خرید مواد اولیه', currency: 'CNY', label: 'مصارف · خرید مواد اولیه · CNY', shortLabel: 'خرید مواد اولیه (CNY)', color: 'var(--raw-orange-500)' },
+  { id: 'other-AED', item: 'سایر', currency: 'AED', label: 'مصارف · سایر · AED', shortLabel: 'سایر مصارف (AED)', color: 'var(--raw-emerald-600)' },
+  { id: 'raw-EUR', item: 'خرید مواد اولیه', currency: 'EUR', label: 'مصارف · خرید مواد اولیه · EUR', shortLabel: 'خرید مواد اولیه (EUR)', color: 'var(--raw-violet-500)' },
+]
+export const DEFAULT_FX_USE_IDS: FxUseItemId[] = ['raw-USD', 'raw-CNY']
+
+export type FxTrendRow = { month: string } & Record<FxUseItemId, number | null>
+
+/** Monthly series for the 4 FX use items under amount (global unit), raw currency amount, or reported rate */
+export function fxUseTrendRows(rows: FxRecord[], ds: Dataset, range: Range, mode: FxTrendMode, unit: 'usd' | 'mr'): FxTrendRow[] {
+  const byKey = new Map<string, FxRecord>()
+  for (const r of rows) {
+    if (r.section === 'مصارف') byKey.set(`${r.month}|${r.item}|${r.currency}`, r)
+  }
+  return dataMonthsIn(ds, range).map((month) => {
+    const out = { month } as FxTrendRow
+    for (const def of FX_USE_ITEMS) {
+      const rec = byKey.get(`${month}|${def.item}|${def.currency}`)
+      if (!rec) {
+        out[def.id] = null
+        continue
+      }
+      if (mode === 'amount') {
+        out[def.id] = unit === 'usd' ? rec.usdMarket : rec.amountMr / 1e3
+      } else if (mode === 'fx') {
+        out[def.id] = rec.amountFx
+      } else {
+        out[def.id] = rec.rate
+      }
+    }
+    return out
+  })
+}
+
+// ── «جمع منابع و مصارف ارزی» ──
+export interface FxBalanceRow {
+  month: string
+  sources: number | null
+  uses: number | null
+  /** Green-hatched positive gap stacked above uses when sources > uses */
+  surplus: number | null
+  /** Red-hatched negative gap stacked above sources when uses > sources */
+  deficit: number | null
+  /** sources - uses (positive = surplus, negative = deficit) */
+  net: number | null
+  hatched: boolean
+}
+export interface FxBalanceYear extends FxBalanceRow {
+  year: number
+  months: number
+  missing: number
+}
+
+const makeBalance = (month: string, sources: number, uses: number): FxBalanceRow => ({
+  month,
+  sources,
+  uses,
+  surplus: Math.max(0, sources - uses),
+  deficit: Math.max(0, uses - sources),
+  net: sources - uses,
+  hatched: false,
+})
+
+/** Monthly total FX sources vs uses in billion rials (`mr`) or thousand market USD (`usd`) */
+export function fxBalanceRows(rows: FxRecord[], ds: Dataset, range: Range, unit: 'usd' | 'mr'): FxBalanceRow[] {
+  const byMonth = new Map<string, FxRecord[]>()
+  for (const r of rows) byMonth.set(r.month, [...(byMonth.get(r.month) ?? []), r])
+  return dataMonthsIn(ds, range).map((month) => {
+    const list = byMonth.get(month) ?? []
+    if (!list.length) {
+      return { month, sources: null, uses: null, surplus: null, deficit: null, net: null, hatched: true }
+    }
+    if (unit === 'usd') {
+      const hasMissing = list.some((r) => r.usdMarket == null)
+      if (hasMissing) {
+        return { month, sources: null, uses: null, surplus: null, deficit: null, net: null, hatched: true }
+      }
+      const sources = list.filter((r) => r.section === 'منابع').reduce((a, r) => a + (r.usdMarket ?? 0), 0)
+      const uses = list.filter((r) => r.section === 'مصارف').reduce((a, r) => a + (r.usdMarket ?? 0), 0)
+      return makeBalance(month, sources, uses)
+    }
+    const sources = list.filter((r) => r.section === 'منابع').reduce((a, r) => a + r.amountMr, 0) / 1e3
+    const uses = list.filter((r) => r.section === 'مصارف').reduce((a, r) => a + r.amountMr, 0) / 1e3
+    return makeBalance(month, sources, uses)
+  })
+}
+
+/** Annual aggregation of monthly FX balance rows (for ranges longer than 24 months) */
+export function fxBalanceYears(monthly: FxBalanceRow[]): FxBalanceYear[] {
+  return [...new Set(monthly.map((x) => yearOf(x.month)))].map((year) => {
+    const rs = monthly.filter((x) => yearOf(x.month) === year)
+    const ok = rs.filter((x) => !x.hatched && x.sources != null && x.uses != null)
+    const base = { month: String(year), year, months: rs.length, missing: rs.length - ok.length }
+    if (!ok.length) {
+      return { ...base, sources: null, uses: null, surplus: null, deficit: null, net: null, hatched: true }
+    }
+    const sources = ok.reduce((a, x) => a + (x.sources ?? 0), 0)
+    const uses = ok.reduce((a, x) => a + (x.uses ?? 0), 0)
+    return {
+      ...base,
+      ...makeBalance(String(year), sources, uses),
+    }
+  })
+}
+
+>>>>>>> scm-v1/main

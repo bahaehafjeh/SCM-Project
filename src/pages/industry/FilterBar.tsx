@@ -7,10 +7,18 @@ import { AXIS, AXIS_END, AXIS_START, DATA_START, FISCAL_YEAR_END, MONTH_NAMES, f
 import { SAMPLE_BEFORE, SAMPLE_HISTORY } from '../../lib/industry/sample'
 import { Seg } from './parts'
 
+<<<<<<< HEAD
 /** Listed symbols; only «غبشهر» has data loaded so far, the others open with every card empty */
 export const SYMBOLS = ['بهپاک — صنعتی بهپاک', 'غبشهر — صنعتی بهشهر', 'غگل — گلوکوزان'] as const
 export type Symbol = (typeof SYMBOLS)[number]
 export const DATA_SYMBOL: Symbol = 'غبشهر — صنعتی بهشهر'
+=======
+import { DATA_SYMBOL, SYMBOLS } from '../../lib/industry/symbols'
+import type { Symbol } from '../../lib/industry/symbols'
+
+export { DATA_SYMBOL, SYMBOLS }
+export type { Symbol }
+>>>>>>> scm-v1/main
 /** Codal has no stable link per report in the data; the link opens Codal itself */
 export const CODAL_URL = 'https://www.codal.ir/'
 

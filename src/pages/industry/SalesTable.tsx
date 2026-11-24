@@ -53,6 +53,7 @@ export function SalesTable({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | nul
   }
   /** `w`: the column's share of the table */
   const columns: { label: string; sort?: SortKey; num?: boolean; w: string; cell: (r: SalesTableRow) => ReactNode }[] = [
+<<<<<<< HEAD
     { label: 'محصول', sort: 'product', w: '22%', cell: (r) => <span className="ind-item__name">{r.product}</span> },
     { label: 'نوع', w: '10%', cell: (r) => <span className="ind-muted">{r.type}</span> },
     { label: 'واحد', w: '6%', cell: (r) => <span className="ind-muted">{r.unit}</span> },
@@ -72,6 +73,17 @@ export function SalesTable({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | nul
         </span>
       ),
     },
+=======
+    { label: 'محصول', sort: 'product', w: '24%', cell: (r) => <span className="ind-item__name">{r.product}</span> },
+    { label: 'نوع', w: '11%', cell: (r) => <span className="ind-muted">{r.type}</span> },
+    { label: 'واحد', w: '6%', cell: (r) => <span className="ind-muted">{r.unit}</span> },
+    { label: 'این ماه', sort: 'cur', num: true, w: '10%', cell: (r) => <Num v={r.cur} d={r.cur ? d : 0} /> },
+    { label: 'ماه قبل', num: true, w: '10%', cell: (r) => <Num v={r.prev} d={r.prev ? d : 0} /> },
+    { label: 'رشد ماهانه', num: true, w: '10%', cell: (r) => <TableChange v={r.mom} /> },
+    { label: 'همان ماه سال قبل', num: true, w: '12%', cell: (r) => <Num v={r.yearAgo} d={r.yearAgo ? d : 0} /> },
+    { label: 'رشد سالانه', num: true, w: '9%', cell: (r) => <TableChange v={r.yoy} /> },
+    { label: 'سهم', sort: 'share', num: true, w: '8%', cell: (r) => (r.share == null ? <span className="ind-muted">—</span> : <span className="n">{fa(r.share, 1)}٪</span>) },
+>>>>>>> scm-v1/main
   ]
 
   return (

@@ -43,6 +43,7 @@
   background: var(--color-muted);
 }
 
+<<<<<<< HEAD
 /* ── Filter card (§8): 92 high; «فیلترهای بیشتر» sticks out of its bottom edge ── */
 .rfilters-wrap {
   position: relative;
@@ -57,10 +58,20 @@
   z-index: 2;
   display: grid;
   gap: var(--s10);
+=======
+/* ── Filter card (§8): 4 dropdown fields + button-style period selector ── */
+.rfilters {
+  position: relative;
+  z-index: 30;
+  display: grid;
+  gap: var(--s10);
+  margin-block-end: var(--space-16);
+>>>>>>> scm-v1/main
   padding: var(--space-12) var(--space-16);
   border-radius: var(--rounded-2xl);
   background: var(--rcard);
 }
+<<<<<<< HEAD
 .rfilters.is-open {
   box-shadow: var(--shadow-lg);
 }
@@ -70,6 +81,8 @@
   z-index: 1;
   background: rgb(0 0 0 / 0.12);
 }
+=======
+>>>>>>> scm-v1/main
 .rfilters__head {
   display: flex;
   align-items: center;
@@ -97,6 +110,7 @@
 }
 .rfilters__row {
   display: grid;
+<<<<<<< HEAD
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--s10);
 }
@@ -133,14 +147,97 @@
   background: var(--brand-shades-600);
   color: var(--color-primary-foreground);
   font-size: 11px;
+=======
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s10);
+}
+.rperiod-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-10, 10px) var(--space-12);
+  padding-block-start: var(--s10);
+  border-block-start: 1px solid var(--color-border);
+}
+.rperiod-bar__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  color: var(--color-muted-foreground);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.rperiod-seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 3px;
+  border-radius: var(--s10);
+  background: var(--color-muted);
+}
+.rperiod-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 var(--space-12);
+  border: 0;
+  border-radius: var(--rounded-lg);
+  background: transparent;
+  color: var(--color-muted-foreground);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
+}
+.rperiod-btn:hover:not([aria-pressed='true']) {
+  color: var(--color-foreground);
+  background: color-mix(in srgb, var(--rcard) 55%, transparent);
+}
+.rperiod-btn[aria-pressed='true'] {
+  background: var(--rcard);
+  color: var(--brand-shades-700);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.08);
+}
+.rperiod-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  font-size: 12px;
+}
+.rperiod-custom select {
+  height: 32px;
+  padding-inline: var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-lg);
+  background: var(--rcard);
+  color: var(--color-foreground);
+  font: inherit;
+  font-size: 12px;
+}
+.rperiod-custom__sep {
+  color: var(--color-muted-foreground);
+>>>>>>> scm-v1/main
 }
 .rmore__foot {
   display: flex;
   align-items: center;
+<<<<<<< HEAD
+=======
+  justify-content: flex-end;
+>>>>>>> scm-v1/main
   gap: var(--space-8);
   padding-block-start: var(--s10);
   border-block-start: 1px solid var(--color-border);
 }
+<<<<<<< HEAD
 .rmore__count {
   margin-inline-end: auto;
   color: var(--color-muted-foreground);
@@ -148,6 +245,8 @@
 .rmore__count strong {
   color: var(--color-foreground);
 }
+=======
+>>>>>>> scm-v1/main
 /* A field: label, value, chevron; active blue with ✕ */
 .rfield {
   position: relative;
@@ -1578,9 +1677,13 @@
 }
 @media (max-width: 1100px) {
   .rfilters__row {
+<<<<<<< HEAD
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .rfilters-wrap {
     height: 144px;
+=======
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+>>>>>>> scm-v1/main
   }
 }

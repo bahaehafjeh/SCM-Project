@@ -2752,7 +2752,7 @@ button.ov-link {
   background: color-mix(in srgb, var(--raw-orange-500) 10%, var(--color-card));
 }
 .alert__meta > .alert__sev--medium {
-  background: color-mix(in srgb, var(--raw-yellow-500) 14%, var(--color-card));
+  background: color-mix(in srgb, var(--raw-yellow-600) 12%, var(--color-card));
 }
 
 /* ───────── «اثر روی زنجیره» on all seven stages (2026-11-15) ─────────

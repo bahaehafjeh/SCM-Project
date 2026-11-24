@@ -40,19 +40,34 @@ export function SalesRateCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | 
   const [mode, setMode] = useState<ProductMode>('rate')
   const [view, setView] = useState<View>('chart')
   const [pick, setPick] = useState<Pick>('top3')
+<<<<<<< HEAD
+=======
+  const [hoverKey, setHoverKey] = useState<string | null>(null)
+>>>>>>> scm-v1/main
   const months = sales && ctx.ds ? salesMonthsIn(sales, ctx.ds, ctx.range) : []
   const has = months.length > 0
   const preset = typeof pick === 'string' ? PRESETS.find((p) => p.id === pick)! : null
   const ids: string[] = sales ? (preset ? topProducts(sales, months, preset.by, preset.n) : (pick as string[])) : []
   // A product chip turns the quick pick into a hand-made list
+<<<<<<< HEAD
   const toggle = (key: string) => setPick(ids.includes(key) ? ids.filter((k) => k !== key) : ids.length >= MAX_PRODUCTS ? ids : [...ids, key])
+=======
+  const toggle = (key: string) => {
+    setHoverKey(null)
+    setPick(ids.includes(key) ? ids.filter((k) => k !== key) : ids.length >= MAX_PRODUCTS ? ids : [...ids, key])
+  }
+>>>>>>> scm-v1/main
   const all = sales ? productRows(sales, months, mode, ctx.unit, ids) : []
 
   // Past a year a navigator under the chart moves and resizes the window; the wheel zooms it
   const showNav = all.length > 12
   const [win, setWin] = useState<[number, number] | null>(null)
   useEffect(() => setWin(null), [ctx.range.from, ctx.range.to])
+<<<<<<< HEAD
   const span: [number, number] = showNav && win && win[1] < all.length ? win : showNav && all.length > 36 ? [all.length - 36, all.length - 1] : [0, Math.max(0, all.length - 1)]
+=======
+  const span: [number, number] = showNav && win && win[1] < all.length ? win : showNav ? [all.length - 12, all.length - 1] : [0, Math.max(0, all.length - 1)]
+>>>>>>> scm-v1/main
   const rows = showNav ? all.slice(span[0], span[1] + 1) : all
   const zoomEl = useRef<HTMLDivElement>(null)
   useWheelZoom(zoomEl, view === 'chart' && showNav ? all.length : 0, span, setWin, { left: M.left + 60, right: M.right })
@@ -60,7 +75,12 @@ export function SalesRateCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | 
     const v = ids.map((k) => r[k] as number | null).filter((x): x is number => x != null)
     return v.length ? (mode === 'rate' ? v.reduce((t, x) => t + x, 0) / v.length : v.reduce((t, x) => t + x, 0)) : null
   })
+<<<<<<< HEAD
   const axis = niceTicks(Math.max(0, ...rows.flatMap((r) => ids.map((k) => Number(r[k] ?? 0)))))
+=======
+  const rawMax = Math.max(0, ...rows.flatMap((r) => ids.map((k) => Number(r[k] ?? 0))))
+  const axis = niceTicks(rawMax, 7)
+>>>>>>> scm-v1/main
   const unit = PRODUCT_UNIT[mode](ctx.unit)
   const end = months[months.length - 1]
   const summary = sales && end ? productSummary(sales, end, ids, ctx.unit) : []
@@ -128,7 +148,30 @@ export function SalesRateCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | 
         {visible.map((p) => {
           const on = ids.includes(p.key)
           return (
+<<<<<<< HEAD
             <button key={p.key} data-chip="" type="button" className={`ind-schip ${on ? 'is-on' : ''}`} style={on ? { borderColor: `color-mix(in srgb, ${p.color} 40%, transparent)` } : undefined} aria-pressed={on} disabled={!on && ids.length >= MAX_PRODUCTS} onClick={() => toggle(p.key)}>
+=======
+            <button
+              key={p.key}
+              data-chip=""
+              type="button"
+              className={`ind-schip ${on ? 'is-on' : ''} ${hoverKey === p.key ? 'is-hot' : ''}`}
+              style={
+                on
+                  ? {
+                      borderColor: `color-mix(in srgb, ${p.color} 40%, transparent)`,
+                    }
+                  : undefined
+              }
+              aria-pressed={on}
+              disabled={!on && ids.length >= MAX_PRODUCTS}
+              onClick={() => toggle(p.key)}
+              onMouseEnter={() => on && setHoverKey(p.key)}
+              onMouseLeave={() => setHoverKey(null)}
+              onFocus={() => on && setHoverKey(p.key)}
+              onBlur={() => setHoverKey(null)}
+            >
+>>>>>>> scm-v1/main
               <span className="ind-schip__dot" style={{ background: p.color }} aria-hidden="true" />
               {p.label}
             </button>
@@ -147,6 +190,7 @@ export function SalesRateCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | 
       </div>
 
       <div className="ind-viewbar">
+<<<<<<< HEAD
         <div className="seg seg--compact ind-iconseg" role="group" aria-label="شیوه‌ی نمایش">
           {VIEWS.map((v) => (
             <button key={v.value} type="button" aria-pressed={view === v.value} aria-label={v.label} title={v.label} onClick={() => setView(v.value)}>
@@ -155,6 +199,18 @@ export function SalesRateCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | 
           ))}
         </div>
         <span className="ind-viewbar__unit">{view === 'chart' ? unit : end ? `${monthName(end)}؛ تغییر نسبت به ماه قبل` : null}</span>
+=======
+        <span className="ind-viewbar__unit">{view === 'chart' ? unit : end ? `${monthName(end)}؛ تغییر نسبت به ماه قبل` : null}</span>
+        <div className="ind-viewbar__tools">
+          <div className="seg seg--compact ind-iconseg" role="group" aria-label="شیوه‌ی نمایش">
+            {VIEWS.map((v) => (
+              <button key={v.value} type="button" aria-pressed={view === v.value} aria-label={v.label} title={v.label} onClick={() => setView(v.value)}>
+                <v.icon size={16} aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+        </div>
+>>>>>>> scm-v1/main
       </div>
 
       {ids.length === 0 ? (
@@ -168,6 +224,7 @@ export function SalesRateCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | 
                 <XAxis {...MONTH_AXIS} />
                 <YAxis domain={[0, axis.max]} ticks={axis.ticks} padding={{ bottom: 12 }} tickFormatter={(v: number) => fa(v, 0)} tickLine={false} axisLine={{ stroke: 'var(--color-border)' }} width={60} />
                 <ChartTooltip
+<<<<<<< HEAD
                   content={({ active, label, payload }) => <Tip active={active} label={tipLabel(label)} items={(payload ?? []).filter((p) => p.value != null).map((p) => ({ key: String(p.dataKey), name: labelOf(String(p.dataKey)), color: colorOf(String(p.dataKey)), value: `${fa(Number(p.value), dec)} ${unit}` }))} />}
                 />
                 {ids.map((k) => (
@@ -184,6 +241,38 @@ export function SalesRateCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet | 
                     dot={(p: { cx?: number; cy?: number; value?: number | null; index?: number }) => (p.value == null || p.cx == null || p.cy == null ? <g key={`${k}-${p.index}`} /> : <circle key={`${k}-${p.index}`} cx={p.cx} cy={p.cy} r={3} fill="var(--color-card)" stroke={colorOf(k)} strokeWidth={1.5} />)}
                   />
                 ))}
+=======
+                  cursor={{ stroke: 'var(--brand-shades-300)', strokeWidth: 1, strokeDasharray: '3 3' }}
+                  content={({ active, label, payload }) => {
+                    const items = (payload ?? [])
+                      .filter((p) => p.value != null)
+                      .map((p) => {
+                        const k = String(p.dataKey)
+                        return { key: k, name: labelOf(k), color: colorOf(k), value: `${fa(Number(p.value), dec)} ${unit}` }
+                      })
+                    return <Tip active={active} label={tipLabel(label)} items={items} />
+                  }}
+                />
+                {ids.map((k) => {
+                  const dim = hoverKey != null && hoverKey !== k
+                  const hot = hoverKey === k
+                  return (
+                    <Line
+                      key={k}
+                      dataKey={k}
+                      type="linear"
+                      stroke={colorOf(k)}
+                      strokeWidth={hot ? 2.8 : 1.8}
+                      strokeOpacity={dim ? 0.18 : 1}
+                      strokeLinejoin="round"
+                      connectNulls={false}
+                      isAnimationActive={false}
+                      activeDot={{ r: hot ? 5 : 4, fill: colorOf(k), stroke: 'var(--color-card)' }}
+                      dot={rows.length > 18 ? false : (p: { cx?: number; cy?: number; value?: number | null; index?: number }) => (p.value == null || p.cx == null || p.cy == null ? <g key={`${k}-${p.index}`} /> : <circle key={`${k}-${p.index}`} cx={p.cx} cy={p.cy} r={3} fill="var(--color-card)" stroke={colorOf(k)} strokeOpacity={dim ? 0.2 : 1} strokeWidth={1.5} />)}
+                    />
+                  )
+                })}
+>>>>>>> scm-v1/main
               </LineChart>
             </ChartContainer>
           </div>

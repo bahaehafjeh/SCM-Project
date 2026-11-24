@@ -87,7 +87,11 @@ function MiniBars({ k, months, unit }: { k: SalesKpi; months: string[]; unit: st
           cursor={false}
           position={{ y: -84 }}
           allowEscapeViewBox={{ x: true, y: true }}
+<<<<<<< HEAD
           wrapperStyle={{ zIndex: 15 }}
+=======
+          wrapperStyle={{ zIndex: 35 }}
+>>>>>>> scm-v1/main
           content={({ active, payload }) => (
             <Tip active={active} label={payload?.[0] ? String(payload[0].payload.tip) : null} items={payload?.[0] && payload[0].value != null ? [{ key: 'v', name: m.label, color: diverging ? (Number(payload[0].value) < 0 ? DOWN : UP) : m.color, value: fmt(Number(payload[0].value)) }] : []} />
           )}
@@ -117,7 +121,11 @@ function FiscalMini({ f, unit }: { f: FiscalLines; unit: string }) {
           cursor={false}
           position={{ y: -96 }}
           allowEscapeViewBox={{ x: true, y: true }}
+<<<<<<< HEAD
           wrapperStyle={{ zIndex: 15 }}
+=======
+          wrapperStyle={{ zIndex: 35 }}
+>>>>>>> scm-v1/main
           content={({ active, payload }) => {
             const row = payload?.[0]?.payload as (typeof data)[number] | undefined
             if (!row) return null

@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
+<<<<<<< HEAD
 import { Check, ChevronDown, ChevronUp, Filter, Search, X } from 'lucide-react'
 import { CHOKEPOINTS, COUNTRY_FA, FORMS, GOODS, MODE_LABEL, MONTHS, ROUTES } from '../../data/routes'
 import type { Mode, Month } from '../../data/routes'
@@ -6,6 +7,14 @@ import { filterRoutes, routeValue } from '../../lib/routes/metrics'
 import { FORM_SLUG, GOOD_SLUG } from '../../lib/routes/url'
 import type { RoutesState } from '../../lib/routes/url'
 import { fa, money, persianMonth } from './format'
+=======
+import { Calendar, Check, ChevronDown, Filter, Search, X } from 'lucide-react'
+import { COUNTRY_FA, GOODS, MODE_LABEL, MONTHS, ROUTES } from '../../data/routes'
+import type { Mode, Month } from '../../data/routes'
+import { GOOD_SLUG } from '../../lib/routes/url'
+import type { RoutesState } from '../../lib/routes/url'
+import { fa, persianMonth } from './format'
+>>>>>>> scm-v1/main
 
 type Opt = { value: string; label: string }
 const norm = (s: string) => s.replace(/ي/g, 'ی').replace(/ك/g, 'ک').toLowerCase()
@@ -75,6 +84,7 @@ function Field({ label, opts, value, onChange, single = false, search = false }:
 const goodsOpts: Opt[] = GOODS.map((g) => ({ value: GOOD_SLUG[g], label: g }))
 const countries = (pick: (r: (typeof ROUTES)[number]) => string): Opt[] => [...new Set(ROUTES.map(pick))].map((c) => ({ value: c, label: COUNTRY_FA[c] ?? c })).sort((a, b) => a.label.localeCompare(b.label, 'fa'))
 const modeOpts: Opt[] = (Object.keys(MODE_LABEL) as Mode[]).map((m) => ({ value: m, label: MODE_LABEL[m] }))
+<<<<<<< HEAD
 const ports = (pick: (r: (typeof ROUTES)[number]) => { id: string; name: string }): Opt[] => [...new Map(ROUTES.map((r) => [pick(r).id, pick(r)])).values()].map((x) => ({ value: x.id, label: x.name }))
 const viaOpts: Opt[] = CHOKEPOINTS.map((c) => ({ value: c.id, label: c.name }))
 const quartOpts: Opt[] = [
@@ -88,11 +98,19 @@ const formOpts: Opt[] = FORMS.map((x) => ({ value: FORM_SLUG[x], label: x }))
 /** «بازهٔ زمانی»: 12 (default), 6 or 3 months, or a custom from–to */
 const LAST = MONTHS[MONTHS.length - 1]
 const PRESETS: Opt[] = [
+=======
+
+/** «بازهٔ زمانی»: 12 (default), 6 or 3 months, or a custom from–to */
+const LAST = MONTHS[MONTHS.length - 1]
+type PeriodPreset = '12' | '6' | '3' | 'custom'
+const PRESETS: { value: PeriodPreset; label: string }[] = [
+>>>>>>> scm-v1/main
   { value: '12', label: '۱۲ ماه اخیر' },
   { value: '6', label: '۶ ماه' },
   { value: '3', label: '۳ ماه' },
   { value: 'custom', label: 'دلخواه' },
 ]
+<<<<<<< HEAD
 const presetOf = (s: Pick<RoutesState, 'from' | 'to'>) => (s.to !== LAST ? 'custom' : s.from === MONTHS[0] ? '12' : s.from === MONTHS[6] ? '6' : s.from === MONTHS[9] ? '3' : 'custom')
 
 export type More = Pick<RoutesState, 'lp' | 'up' | 'via' | 'q' | 'form'>
@@ -120,6 +138,26 @@ export function FilterCard({ s, set, compact }: { s: RoutesState; set: (patch: P
   }, [moreOpen])
   const live = filterRoutes({ ...s, ...draft })
   const liveValue = live.reduce((t, r) => t + routeValue(r, { ...s, ...draft }), 0)
+=======
+const presetOf = (s: Pick<RoutesState, 'from' | 'to'>): PeriodPreset => (s.to !== LAST ? 'custom' : s.from === MONTHS[0] ? '12' : s.from === MONTHS[6] ? '6' : s.from === MONTHS[9] ? '3' : 'custom')
+
+/**
+ * The filter card (§8): 4 direct dropdowns plus a button-style period selector in place of «فیلترهای بیشتر».
+ */
+export function FilterCard({ s, set, compact }: { s: RoutesState; set: (patch: Partial<RoutesState>) => void; compact: boolean }) {
+  const [sheet, setSheet] = useState(false)
+  const preset = presetOf(s)
+  const activeCount = s.goods.length + s.origin.length + s.dest.length + s.mode.length + (preset !== '12' ? 1 : 0)
+  const extraCount = s.lp.length + s.up.length + s.via.length + (s.q ? 1 : 0) + s.form.length
+  const anyActive = activeCount + extraCount > 0
+
+  const pickPreset = (p: PeriodPreset) => {
+    if (p === '12') set({ from: MONTHS[0], to: LAST })
+    else if (p === '6') set({ from: MONTHS[6], to: LAST })
+    else if (p === '3') set({ from: MONTHS[9], to: LAST })
+    else set({ from: MONTHS[0], to: MONTHS[MONTHS.length - 2] })
+  }
+>>>>>>> scm-v1/main
 
   const fields = (
     <div className="rfilters__row">
@@ -127,6 +165,7 @@ export function FilterCard({ s, set, compact }: { s: RoutesState; set: (patch: P
       <Field label="کشور مبدأ" opts={countries((r) => r.originCountry)} value={s.origin} onChange={(origin) => set({ origin })} search />
       <Field label="کشور مقصد" opts={countries((r) => r.destCountry)} value={s.dest} onChange={(dest) => set({ dest })} search />
       <Field label="روش حمل" opts={modeOpts} value={s.mode} onChange={(mode) => set({ mode: mode as Mode[] })} />
+<<<<<<< HEAD
       <div className="rperiod">
         <Field
           label="بازهٔ زمانی"
@@ -161,6 +200,49 @@ export function FilterCard({ s, set, compact }: { s: RoutesState; set: (patch: P
           </span>
         )}
       </div>
+=======
+    </div>
+  )
+
+  const periodButtons = (
+    <div className="rperiod-bar">
+      <span className="rperiod-bar__label">
+        <Calendar size={14} aria-hidden="true" />
+        بازهٔ زمانی
+      </span>
+      <div className="rperiod-seg" role="group" aria-label="بازهٔ زمانی">
+        {PRESETS.map((p) => (
+          <button
+            key={p.value}
+            type="button"
+            className="rperiod-btn"
+            aria-pressed={preset === p.value}
+            onClick={() => pickPreset(p.value)}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+      {preset === 'custom' && (
+        <div className="rperiod-custom">
+          <select aria-label="از ماه" value={s.from} onChange={(e) => set({ from: e.target.value as Month })}>
+            {MONTHS.map((m) => (
+              <option key={m} value={m}>
+                {persianMonth(m)}
+              </option>
+            ))}
+          </select>
+          <span className="rperiod-custom__sep">تا</span>
+          <select aria-label="تا ماه" value={s.to} onChange={(e) => set({ to: e.target.value as Month })}>
+            {MONTHS.map((m) => (
+              <option key={m} value={m}>
+                {persianMonth(m)}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+>>>>>>> scm-v1/main
     </div>
   )
 
@@ -170,7 +252,16 @@ export function FilterCard({ s, set, compact }: { s: RoutesState; set: (patch: P
         <Filter size={15} aria-hidden="true" />
         فیلترها
       </h2>
+<<<<<<< HEAD
       <button type="button" className={`rfilters__clear ${anyActive ? 'is-on' : ''}`} disabled={!anyActive} onClick={() => set({ goods: [], origin: [], dest: [], mode: [], from: MONTHS[0], to: LAST, ...MORE_EMPTY })}>
+=======
+      <button
+        type="button"
+        className={`rfilters__clear ${anyActive ? 'is-on' : ''}`}
+        disabled={!anyActive}
+        onClick={() => set({ goods: [], origin: [], dest: [], mode: [], from: MONTHS[0], to: LAST, lp: [], up: [], via: [], q: null, form: [] })}
+      >
+>>>>>>> scm-v1/main
         پاک کردن فیلترها
       </button>
     </div>
@@ -182,7 +273,11 @@ export function FilterCard({ s, set, compact }: { s: RoutesState; set: (patch: P
       <>
         <button type="button" className="rfilters__open" onClick={() => setSheet(true)}>
           <Filter size={15} aria-hidden="true" />
+<<<<<<< HEAD
           فیلترها{anyActive ? ` (${fa(firstActive + moreCount(s))})` : ''}
+=======
+          فیلترها{anyActive ? ` (${fa(activeCount + extraCount)})` : ''}
+>>>>>>> scm-v1/main
         </button>
         {sheet && (
           <div className="rsheet" role="dialog" aria-modal="true" aria-label="فیلترها">
@@ -190,10 +285,17 @@ export function FilterCard({ s, set, compact }: { s: RoutesState; set: (patch: P
             <div className="rsheet__body">
               {head}
               {fields}
+<<<<<<< HEAD
               <MoreFields draft={draft} setDraft={setDraft} />
               <div className="rmore__foot">
                 <button type="button" className="abtn abtn--primary abtn--sm" onClick={() => (set(draft), setSheet(false))}>
                   نمایش {fa(live.length)} مسیر
+=======
+              {periodButtons}
+              <div className="rmore__foot">
+                <button type="button" className="abtn abtn--primary abtn--sm" onClick={() => setSheet(false)}>
+                  تأیید
+>>>>>>> scm-v1/main
                 </button>
               </div>
             </div>
@@ -202,6 +304,7 @@ export function FilterCard({ s, set, compact }: { s: RoutesState; set: (patch: P
       </>
     )
 
+<<<<<<< HEAD
   // The card keeps its place; opened, it grows over the map (the wrapper holds the collapsed height)
   return (
     <div className="rfilters-wrap">
@@ -251,5 +354,13 @@ function MoreFields({ draft, setDraft }: { draft: More; setDraft: (m: More) => v
       <Field label="چارک ارزش" single opts={quartOpts} value={draft.q ? [String(draft.q)] : []} onChange={(v) => setDraft({ ...draft, q: v[0] ? (Number(v[0]) as 1 | 2 | 3 | 4) : null })} />
       <Field label="شکل محموله" opts={formOpts} value={draft.form} onChange={(form) => setDraft({ ...draft, form })} />
     </div>
+=======
+  return (
+    <section className="rfilters" aria-label="فیلترها">
+      {head}
+      {fields}
+      {periodButtons}
+    </section>
+>>>>>>> scm-v1/main
   )
 }

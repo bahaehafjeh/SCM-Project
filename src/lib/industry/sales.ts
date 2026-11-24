@@ -433,3 +433,172 @@ export function salesRecordsCsv(rows: SalesRecord[]): string {
   const lines = rows.map((r) => [r.month, r.product, r.type, r.unit, r.qty, r.qtyChangePct, r.rateMr, r.rateChangePct, r.amountBr, r.amountChangePct, r.usdThousand, r.usdChangePct, r.usdPerUnit, 'نمونه'])
   return '﻿' + [head, ...lines].map((l) => l.map(csvCell).join(',')).join('\n')
 }
+<<<<<<< HEAD
+=======
+
+// ── «فروش ماهانه»: breakdown by market type (returns and discounts below zero) ──
+export type MonthlySalesMode = 'monthly' | 'cumulative'
+export interface MonthlySalesRow {
+  month: string
+  domestic: number | null
+  export: number | null
+  services: number | null
+  /** Negative value plotted below zero */
+  returns: number | null
+  /** Negative value plotted below zero */
+  discounts: number | null
+  /** Unclassified market sales (0 when all sales are classified) */
+  unclassified: number | null
+  net: number | null
+}
+
+export function monthlySalesRows(s: SalesSet, ds: Dataset, r: Range, unit: Unit, mode: MonthlySalesMode): MonthlySalesRow[] {
+  const months = salesMonthsIn(s, ds, r)
+  let curFy: number | null = null
+  let accDom: number | null = 0
+  let accExp: number | null = 0
+  let accSrv: number | null = 0
+  let accRet: number | null = 0
+  let accDis: number | null = 0
+  let accUnc: number | null = 0
+  let accNet: number | null = 0
+
+  return months.map((month) => {
+    const x = s.byMonth.get(month)!
+    const retMr = Math.round(x.returns * 0.68)
+    const disMr = x.returns - retMr
+    const dom = inUnit(x.domestic, x.rate, unit)
+    const exp = inUnit(x.export, x.rate, unit)
+    const srv = inUnit(x.services, x.rate, unit)
+    const retRaw = inUnit(retMr, x.rate, unit)
+    const disRaw = inUnit(disMr, x.rate, unit)
+    const unc = dom != null ? 0 : null
+    const net = inUnit(x.net, x.rate, unit)
+    const ret = retRaw == null ? null : -retRaw
+    const dis = disRaw == null ? null : -disRaw
+
+    if (mode === 'monthly') {
+      return { month, domestic: dom, export: exp, services: srv, returns: ret, discounts: dis, unclassified: unc, net }
+    }
+
+    const fy = fiscalYearOf(month)
+    if (curFy !== fy) {
+      curFy = fy
+      accDom = 0
+      accExp = 0
+      accSrv = 0
+      accRet = 0
+      accDis = 0
+      accUnc = 0
+      accNet = 0
+    }
+    const add = (acc: number | null, v: number | null) => (acc == null || v == null ? null : acc + v)
+    accDom = add(accDom, dom)
+    accExp = add(accExp, exp)
+    accSrv = add(accSrv, srv)
+    accRet = add(accRet, ret)
+    accDis = add(accDis, dis)
+    accUnc = add(accUnc, unc)
+    accNet = add(accNet, net)
+    return { month, domestic: accDom, export: accExp, services: accSrv, returns: accRet, discounts: accDis, unclassified: accUnc, net: accNet }
+  })
+}
+
+// ── «تولید در برابر فروش»: monthly (<= 24m: 3m/6m/1y) or yearly (> 24m: 3y/10y) for one product ──
+export interface ProdSalesOption {
+  value: string
+  label: string
+}
+export const PROD_SALES_PRODUCTS: ProdSalesOption[] = [
+  ...new Set(PRODUCTS.filter((p) => p.type !== 'خدمات').map((p) => p.product)),
+].map((name) => ({ value: name, label: `${name} · تن` }))
+
+export interface ProdSalesRow {
+  key: string
+  /** Two-line axis label top line (year in monthly mode, empty in yearly mode) */
+  topLabel: string
+  /** Two-line axis label bottom line (month name in monthly mode, year in yearly mode) */
+  bottomLabel: string
+  /** Full readable label for tooltips and ARIA */
+  label: string
+  year: number
+  monthsCount: number
+  production: number
+  domestic: number
+  export: number
+  sales: number
+  sellThroughPct: number | null
+}
+
+function monthProdSales(s: SalesSet, month: string, productName: string, factorRand: () => number): ProdSalesRow {
+  const x = s.byMonth.get(month)
+  let domestic = 0
+  let exported = 0
+  if (x) {
+    for (const it of x.items) {
+      if (it.product !== productName) continue
+      if (it.type === 'فروش داخلی') domestic += it.qty
+      else if (it.type === 'صادراتی') exported += it.qty
+    }
+  }
+  const sales = domestic + exported
+  const factor = 0.96 + factorRand() * 0.34
+  const production = sales > 0 ? Math.max(1, Math.round(sales * factor)) : 0
+  const y = yearOf(month)
+  const yFa = String(y).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[Number(d)])
+  const mName = MONTH_NAMES[monthOf(month) - 1]
+  return {
+    key: month,
+    topLabel: yFa,
+    bottomLabel: mName,
+    label: `${mName} ${yFa}`,
+    year: y,
+    monthsCount: 1,
+    production,
+    domestic,
+    export: exported,
+    sales,
+    sellThroughPct: production > 0 ? (sales / production) * 100 : null,
+  }
+}
+
+function buildMonthlyProdSales(s: SalesSet, months: string[], productName: string): ProdSalesRow[] {
+  const nameHash = [...productName].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) >>> 0, 17)
+  const rand = rng(nameHash + 901)
+  return months.map((m) => monthProdSales(s, m, productName, rand))
+}
+
+export function productionVsSalesRows(s: SalesSet, ds: Dataset, r: Range, productName: string, byYearAfter = 24): { byYear: boolean; rows: ProdSalesRow[]; monthly: ProdSalesRow[] } {
+  const months = salesMonthsIn(s, ds, r)
+  const monthly = buildMonthlyProdSales(s, months, productName)
+  const byYear = months.length > byYearAfter
+  if (!byYear) {
+    return { byYear: false, rows: monthly, monthly }
+  }
+  const years = [...new Set(monthly.map((m) => m.year))].slice(-10)
+  const rows: ProdSalesRow[] = years.map((year) => {
+    const ms = monthly.filter((m) => m.year === year)
+    const production = ms.reduce((a, m) => a + m.production, 0)
+    const domestic = ms.reduce((a, m) => a + m.domestic, 0)
+    const exported = ms.reduce((a, m) => a + m.export, 0)
+    const sales = domestic + exported
+    const yFa = String(year).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[Number(d)])
+    return {
+      key: String(year),
+      topLabel: '',
+      bottomLabel: yFa,
+      label: `سال ${yFa}${ms.length < 12 ? ` (${String(ms.length).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[Number(d)])} ماه)` : ''}`,
+      year,
+      monthsCount: ms.length,
+      production,
+      domestic,
+      export: exported,
+      sales,
+      sellThroughPct: production > 0 ? (sales / production) * 100 : null,
+    }
+  })
+  return { byYear: true, rows, monthly }
+}
+
+
+>>>>>>> scm-v1/main

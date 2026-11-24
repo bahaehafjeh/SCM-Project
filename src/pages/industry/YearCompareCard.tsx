@@ -22,14 +22,26 @@ export function YearCompareCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet 
   const [mode, setMode] = useState<YearMode>('fiscal')
   // Positions in the list (0 = newest), so the choice survives a change of year type
   const [on, setOn] = useState<number[]>([0, 1])
+<<<<<<< HEAD
+=======
+  const [hoverYear, setHoverYear] = useState<number | null>(null)
+>>>>>>> scm-v1/main
   const end = sales && ctx.end && sales.byMonth.has(ctx.end) ? ctx.end : null
   const years = end ? compareYears(end, mode) : []
   const shown = years.filter((_, i) => on.includes(i))
   const rows = sales && end ? yearCompareRows(sales, end, mode, ctx.unit, shown) : []
   const unit = SALES_UNIT_LABEL[ctx.unit]
   const d = 1
+<<<<<<< HEAD
   const axis = niceTicks(Math.max(0, ...rows.flatMap((r) => shown.map((y) => Number(r[`y${y}`] ?? 0)))))
   const toggle = (i: number) => setOn((xs) => (xs.includes(i) ? (xs.length > 1 ? xs.filter((x) => x !== i) : xs) : [...xs, i]))
+=======
+  const axis = niceTicks(Math.max(0, ...rows.flatMap((r) => shown.map((y) => Number(r[`y${y}`] ?? 0)))), 6)
+  const toggle = (i: number) => {
+    setHoverYear(null)
+    setOn((xs) => (xs.includes(i) ? (xs.length > 1 ? xs.filter((x) => x !== i) : xs) : [...xs, i]))
+  }
+>>>>>>> scm-v1/main
   const yearName = (y: number) => faDigits(String(y))
 
   return (
@@ -47,7 +59,22 @@ export function YearCompareCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet 
             const pressed = on.includes(i)
             return (
               <li key={y}>
+<<<<<<< HEAD
                 <button type="button" className="ind-year" aria-pressed={pressed} style={{ '--c': SHADES[i] } as CSSProperties} onClick={() => toggle(i)} title={pressed && on.length === 1 ? 'دست‌کم یک سال نمایش داده می‌شود' : undefined}>
+=======
+                <button
+                  type="button"
+                  className={`ind-year ${hoverYear === y ? 'is-hot' : ''}`}
+                  aria-pressed={pressed}
+                  style={{ '--c': SHADES[i] } as CSSProperties}
+                  onClick={() => toggle(i)}
+                  onMouseEnter={() => pressed && setHoverYear(y)}
+                  onMouseLeave={() => setHoverYear(null)}
+                  onFocus={() => pressed && setHoverYear(y)}
+                  onBlur={() => setHoverYear(null)}
+                  title={pressed && on.length === 1 ? 'دست‌کم یک سال نمایش داده می‌شود' : undefined}
+                >
+>>>>>>> scm-v1/main
                   <span className="ind-year__sw" aria-hidden="true" />
                   <span className="n">{yearName(y)}</span>
                 </button>
@@ -61,7 +88,11 @@ export function YearCompareCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet 
             <XAxis dataKey="name" interval={0} tickLine={false} axisLine={{ stroke: 'var(--color-border)' }} tickMargin={8} fontSize={11} />
             <YAxis domain={[0, axis.max]} ticks={axis.ticks} tickFormatter={(v: number) => fa(v, 0)} tickLine={false} axisLine={{ stroke: 'var(--color-border)' }} width={70} />
             <ChartTooltip
+<<<<<<< HEAD
               cursor={{ fill: 'var(--color-muted)', opacity: 0.6 }}
+=======
+              cursor={{ fill: 'color-mix(in srgb, var(--brand-shades-500) 7%, transparent)', radius: 6 }}
+>>>>>>> scm-v1/main
               content={({ active, payload }) => {
                 const row = payload?.[0]?.payload as YearRow | undefined
                 if (!row) return null
@@ -71,7 +102,11 @@ export function YearCompareCard({ ctx, sales }: { ctx: CardCtx; sales: SalesSet 
             />
             {/* Oldest first, so in each month the newest year stands at the right */}
             {[...shown].reverse().map((y) => (
+<<<<<<< HEAD
               <Bar key={y} dataKey={`y${y}`} fill={SHADES[years.indexOf(y)]} maxBarSize={18} radius={[3, 3, 0, 0]} isAnimationActive={false} />
+=======
+              <Bar key={y} dataKey={`y${y}`} fill={SHADES[years.indexOf(y)]} fillOpacity={hoverYear == null || hoverYear === y ? 1 : 0.24} maxBarSize={18} radius={[3, 3, 0, 0]} isAnimationActive={false} />
+>>>>>>> scm-v1/main
             ))}
           </BarChart>
         </ChartContainer>

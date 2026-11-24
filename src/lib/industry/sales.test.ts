@@ -3,7 +3,11 @@ import { describe, expect, it } from 'vitest'
 import { parseCsv } from './data'
 import { DEFAULT_RANGE, indexRecords } from './derive'
 import { sampleHistory } from './sample'
+<<<<<<< HEAD
 import { salesRecords, salesYearCounts, SALES_PRODUCTS, productValue, topProducts, salesCsv, salesTableRows, compareYears, fiscalLines, fiscalStart, fiscalYearOf, monthOfYear, salesKpis, sampleSales, yearCompareRows, yearMonthNames } from './sales'
+=======
+import { monthlySalesRows, PROD_SALES_PRODUCTS, productionVsSalesRows, salesRecords, salesYearCounts, SALES_PRODUCTS, productValue, topProducts, salesCsv, salesTableRows, compareYears, fiscalLines, fiscalStart, fiscalYearOf, monthOfYear, salesKpis, sampleSales, yearCompareRows, yearMonthNames } from './sales'
+>>>>>>> scm-v1/main
 
 const real = parseCsv(csv)
 const ds = indexRecords([...real, ...sampleHistory(real)])
@@ -120,3 +124,38 @@ describe('«جزئیات فروش در بازه»', () => {
     expect(salesRecords(sales, ds, DEFAULT_RANGE, 1404).every((x) => x.month.startsWith('1404'))).toBe(true)
   })
 })
+<<<<<<< HEAD
+=======
+
+describe('«فروش ماهانه» & «تولید در برابر فروش»', () => {
+  it('breaks monthly sales into positive streams and negative returns + discounts', () => {
+    const rows = monthlySalesRows(sales, ds, DEFAULT_RANGE, 'mr', 'monthly')
+    const last = rows[rows.length - 1]
+    const raw = sales.byMonth.get(last.month)!
+    expect(last.domestic).toBeCloseTo(raw.domestic / 1e3, 4)
+    expect(last.returns!).toBeLessThanOrEqual(0)
+    expect(last.discounts!).toBeLessThanOrEqual(0)
+    expect(Math.abs(last.returns! + last.discounts!) * 1e3).toBeCloseTo(raw.returns, 1)
+
+    const cum = monthlySalesRows(sales, ds, DEFAULT_RANGE, 'mr', 'cumulative')
+    const decIdx = cum.findIndex((r) => r.month === '1404/10')
+    expect(cum[decIdx].domestic).toBeCloseTo(rows[decIdx].domestic!, 4)
+  })
+
+  it('follows the range: monthly for <= 24 months and yearly for 3y / 10y', () => {
+    const prod = PROD_SALES_PRODUCTS[0].value
+    const yr = productionVsSalesRows(sales, ds, DEFAULT_RANGE, prod)
+    expect(yr.byYear).toBe(true)
+    expect(yr.rows.length).toBeGreaterThanOrEqual(3)
+    for (const r of yr.rows) {
+      expect(r.sales).toBe(r.domestic + r.export)
+      expect(r.production).toBeGreaterThan(0)
+    }
+    const shortRange = { from: DEFAULT_RANGE.to - 5, to: DEFAULT_RANGE.to }
+    const mo = productionVsSalesRows(sales, ds, shortRange, prod)
+    expect(mo.byYear).toBe(false)
+    expect(mo.rows).toHaveLength(6)
+    expect(mo.rows[mo.rows.length - 1].topLabel).toBe('۱۴۰۵')
+  })
+})
+>>>>>>> scm-v1/main
